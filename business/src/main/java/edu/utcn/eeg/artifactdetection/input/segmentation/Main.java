@@ -10,6 +10,7 @@ public class Main {
 		FileProcessor fp = new FileProcessor();
 		String fileName = Configuration.RESOURCES_PATH+"/TxtInputFiles"; // could also be a constant
 		fp.parseDataDirectory(new File(fileName));
+		
 	}
 
 }

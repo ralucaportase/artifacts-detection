@@ -21,8 +21,7 @@ public class FixedWindowSegmentation {
 	 */
 	public void segment(double[] allValues, int index, int channel){
 		int i=0;
-		int n = Configuration.WINDOW_SIZE/Configuration.STEP;
-		for(i = 0; i<n; i+=Configuration.STEP){
+		for(i = 0; i<Configuration.WINDOW_SIZE; i+=Configuration.STEP){
 			iterativeSegm(allValues, i,channel);
 		}
 	}

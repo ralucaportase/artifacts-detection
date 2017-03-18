@@ -4,6 +4,7 @@
 ### Eclipse ###
 resources/
 resources_not_needed/
+results/
 DTinputData.xml
 .metadata
 bin/

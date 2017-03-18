@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import edu.utcn.eeg.artifactdetection.model.Configuration;
+
 public class FileProcessor {
 	
 
@@ -36,6 +38,9 @@ public class FileProcessor {
 		try(Scanner scan = new Scanner(file)){
 			while (scan.hasNextDouble()) {
 				data.add(scan.nextDouble());
+				if(data.size() > Configuration.MAX_INDEX){
+					break;
+				}
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
