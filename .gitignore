@@ -5,6 +5,7 @@
 resources/
 resources_not_needed/
 results/
+test/
 DTinputData.xml
 .metadata
 bin/
