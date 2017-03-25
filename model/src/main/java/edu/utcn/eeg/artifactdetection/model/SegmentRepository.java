@@ -22,5 +22,9 @@ public class SegmentRepository implements Serializable{
 	public void addSegment(Segment segment){
 		segments.add(segment);
 	}
+	
+	public List<Segment> getSegments(){
+		return this.segments;
+	}
 
 }

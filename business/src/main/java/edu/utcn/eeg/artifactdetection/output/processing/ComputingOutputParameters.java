@@ -1,5 +1,7 @@
 package edu.utcn.eeg.artifactdetection.output.processing;
 
+import java.util.List;
+
 /**
  * Methods for computing parameters for the classification
  * 
@@ -15,7 +17,7 @@ public class ComputingOutputParameters {
 	 * @param falsePositive
 	 */
 	public double computePrecision(int truePositive, int falsePositive) {
-		return truePositive / (truePositive + falsePositive);
+		return (double) truePositive / (truePositive + falsePositive) * 100;
 	}
 
 	/**
@@ -25,7 +27,7 @@ public class ComputingOutputParameters {
 	 * @param falseNegative
 	 */
 	public double computeRecall(int truePositive, int falseNegative) {
-		return truePositive / (truePositive + falseNegative);
+		return (double) truePositive / (truePositive + falseNegative) * 100;
 	}
 
 	/**
@@ -35,7 +37,7 @@ public class ComputingOutputParameters {
 	 * @param falsePositive
 	 */
 	public double computeTrueNegativeRate(int trueNegative, int falsePositive) {
-		return trueNegative / (trueNegative + falsePositive);
+		return (double) trueNegative / (trueNegative + falsePositive) * 100;
 	}
 
 	/**
@@ -48,8 +50,9 @@ public class ComputingOutputParameters {
 	 */
 	public double computeAccuracy(int truePositive, int trueNegative,
 			int falsePositive, int falseNegative) {
-		return (trueNegative + truePositive)
-				/ (trueNegative + truePositive + falsePositive + falseNegative);
+		return (double) (trueNegative + truePositive)
+				/ (trueNegative + truePositive + falsePositive + falseNegative)
+				* 100;
 	}
 
 	/**
@@ -64,7 +67,7 @@ public class ComputingOutputParameters {
 		double precision = computePrecision(truePositive, falsePositive);
 		double recall = computeRecall(truePositive, falseNegative);
 
-		return 2 * precision * recall / (precision + recall);
+		return (double) 2 * precision * recall / (precision + recall) ;
 	}
 
 }

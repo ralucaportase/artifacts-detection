@@ -1,6 +1,7 @@
 package edu.utcn.eeg.artifactdetection.features.export;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,11 +13,13 @@ import edu.utcn.eeg.artifactdetection.model.FeatureType;
 import edu.utcn.eeg.artifactdetection.model.ResultType;
 import edu.utcn.eeg.artifactdetection.model.Segment;
 import edu.utcn.eeg.artifactdetection.model.SegmentRepository;
+import edu.utcn.eeg.artifactdetection.output.processing.ComputingOutputParameters;
+import edu.utcn.eeg.artifactdetection.output.processing.SVMOutput;
 
 /**
  * @author: RalucaPortase
  * 
- * Class for generating data in the format used by SVM light
+ *          Class for generating data in the format used by SVM light
  */
 public class DataGeneratorForInductiveSVM {
 	private static final String LEARNING_FILENAME = Configuration.PROJECT_PATH
@@ -46,12 +49,9 @@ public class DataGeneratorForInductiveSVM {
 	}
 
 	/*
-	 * format used for learning file is 
-	 * <line> .=. <target> <feature>:<value> ... <feature>:<value> # <info>
-	 * <target> .=. +1 | -1 | 0 | <float> 
-	 * <feature> .=. <integer> | "qid"
-	 * <value> .=. <float>
-	 * <info> .=. <string>
+	 * format used for learning file is <line> .=. <target> <feature>:<value>
+	 * ... <feature>:<value> # <info> <target> .=. +1 | -1 | 0 | <float>
+	 * <feature> .=. <integer> | "qid" <value> .=. <float> <info> .=. <string>
 	 */
 	public static String getContentOfLearningFile(List<Segment> segments) {
 		List<Double> outputFeatures;
@@ -59,7 +59,7 @@ public class DataGeneratorForInductiveSVM {
 		boolean ok = true;
 		int index, // index represents the feature
 		noOfArtifacts = 0, noOfBrainSignals = 0;
-		
+
 		for (Segment segment : segments) {
 			outputFeatures = getFeaturesForSegment(segment);
 			// we use a binary classification when 1 represent
@@ -68,7 +68,7 @@ public class DataGeneratorForInductiveSVM {
 				// make sure that we have equal no of learning samples
 				if (noOfBrainSignals <= noOfArtifacts) {
 					lineContent += "\n1 ";
-					//noOfBrainSignals++;
+					// noOfBrainSignals++;
 					ok = true;
 				} else
 					ok = false;
@@ -76,7 +76,7 @@ public class DataGeneratorForInductiveSVM {
 				lineContent += "\n-1 ";
 				noOfArtifacts++;
 				ok = true;
-				//System.out.println("Processing " + segment.getCorrectType());
+				// System.out.println("Processing " + segment.getCorrectType());
 			}
 			index = 1;
 			if (ok == true) {
@@ -115,35 +115,63 @@ public class DataGeneratorForInductiveSVM {
 		}
 
 	}
-	
-	private int computeFalsePositiveRate(){
-		return 0;
+
+	public void createSvmInputFiles() {
+		SegmentDeserializer deserializer = new SegmentDeserializer();
+		List<Segment> segments = new ArrayList<Segment>();
+
+		SegmentRepository repository = deserializer
+				.deserializeSegmentsFromFile("D:/DiplomaCode/artifacts-detection/results/Muscle72.ser");
+		segments.addAll(repository.getSegments());
+		repository = deserializer
+				.deserializeSegmentsFromFile("D:/DiplomaCode/artifacts-detection/results/Occular72.ser");
+		segments.addAll(repository.getSegments());
+		repository = deserializer
+				.deserializeSegmentsFromFile("D:/DiplomaCode/artifacts-detection/results/Clean72.ser");
+		segments.addAll(repository.getSegments());
+
+		writeToFile(segments);
+		System.out.println("done writing file!");
 	}
-	
-	private int computeTruePositiveRate(){
-		return 0;
-	}
-	
-	private int computeFalseNegativeRate(){
-		return 0;
-	}
-	
-	private int computeTrueNegativeRate(){
-		return 0;
+
+	public static void computeOutputSVMParameters() {
+		SVMOutput svmOutput = new SVMOutput();
+		List<Double> inputClassification = svmOutput.parseOutputFile(new File(
+				"D:/DiplomaCode/artifacts-detection/svm/svmTest74.csv"));
+		List<Double> outputClassification = svmOutput.parseOutputFile(new File(
+				"D:/DiplomaCode/artifacts-detection/svm/predictionTest16.dat"));
+
+		int falseNegative = svmOutput.computeFalseNegativeRate(
+				inputClassification, outputClassification);
+		int falsePositive = svmOutput.computeFalsePositiveRate(
+				inputClassification, outputClassification);
+		int trueNegative = svmOutput.computeTrueNegativeRate(
+				inputClassification, outputClassification);
+		int truePositive = svmOutput.computeTruePositiveRate(
+				inputClassification, outputClassification);
+
+		ComputingOutputParameters realOutput = new ComputingOutputParameters();
+
+		System.out.println("False Negative: " + falseNegative);
+		System.out.println("True Positive: " + truePositive);
+		System.out.println("False Positive: " + falsePositive);
+		System.out.println("True Negative: " + trueNegative);
+		System.out.println("Precision: "
+				+ realOutput.computePrecision(truePositive, falsePositive));
+		System.out.println("Recall: "
+				+ realOutput.computeRecall(truePositive, falseNegative));
+		System.out.println("True Negative Rate: "
+				+ realOutput.computeTrueNegativeRate(trueNegative,
+						falsePositive));
+		System.out.println("Accuracy: "
+				+ realOutput.computeAccuracy(truePositive, trueNegative,
+						falsePositive, falseNegative));
+		System.out.println("F-Measure: "
+				+ realOutput.computeFMeasure(truePositive, falsePositive,
+						falseNegative));
 	}
 
 	public static void main(String[] args) {
-		SegmentDeserializer deserializer = new SegmentDeserializer();			
-		List<Segment> segments = new ArrayList<Segment>();
-		
-		SegmentRepository repository = deserializer.deserializeSegmentsFromFile("D:/DiplomaCode/artifacts-detection/results/Muscle72.ser");
-		segments.addAll(repository.getSegments());
-	    repository = deserializer.deserializeSegmentsFromFile("D:/DiplomaCode/artifacts-detection/results/Occular72.ser");
-		segments.addAll(repository.getSegments());
-	    repository = deserializer.deserializeSegmentsFromFile("D:/DiplomaCode/artifacts-detection/results/Clean72.ser");
-		segments.addAll(repository.getSegments());
-		
-		writeToFile(segments);
-		System.out.println("done writing file!");
+		computeOutputSVMParameters();
 	}
 }
