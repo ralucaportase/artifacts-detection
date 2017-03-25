@@ -123,6 +123,7 @@ public class StructureBuilder {
 		case MUSCLE: 
 			muscleStruct.addSegment(segment);
 			musc++;
+			break;
 		default:
 			brainStruct.addSegment(segment);
 			brain++;
