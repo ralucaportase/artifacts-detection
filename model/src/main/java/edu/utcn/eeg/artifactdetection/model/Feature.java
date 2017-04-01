@@ -20,7 +20,7 @@ public class Feature implements Serializable{
 		this.value = value;
 	}
 
-	public double getValueName() {
+	public double getValue() {
 		return value;
 	}
 

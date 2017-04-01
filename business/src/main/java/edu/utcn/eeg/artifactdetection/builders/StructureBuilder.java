@@ -1,12 +1,15 @@
 package edu.utcn.eeg.artifactdetection.builders;
 
+import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
+import com.google.common.collect.Lists;
 import com.google.common.collect.Range;
 
 import edu.utcn.eeg.artifactdetection.features.FeatureExtractor;
-import edu.utcn.eeg.artifactdetection.features.export.DataGeneratorForDecisionTree;
-import edu.utcn.eeg.artifactdetection.features.export.SegmentSerializer;
+import edu.utcn.eeg.artifactdetection.input.segmentation.LoggerUtil;
 import edu.utcn.eeg.artifactdetection.labels.ArtifactsLabelsExtractor;
 import edu.utcn.eeg.artifactdetection.model.ArtifactType;
 import edu.utcn.eeg.artifactdetection.model.ArtifactsStructure;
@@ -17,15 +20,16 @@ import edu.utcn.eeg.artifactdetection.model.Segment;
 import edu.utcn.eeg.artifactdetection.model.SegmentRepository;
 
 public class StructureBuilder {
+	
+	private Logger logger = LoggerUtil.logger(StructureBuilder.class);
 
-	private DataGeneratorForDecisionTree dataGen;
 	private Map<ArtifactType, ArtifactsStructure> artifactsStructures;
 	private SegmentRepository occularStruct;
 	private SegmentRepository muscleStruct;
 	private SegmentRepository brainStruct;
-	private int occ; 
-	private int musc; 
-	private int brain;
+	private SegmentRepository occularStructTest;
+	private SegmentRepository muscleStructTest;
+	private SegmentRepository brainStructTest;
 
 	public StructureBuilder() {
 		ArtifactsLabelsExtractor artifactsLabelsExtractor = new ArtifactsLabelsExtractor();
@@ -34,15 +38,18 @@ public class StructureBuilder {
 		brainStruct = new SegmentRepository("Clean");
 		muscleStruct = new SegmentRepository("Muscle");
 		occularStruct = new SegmentRepository("Occular");
+		brainStructTest = new SegmentRepository("Clean_Test");
+		muscleStructTest = new SegmentRepository("Muscle_Test");
+		occularStructTest = new SegmentRepository("Occular_Test");
 	}
 
-	public void buildDataStructures(double[] data, int iter, int index, int channel) {
+	public void buildDataStructures(double[] data, int iter, int index, int channel, boolean test) {
 		ResultType resultType = computeCorrectType(index, channel);
 		if (resultType != null) {
 			Segment segment = createSegment(data, iter, index, channel, resultType);
 			//dataGen.writeSegment(segment);
-			addToSerializableStructure(segment);
-			System.out.println(segment);
+			addToSerializableStructure(segment, test);
+			logger.info(segment);
 		}
 	}
 
@@ -60,7 +67,7 @@ public class StructureBuilder {
 		Feature[] features = FeatureBuilder.createStandardFeaturesInstances();
 		for (Feature feat : features) {
 			if (FeatureExtractor.getFeatureValue(feat.getFeature(), data) == null) {
-				System.out.println("Error with the feature extraction!");
+				logger.error("Error with the feature extraction! in StructureBuilder[computeFeaturesForSegment]");
 				return null;
 			}
 			feat.setValue(FeatureExtractor.getFeatureValue(feat.getFeature(), data));
@@ -114,27 +121,34 @@ public class StructureBuilder {
 		return null;
 	}
 	
-	private void addToSerializableStructure(Segment segment){
+	private void addToSerializableStructure(Segment segment, boolean test){
 		switch (segment.getCorrectType()) {
 		case OCCULAR:
-			occularStruct.addSegment(segment);
-			occ++;
+			if(test){
+				occularStructTest.addSegment(segment);
+			}else{
+				occularStruct.addSegment(segment);
+			}
 			break;
 		case MUSCLE: 
-			muscleStruct.addSegment(segment);
-			musc++;
+			if(test){
+				muscleStructTest.addSegment(segment);
+			}else{
+				muscleStruct.addSegment(segment);
+			}
 			break;
 		default:
-			brainStruct.addSegment(segment);
-			brain++;
+			if(test){
+				brainStructTest.addSegment(segment);
+			}else{
+				brainStruct.addSegment(segment);
+			}
 		}
 	}
 	
-	public void serialize(){
-		SegmentSerializer.serialize(occularStruct, Configuration.RESULTS_PATH);
-		SegmentSerializer.serialize(muscleStruct, Configuration.RESULTS_PATH);
-		SegmentSerializer.serialize(brainStruct, Configuration.RESULTS_PATH);
-		System.out.println("Ocular = "+occ+" Muscular = "+musc+" Brain = "+brain);
+	public List<SegmentRepository> getSerializableStructures(){
+		return Lists.newArrayList(occularStruct,occularStructTest,muscleStruct,muscleStructTest,brainStruct,brainStructTest);
 	}
+		
 
 }

@@ -66,4 +66,15 @@ public class FrequencyFeaturesExtractor {
 		return (double)f*n/FrequencyBands.SAMPLING_FREQUENCY;
 	}
 
+	
+	public double computeShannonEntropy(){
+		double entropy = 0;
+		for(int i = 1; i<=16; i++){
+			double magn = dft.getMagnitudeForBean(i);
+			entropy -= magn*Math.log(magn);
+		}
+		return entropy;
+	}
+	
+	
 }

@@ -22,7 +22,7 @@ public class DataGeneratorForDecisionTree {
 	public void writeSegment(Segment segment){
 			Map<String,String> pair = new HashMap<>();
 			for(Feature feat : segment.getFeatures()){
-				pair.put(feat.getFeature().toString(), Double.toString(feat.getValueName()));
+				pair.put(feat.getFeature().toString(), Double.toString(feat.getValue()));
 			}
 			pair.put("Label", segment.getCorrectType().toString());
 			xmlWriter.addExample(document, "training", pair);

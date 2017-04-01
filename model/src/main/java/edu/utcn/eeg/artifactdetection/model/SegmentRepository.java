@@ -8,7 +8,7 @@ public class SegmentRepository implements Serializable{
 
 	private static final long serialVersionUID = 3L;
 
-	private List<Segment> segments; 
+	private List<AbstractSegment> segments; 
 	private String name;
 	public SegmentRepository(String name) {
 		this.name = name;
@@ -19,12 +19,16 @@ public class SegmentRepository implements Serializable{
 		return name;
 	}
 	
-	public void addSegment(Segment segment){
+	public void addSegment(AbstractSegment segment){
 		segments.add(segment);
 	}
 	
-	public List<Segment> getSegments(){
+	public List<AbstractSegment> getSegments(){
 		return this.segments;
 	}
 
+	@Override
+	public String toString(){
+		return "Structure "+name+" "+segments.size();
+	}
 }

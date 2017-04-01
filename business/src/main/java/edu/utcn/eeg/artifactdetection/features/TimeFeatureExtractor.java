@@ -23,7 +23,7 @@ public class TimeFeatureExtractor {
 			stdDev+=(d-mean)*(d-mean);
 		}
 		stdDev = stdDev/(values.length-1);
-		return (double) Math.sqrt(stdDev);
+		return Math.sqrt(stdDev);
 	}
 	
 	public double computeMedian(Double[] values){
@@ -41,7 +41,38 @@ public class TimeFeatureExtractor {
 			rms+=d*d;
 		}
 		rms = rms/values.length;
-		return (double)Math.sqrt(rms);
+		return Math.sqrt(rms);
+	}
+	
+	public double computeSkewness(double[] values){
+		double skewness = 0; 
+		double numa=0;
+		double numi=0;
+		double mean = computeMean(values);
+		for (double d : values) {
+			numa+=(d-mean)*(d-mean)*(d-mean);
+			numi+=(d-mean)*(d-mean);
+		}
+		numa/=values.length;
+		numi/=values.length;
+		numi=numi*numi*numi;
+		numi=Math.sqrt(numi);
+		skewness = numa/numi;
+		return skewness;
+	}
+	
+	public double computeKurtosis(double[] values){
+		double numa=0;
+		double numi=0;
+		double mean = computeMean(values);
+		for (double d : values) {
+			numa+=(d-mean)*(d-mean)*(d-mean)*(d-mean);
+			numi+=(d-mean)*(d-mean);
+		}
+		numa/=values.length;
+		numi/=values.length;
+		numi=numi*numi;
+		return numa/numi;
 	}
 
 }

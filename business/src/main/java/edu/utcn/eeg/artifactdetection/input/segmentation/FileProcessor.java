@@ -6,26 +6,29 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import org.apache.log4j.Logger;
+
 import edu.utcn.eeg.artifactdetection.model.Configuration;
+import edu.utcn.eeg.artifactdetection.model.SegmentRepository;
 
 public class FileProcessor {
 	
-
-	FixedWindowSegmentation fws;
+	private Logger logger = LoggerUtil.logger(FileProcessor.class);
+	private FixedWindowSegmentation fws;
 	
 	public FileProcessor(){
 		fws=new FixedWindowSegmentation();
 	}
 	
-	public void parseDataDirectory(File folder){
+	public List<SegmentRepository> parseDataDirectory(File folder){
 		int i=0;
 		for (final File fileEntry : folder.listFiles()) {
 	        if (!fileEntry.isDirectory()) {
-	        	System.out.println(fileEntry.getAbsolutePath());
+	        	logger.info(fileEntry.getAbsolutePath());
 	            parseFile(fileEntry,i++);
 	        }
 	    }
-		fws.getStructureBuilder().serialize();
+		return fws.getStructureBuilder().getSerializableStructures();
 	}
 
 	private void parseFile(File file, int index){
@@ -33,20 +36,32 @@ public class FileProcessor {
 		if(channel<65){
 			return;
 		}
-		System.out.println("Fisierul ch "+channel);
+		logger.info("Fisierul channel "+channel);
 		List<Double> data = new ArrayList<>();
+		List<Double> testData = new ArrayList<>();
 		try(Scanner scan = new Scanner(file)){
 			while (scan.hasNextDouble()) {
-				data.add(scan.nextDouble());
-				if(data.size() > Configuration.MAX_INDEX){
+				if(data.size() <= Configuration.TRAIN_MAX_INDEX){
+					data.add(scan.nextDouble());
+				}
+				else if(testData.size()<Configuration.TEST_MAX_INDEX){
+					testData.add(scan.nextDouble());
+				}
+				else{
 					break;
 				}
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		System.out.println("Nr elemente "+data.size());
-		fws.segment(data.stream().mapToDouble(i -> i).toArray(), index, channel);
+		logger.info("Nr elemente train "+data.size());
+		logger.info("Nr elemente test "+testData.size());
+		segment(data, index,channel,false);
+		segment(testData, index, channel, true);	
+	}
+	
+	private void segment(List<Double> data, int index, int channel, boolean test){
+		fws.segment(data.stream().mapToDouble(i -> i).toArray(), index, channel,test);
 	}
 	
 	private int getChannelFromFile(String file){

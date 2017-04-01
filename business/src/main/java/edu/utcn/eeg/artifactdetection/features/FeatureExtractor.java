@@ -24,6 +24,12 @@ public class FeatureExtractor {
 			return frequencyFeatureExtractor.computeBetaHighMean();
 		case GAMMA_HIGH_SPECTRUM:
 			return frequencyFeatureExtractor.computeGammaHighMean();
+		case SKEWNESS: 
+			return timeFeatureExtractor.computeSkewness(data);
+		case KURTOSIS:
+			return timeFeatureExtractor.computeKurtosis(data);
+		case ENTROPY: 
+			return frequencyFeatureExtractor.computeShannonEntropy();
 		default:
 			return null;
 		}

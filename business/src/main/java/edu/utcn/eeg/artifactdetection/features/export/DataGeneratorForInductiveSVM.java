@@ -7,7 +7,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import edu.utcn.eeg.artifactdetection.features.FeatureExtractor;
+import edu.utcn.eeg.artifactdetection.input.segmentation.LoggerUtil;
+import edu.utcn.eeg.artifactdetection.model.AbstractSegment;
 import edu.utcn.eeg.artifactdetection.model.Configuration;
 import edu.utcn.eeg.artifactdetection.model.FeatureType;
 import edu.utcn.eeg.artifactdetection.model.ResultType;
@@ -22,6 +26,9 @@ import edu.utcn.eeg.artifactdetection.output.processing.SVMOutput;
  *          Class for generating data in the format used by SVM light
  */
 public class DataGeneratorForInductiveSVM {
+	
+	private static Logger logger = LoggerUtil.logger(DataGeneratorForInductiveSVM.class);
+
 	private static final String LEARNING_FILENAME = Configuration.PROJECT_PATH
 			+ "/svm/svmTest72.dat";
 
@@ -53,15 +60,19 @@ public class DataGeneratorForInductiveSVM {
 	 * ... <feature>:<value> # <info> <target> .=. +1 | -1 | 0 | <float>
 	 * <feature> .=. <integer> | "qid" <value> .=. <float> <info> .=. <string>
 	 */
-	public static String getContentOfLearningFile(List<Segment> segments) {
+	public static String getContentOfLearningFile(List<AbstractSegment> segments) {
 		List<Double> outputFeatures;
 		String lineContent = "";
 		boolean ok = true;
 		int index, // index represents the feature
 		noOfArtifacts = 0, noOfBrainSignals = 0;
 
-		for (Segment segment : segments) {
-			outputFeatures = getFeaturesForSegment(segment);
+		for (AbstractSegment segment : segments) {
+			if(! (segment instanceof Segment)){
+				logger.error("AbstractSegment not instance of Segment! DataGeneratorForInductiveSVM[getContentOfLearningFile]");
+				return null;
+			}
+			outputFeatures = getFeaturesForSegment((Segment)segment);
 			// we use a binary classification when 1 represent
 			// brain signal and -1 artifact
 			if (segment.getCorrectType() == ResultType.BRAIN_SIGNAL) {
@@ -91,7 +102,7 @@ public class DataGeneratorForInductiveSVM {
 		return lineContent;
 	}
 
-	private static void writeToFile(List<Segment> segments) {
+	private static void writeToFile(List<AbstractSegment> segments) {
 		BufferedWriter bw = null;
 		FileWriter fw = null;
 
@@ -118,7 +129,7 @@ public class DataGeneratorForInductiveSVM {
 
 	public void createSvmInputFiles() {
 		SegmentDeserializer deserializer = new SegmentDeserializer();
-		List<Segment> segments = new ArrayList<Segment>();
+		List<AbstractSegment> segments = new ArrayList<AbstractSegment>();
 
 		SegmentRepository repository = deserializer
 				.deserializeSegmentsFromFile("D:/DiplomaCode/artifacts-detection/results/Muscle72.ser");
