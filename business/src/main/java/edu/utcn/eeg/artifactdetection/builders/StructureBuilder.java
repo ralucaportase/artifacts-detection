@@ -24,31 +24,37 @@ public class StructureBuilder {
 	private Logger logger = LoggerUtil.logger(StructureBuilder.class);
 
 	private Map<ArtifactType, ArtifactsStructure> artifactsStructures;
-	private SegmentRepository occularStruct;
-	private SegmentRepository muscleStruct;
-	private SegmentRepository brainStruct;
+	private SegmentRepository occularStructTrain;
+	private SegmentRepository muscleStructTrain;
+	private SegmentRepository brainStructTrain;
 	private SegmentRepository occularStructTest;
 	private SegmentRepository muscleStructTest;
 	private SegmentRepository brainStructTest;
+	private SegmentRepository occularStructEval;
+	private SegmentRepository muscleStructEval;
+	private SegmentRepository brainStructEval;
 
 	public StructureBuilder() {
 		ArtifactsLabelsExtractor artifactsLabelsExtractor = new ArtifactsLabelsExtractor();
 		artifactsStructures = artifactsLabelsExtractor.parseLabelsDirectory(Configuration.RESOURCES_PATH+"/Labels");
 		//dataGen = new DataGeneratorForDecisionTree();
-		brainStruct = new SegmentRepository("Clean");
-		muscleStruct = new SegmentRepository("Muscle");
-		occularStruct = new SegmentRepository("Occular");
+		brainStructEval = new SegmentRepository("Clean_Eval");
+		muscleStructEval = new SegmentRepository("Muscle_Eval");
+		occularStructEval = new SegmentRepository("Occular_Eval");
 		brainStructTest = new SegmentRepository("Clean_Test");
 		muscleStructTest = new SegmentRepository("Muscle_Test");
 		occularStructTest = new SegmentRepository("Occular_Test");
+		brainStructTrain = new SegmentRepository("Clean_Train");
+		muscleStructTrain = new SegmentRepository("Muscle_Train");
+		occularStructTrain = new SegmentRepository("Occular_Train");
 	}
 
-	public void buildDataStructures(double[] data, int iter, int index, int channel, boolean test) {
+	public void buildDataStructures(double[] data, int iter, int index, int channel, int type) {
 		ResultType resultType = computeCorrectType(index, channel);
 		if (resultType != null) {
 			Segment segment = createSegment(data, iter, index, channel, resultType);
 			//dataGen.writeSegment(segment);
-			addToSerializableStructure(segment, test);
+			addToSerializableStructure(segment, type);
 			logger.info(segment);
 		}
 	}
@@ -121,33 +127,52 @@ public class StructureBuilder {
 		return null;
 	}
 	
-	private void addToSerializableStructure(Segment segment, boolean test){
+	private void addToSerializableStructure(Segment segment, int type){
 		switch (segment.getCorrectType()) {
 		case OCCULAR:
-			if(test){
+			switch (type) {
+			case 1:
+				occularStructTrain.addSegment(segment);
+				break;
+			case 2:
 				occularStructTest.addSegment(segment);
-			}else{
-				occularStruct.addSegment(segment);
-			}
+				break;
+			default:
+				occularStructEval.addSegment(segment);
+				break;
+			}			
 			break;
 		case MUSCLE: 
-			if(test){
+			switch (type) {
+			case 1:
+				muscleStructTrain.addSegment(segment);
+				break;
+			case 2:
 				muscleStructTest.addSegment(segment);
-			}else{
-				muscleStruct.addSegment(segment);
-			}
+				break;
+			default:
+				muscleStructEval.addSegment(segment);
+				break;
+			}		
 			break;
 		default:
-			if(test){
+			switch (type) {
+			case 1:
+				brainStructTrain.addSegment(segment);
+				break;
+			case 2:
 				brainStructTest.addSegment(segment);
-			}else{
-				brainStruct.addSegment(segment);
-			}
+				break;
+			default:
+				brainStructEval.addSegment(segment);
+				break;
+			}		
+			break;
 		}
 	}
 	
 	public List<SegmentRepository> getSerializableStructures(){
-		return Lists.newArrayList(occularStruct,occularStructTest,muscleStruct,muscleStructTest,brainStruct,brainStructTest);
+		return Lists.newArrayList(occularStructTrain,occularStructEval,occularStructTest,muscleStructTrain,muscleStructEval,muscleStructTest,brainStructTrain,brainStructEval,brainStructTest);
 	}
 		
 

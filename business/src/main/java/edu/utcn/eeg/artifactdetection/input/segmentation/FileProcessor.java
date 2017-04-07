@@ -39,29 +39,37 @@ public class FileProcessor {
 		logger.info("Fisierul channel "+channel);
 		List<Double> data = new ArrayList<>();
 		List<Double> testData = new ArrayList<>();
+		List<Double> evalData = new ArrayList<>();
+		int count = 0;
 		try(Scanner scan = new Scanner(file)){
 			while (scan.hasNextDouble()) {
-				if(data.size() <= Configuration.TRAIN_MAX_INDEX){
+				count++;
+				if(count <= Configuration.TRAIN_MAX_INDEX){
 					data.add(scan.nextDouble());
 				}
-				else if(testData.size()<Configuration.TEST_MAX_INDEX){
+				else if(count <= Configuration.TEST_MAX_INDEX){
 					testData.add(scan.nextDouble());
 				}
-				else{
+				else if(count <= Configuration.MAX_INDEX){
+					evalData.add(scan.nextDouble());
+				}
+				else {
 					break;
 				}
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		logger.info("Nr elemente train "+data.size());
-		logger.info("Nr elemente test "+testData.size());
-		segment(data, index,channel,false);
-		segment(testData, index, channel, true);	
+		logger.info("Nr valori train "+data.size());
+		logger.info("Nr valori test "+testData.size());
+		logger.info("Nr valori eval "+evalData.size());
+		segment(data, index,channel,1);
+		segment(testData, index,channel,2);
+		segment(evalData, index,channel,3);
 	}
 	
-	private void segment(List<Double> data, int index, int channel, boolean test){
-		fws.segment(data.stream().mapToDouble(i -> i).toArray(), index, channel,test);
+	private void segment(List<Double> data, int index, int channel, int type){
+		fws.segment(data.stream().mapToDouble(i -> i).toArray(), index, channel,type);
 	}
 	
 	private int getChannelFromFile(String file){

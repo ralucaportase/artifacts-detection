@@ -1,8 +1,9 @@
 package edu.utcn.eeg.artifactdetection.features;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import com.google.common.primitives.Doubles;
 
 
 public class TimeFeatureExtractor {
@@ -26,8 +27,8 @@ public class TimeFeatureExtractor {
 		return Math.sqrt(stdDev);
 	}
 	
-	public double computeMedian(Double[] values){
-		List<Double> valList= Arrays.asList(values);
+	public double computeMedian(double[] values){
+		List<Double> valList= Doubles.asList(values);
 		Collections.sort(valList);
 		if(valList.size()%2==0){
 			return (valList.get(valList.size()/2) + valList.get(valList.size()/2+1))/2;

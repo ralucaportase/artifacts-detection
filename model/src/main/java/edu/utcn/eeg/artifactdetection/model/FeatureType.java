@@ -1,6 +1,10 @@
 package edu.utcn.eeg.artifactdetection.model;
 
 public enum FeatureType {
+	MEAN,
+	MEDIAN,
+	RMS,
+	
 	STANDARD_DEVIATION, 
 	
 	DELTA_SPECTRUM, 

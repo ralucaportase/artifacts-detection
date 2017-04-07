@@ -30,6 +30,12 @@ public class FeatureExtractor {
 			return timeFeatureExtractor.computeKurtosis(data);
 		case ENTROPY: 
 			return frequencyFeatureExtractor.computeShannonEntropy();
+		case MEAN: 
+			return timeFeatureExtractor.computeMean(data);
+		case MEDIAN:
+			return timeFeatureExtractor.computeMedian(data);
+		case RMS:
+			return timeFeatureExtractor.computeRootMeanSquare(data);
 		default:
 			return null;
 		}

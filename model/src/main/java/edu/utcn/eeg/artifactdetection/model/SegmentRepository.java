@@ -31,4 +31,8 @@ public class SegmentRepository implements Serializable{
 	public String toString(){
 		return "Structure "+name+" "+segments.size();
 	}
+	
+	public void setSegments(List<AbstractSegment> segments){
+		this.segments = segments;
+	}
 }

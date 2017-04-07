@@ -9,8 +9,9 @@ public interface Configuration {
 	public static final String RESULTS_PATH = PROJECT_PATH + "/results";
 	public static final int MAX_INDEX = 238000;
 	public static final String ARFF_NAME = RESULTS_PATH+"/WekaInput.arff";
-	public static final int TEST_PROPORTION = 10; //10%
-	public static final int TRAIN_MAX_INDEX = (100-TEST_PROPORTION)*MAX_INDEX/100;
-	public static final int TEST_MAX_INDEX = MAX_INDEX - TRAIN_MAX_INDEX;
+	public static final int TEST_PROPORTION = 20; //20% 
+	public static final int EVAL_PROPORTION = 10; //10%
+	public static final int TRAIN_MAX_INDEX = (100-TEST_PROPORTION-EVAL_PROPORTION)*MAX_INDEX/100;
+	public static final int TEST_MAX_INDEX = TRAIN_MAX_INDEX + TEST_PROPORTION*MAX_INDEX/100;
 	public static final String INPUT_FILES = RESOURCES_PATH+"/TxtInputFiles";
 }
