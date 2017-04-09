@@ -28,7 +28,7 @@ public class TimeFeatureExtractor {
 	}
 	
 	public double computeMedian(double[] values){
-		List<Double> valList= Doubles.asList(values);
+		List<Double> valList= Doubles.asList(values.clone());
 		Collections.sort(valList);
 		if(valList.size()%2==0){
 			return (valList.get(valList.size()/2) + valList.get(valList.size()/2+1))/2;

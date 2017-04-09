@@ -1,22 +1,22 @@
 package edu.utcn.eeg.artifactdetection.input.segmentation;
 
-import java.io.File;
-import java.util.Arrays;
 import java.util.List;
 
-import edu.utcn.eeg.artifactdetection.features.export.SegmentExporter;
-import edu.utcn.eeg.artifactdetection.model.AbstractSegment;
-import edu.utcn.eeg.artifactdetection.model.Configuration;
 import edu.utcn.eeg.artifactdetection.model.SegmentRepository;
 
 public class Main {
 
 	public static void main(String[] args) throws Exception{
-		
+	/*	System.out.println("Start");
 		LoggerUtil.configure();
+		Logger logger = LoggerUtil.logger(Main.class);
 		FileProcessor fp = new FileProcessor();
 		String fileName = Configuration.INPUT_FILES; 
 		List<SegmentRepository> segmentRepositories = fp.parseDataDirectory(new File(fileName));
+		
+		for (SegmentRepository segmentRepository : segmentRepositories) {
+			logger.info(segmentRepository.getName()+" "+segmentRepository.getSegments().size());
+		}
 		
 		SegmentExporter.exportAll(segmentRepositories);
 		
@@ -30,7 +30,10 @@ public class Main {
 		multiChannelSegmentation.buildMultichannelSegments();
 		List<SegmentRepository> segmentRepositories2 = multiChannelSegmentation.getSerializableStructures();
 		SegmentExporter.exportAll(segmentRepositories2);
+		*/
 		
+		ArffExporter.export();
+	
 	}
 	
 	private static SegmentRepository findRepository(List<SegmentRepository>repositories, String name){
@@ -41,5 +44,5 @@ public class Main {
 		}
 		throw new IllegalArgumentException(name+" is not a repository name!");
 	}
-
+	
 }

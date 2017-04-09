@@ -9,6 +9,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Range;
 
 import edu.utcn.eeg.artifactdetection.features.FeatureExtractor;
+import edu.utcn.eeg.artifactdetection.features.export.DataGeneratorForDecisionTree;
 import edu.utcn.eeg.artifactdetection.input.segmentation.LoggerUtil;
 import edu.utcn.eeg.artifactdetection.labels.ArtifactsLabelsExtractor;
 import edu.utcn.eeg.artifactdetection.model.ArtifactType;
@@ -22,7 +23,7 @@ import edu.utcn.eeg.artifactdetection.model.SegmentRepository;
 public class StructureBuilder {
 	
 	private Logger logger = LoggerUtil.logger(StructureBuilder.class);
-
+	private DataGeneratorForDecisionTree dataGen;
 	private Map<ArtifactType, ArtifactsStructure> artifactsStructures;
 	private SegmentRepository occularStructTrain;
 	private SegmentRepository muscleStructTrain;
@@ -173,6 +174,7 @@ public class StructureBuilder {
 	
 	public List<SegmentRepository> getSerializableStructures(){
 		return Lists.newArrayList(occularStructTrain,occularStructEval,occularStructTest,muscleStructTrain,muscleStructEval,muscleStructTest,brainStructTrain,brainStructEval,brainStructTest);
+		
 	}
 		
 

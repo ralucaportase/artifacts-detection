@@ -9,7 +9,7 @@ public class Segment extends AbstractSegment{
 	private double[] values;
 
 	public Segment(double[] values) {
-		this.values = values;
+		this.values = values.clone();
 	}
 
 	public int getChannelNr() {
@@ -45,5 +45,13 @@ public class Segment extends AbstractSegment{
 			}
 		}
 		return null;
+	}
+	
+	public String getValuesToString(){
+		String string = "Start ";
+		for (double d : values) {
+			string+=d+" ";
+		}
+		return string+" End";
 	}
 }

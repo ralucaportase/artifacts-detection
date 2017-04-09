@@ -8,7 +8,8 @@ public interface Configuration {
 	public static final String RESOURCES_PATH = PROJECT_PATH + "/resources";
 	public static final String RESULTS_PATH = PROJECT_PATH + "/results";
 	public static final int MAX_INDEX = 238000;
-	public static final String ARFF_NAME = RESULTS_PATH+"/WekaInput.arff";
+	public static final String ARFF_TRAIN_NAME = RESULTS_PATH+"/WekaTrainInput.arff";
+	public static final String ARFF_TEST_NAME = RESULTS_PATH+"/WekaTestInput.arff";
 	public static final int TEST_PROPORTION = 20; //20% 
 	public static final int EVAL_PROPORTION = 10; //10%
 	public static final int TRAIN_MAX_INDEX = (100-TEST_PROPORTION-EVAL_PROPORTION)*MAX_INDEX/100;
