@@ -1,13 +1,20 @@
 package edu.utcn.eeg.artifactdetection.input.segmentation;
 
+import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
+import edu.utcn.eeg.artifactdetection.features.export.SegmentExporter;
+import edu.utcn.eeg.artifactdetection.model.AbstractSegment;
+import edu.utcn.eeg.artifactdetection.model.Configuration;
 import edu.utcn.eeg.artifactdetection.model.SegmentRepository;
 
 public class Main {
 
 	public static void main(String[] args) throws Exception{
-	/*	System.out.println("Start");
+		System.out.println("Start");
 		LoggerUtil.configure();
 		Logger logger = LoggerUtil.logger(Main.class);
 		FileProcessor fp = new FileProcessor();
@@ -30,9 +37,9 @@ public class Main {
 		multiChannelSegmentation.buildMultichannelSegments();
 		List<SegmentRepository> segmentRepositories2 = multiChannelSegmentation.getSerializableStructures();
 		SegmentExporter.exportAll(segmentRepositories2);
-		*/
 		
-		ArffExporter.export();
+		
+		//ArffExporter.export();
 	
 	}
 	

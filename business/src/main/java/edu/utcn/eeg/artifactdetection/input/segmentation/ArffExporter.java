@@ -2,18 +2,14 @@ package edu.utcn.eeg.artifactdetection.input.segmentation;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import edu.utcn.eeg.artifactdetection.features.export.ArffGenerator;
-import edu.utcn.eeg.artifactdetection.features.export.FeatureFilter;
 import edu.utcn.eeg.artifactdetection.features.export.SegmentDeserializer;
 import edu.utcn.eeg.artifactdetection.model.AbstractSegment;
 import edu.utcn.eeg.artifactdetection.model.Configuration;
-import edu.utcn.eeg.artifactdetection.model.FeatureType;
 import edu.utcn.eeg.artifactdetection.model.ResultType;
-import edu.utcn.eeg.artifactdetection.model.Segment;
 import edu.utcn.eeg.artifactdetection.model.SegmentRepository;
 
 public class ArffExporter {
@@ -41,17 +37,16 @@ public class ArffExporter {
 		System.out.println("Occular eval "+occularEval.getSegments().size());
 		System.out.println("Muscle eval "+muscleEval.getSegments().size());
 		
-		FeatureFilter featureFilter = new FeatureFilter(Arrays.asList(FeatureType.MEAN, FeatureType.MEDIAN, FeatureType.SKEWNESS, FeatureType.KURTOSIS));
-		featureFilter.filter(cleanRepo);
-		featureFilter.filter(trainRepo);
-		featureFilter.filter(cleanEval);
-		featureFilter.filter(cleanTest);
-		featureFilter.filter(muscleEval);
-		featureFilter.filter(muscleRepo);
-		featureFilter.filter(muscleTest);
-		featureFilter.filter(occularEval);
-		featureFilter.filter(occularRepo);
-		featureFilter.filter(occularTest);
+//		featureFilter.filter(cleanRepo);
+//		//featureFilter.filter(trainRepo);
+//		featureFilter.filter(cleanEval);
+//		featureFilter.filter(cleanTest);
+//		featureFilter.filter(muscleEval);
+//		featureFilter.filter(muscleRepo);
+//		featureFilter.filter(muscleTest);
+//		featureFilter.filter(occularEval);
+//		featureFilter.filter(occularRepo);
+//		featureFilter.filter(occularTest);
 		
 		List<AbstractSegment> cleaned = new ArrayList<>();
 		
@@ -74,20 +69,20 @@ public class ArffExporter {
 		
 		for (AbstractSegment segment : all) {
 			arffGenerator.writeSegmentFeatures(segment.getFeatures(), segment.getCorrectType());
-			if(segment.getCorrectType().equals(ResultType.BRAIN_SIGNAL)){
-					Segment segment2 = (Segment)segment;
-					System.out.println(segment2.getValuesToString());
-				
-			}
+//			if(segment.getCorrectType().equals(ResultType.BRAIN_SIGNAL)){
+//					Segment segment2 = (Segment)segment;
+//					//System.out.println(segment2.getValuesToString());
+//				
+//			}
 		}
 		
 		List<AbstractSegment> testSegm=new ArrayList<>();
 		testSegm.addAll(cleanTest.getSegments());
 		testSegm.addAll(muscleTest.getSegments());
 		testSegm.addAll(occularTest.getSegments());
-//		testSegm.addAll(cleanEval.getSegments());
-//		testSegm.addAll(muscleEval.getSegments());
-//		testSegm.addAll(occularEval.getSegments());
+		testSegm.addAll(cleanEval.getSegments());
+		testSegm.addAll(muscleEval.getSegments());
+		testSegm.addAll(occularEval.getSegments());
 		Collections.shuffle(testSegm);
 		ArffGenerator arffGenerator2 = new ArffGenerator(Configuration.ARFF_TEST_NAME);
 		

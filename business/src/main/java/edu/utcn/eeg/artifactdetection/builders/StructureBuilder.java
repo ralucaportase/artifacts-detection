@@ -9,7 +9,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Range;
 
 import edu.utcn.eeg.artifactdetection.features.FeatureExtractor;
-import edu.utcn.eeg.artifactdetection.features.export.DataGeneratorForDecisionTree;
 import edu.utcn.eeg.artifactdetection.input.segmentation.LoggerUtil;
 import edu.utcn.eeg.artifactdetection.labels.ArtifactsLabelsExtractor;
 import edu.utcn.eeg.artifactdetection.model.ArtifactType;
@@ -23,7 +22,6 @@ import edu.utcn.eeg.artifactdetection.model.SegmentRepository;
 public class StructureBuilder {
 	
 	private Logger logger = LoggerUtil.logger(StructureBuilder.class);
-	private DataGeneratorForDecisionTree dataGen;
 	private Map<ArtifactType, ArtifactsStructure> artifactsStructures;
 	private SegmentRepository occularStructTrain;
 	private SegmentRepository muscleStructTrain;
@@ -50,7 +48,13 @@ public class StructureBuilder {
 		occularStructTrain = new SegmentRepository("Occular_Train");
 	}
 
-	public void buildDataStructures(double[] data, int iter, int index, int channel, int type) {
+	public void buildDataStructures(double[] data, int iter, int localIndex, int channel, int type) {
+		int index = localIndex;
+		if(type==2){
+			index = localIndex + Configuration.TRAIN_MAX_INDEX;
+		}else if(type==3){
+			index = localIndex + Configuration.TEST_MAX_INDEX;
+		}
 		ResultType resultType = computeCorrectType(index, channel);
 		if (resultType != null) {
 			Segment segment = createSegment(data, iter, index, channel, resultType);
