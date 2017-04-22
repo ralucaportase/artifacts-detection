@@ -23,10 +23,7 @@ public class SVMOutput {
 	public List<Double> parseOutputFile(File file) {
 		List<Double> fileOutput = new ArrayList<Double>();
 
-		//FileInputStream fis;
 		try {
-			//fis = new FileInputStream(file);
-
 			Scanner scan = new Scanner(file);
 			while (scan.hasNextDouble()) {
 				fileOutput.add(scan.nextDouble());
@@ -52,8 +49,8 @@ public class SVMOutput {
 		int noOfFalsePositive = 0;
 		for (int i = 0; i < inputClassification.size(); i++) {
 			//input is clean but output is considered artifact
-			if (inputClassification.get(i) > 0
-					&& outputClassification.get(i) < 0) {
+			if (inputClassification.get(i) < 0
+					&& outputClassification.get(i) > 0) {
 				noOfFalsePositive++;
 			}
 		}
@@ -71,8 +68,8 @@ public class SVMOutput {
 		int noOfTruePositive = 0;
 		for (int i = 0; i < inputClassification.size(); i++) {
 			//contains artifacts, classified as so
-			if (inputClassification.get(i) < 0
-					&& outputClassification.get(i) < 0) {
+			if (inputClassification.get(i) > 0
+					&& outputClassification.get(i) > 0) {
 				noOfTruePositive++;
 			}
 		}
@@ -90,8 +87,8 @@ public class SVMOutput {
 		int noOfFalseNegative = 0;
 		for (int i = 0; i < inputClassification.size(); i++) {
 			//input is artifact, but output is considered clean
-			if (inputClassification.get(i) < 0
-					&& outputClassification.get(i) > 0) {
+			if (inputClassification.get(i) > 0
+					&& outputClassification.get(i) < 0) {
 				noOfFalseNegative++;
 			}
 		}
@@ -109,8 +106,8 @@ public class SVMOutput {
 		int noOfTrueNegative = 0;
 		for (int i = 0; i < inputClassification.size(); i++) {
 			//clean, classified as so
-			if (inputClassification.get(i) > 0
-					&& outputClassification.get(i) > 0) {
+			if (inputClassification.get(i) < 0
+					&& outputClassification.get(i) < 0) {
 				noOfTrueNegative++;
 			}
 		}

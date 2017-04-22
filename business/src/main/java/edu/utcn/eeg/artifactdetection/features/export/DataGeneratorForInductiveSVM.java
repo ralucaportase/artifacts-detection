@@ -13,6 +13,7 @@ import edu.utcn.eeg.artifactdetection.features.FeatureExtractor;
 import edu.utcn.eeg.artifactdetection.input.segmentation.LoggerUtil;
 import edu.utcn.eeg.artifactdetection.model.AbstractSegment;
 import edu.utcn.eeg.artifactdetection.model.Configuration;
+import edu.utcn.eeg.artifactdetection.model.Feature;
 import edu.utcn.eeg.artifactdetection.model.FeatureType;
 import edu.utcn.eeg.artifactdetection.model.ResultType;
 import edu.utcn.eeg.artifactdetection.model.Segment;
@@ -26,11 +27,12 @@ import edu.utcn.eeg.artifactdetection.output.processing.SVMOutput;
  *          Class for generating data in the format used by SVM light
  */
 public class DataGeneratorForInductiveSVM {
-	
-	private static Logger logger = LoggerUtil.logger(DataGeneratorForInductiveSVM.class);
+
+	private static Logger logger = LoggerUtil
+			.logger(DataGeneratorForInductiveSVM.class);
 
 	private static final String LEARNING_FILENAME = Configuration.PROJECT_PATH
-			+ "/svm/svmTest72.dat";
+			+ "/svm/svm_Train66-102All.dat";
 
 	private static List<Double> getFeaturesForSegment(Segment segment) {
 		List<Double> outputFeatures = new ArrayList<Double>();
@@ -55,6 +57,49 @@ public class DataGeneratorForInductiveSVM {
 		return outputFeatures;
 	}
 
+	private static String getLineContent(AbstractSegment segment) {
+		String lineContent = "";
+		if (segment.getCorrectType() == ResultType.BRAIN_SIGNAL) {
+			lineContent += "-1";
+		} else
+			lineContent += "1";
+		Feature[] features = segment.getFeatures();
+		for (int i = 0; i < features.length; i++) {
+			if (features[i].getFeature().toString() == "MEAN") {
+				lineContent += " 1:" + features[i].getValue();
+			} else if (features[i].getFeature().toString() == "MEDIAN") {
+				lineContent += " 2:" + features[i].getValue();
+			} else if (features[i].getFeature().toString() == "RMS") {
+				lineContent += " 3:" + features[i].getValue();
+			} else if (features[i].getFeature().toString() == "STANDARD_DEVIATION") {
+				lineContent += " 4:" + features[i].getValue();
+			} else if (features[i].getFeature().toString() == "DELTA_SPECTRUM") {
+				lineContent += " 5:" + features[i].getValue();
+			} else if (features[i].getFeature().toString() == "ALPHA_SPECTRUM") {
+				lineContent += " 6:" + features[i].getValue();
+			} else if (features[i].getFeature().toString() == "BETHA_LOW_SPECTRUM") {
+				lineContent += " 7:" + features[i].getValue();
+			} else if (features[i].getFeature().toString() == "THETA_SPECTRUM") {
+				lineContent += " 8:" + features[i].getValue();
+			} else if (features[i].getFeature().toString() == "GAMMA_LOW_SPECTRUM") {
+				lineContent += " 9:" + features[i].getValue();
+			} else if (features[i].getFeature().toString() == "BETHA_HIGH_SPECTRUM") {
+				lineContent += " 10:" + features[i].getValue();
+			} else if (features[i].getFeature().toString() == "GAMMA_HIGH_SPECTRUM") {
+				lineContent += " 11:" + features[i].getValue();
+			} else if (features[i].getFeature().toString() == "SKEWNESS") {
+				lineContent += " 12:" + features[i].getValue();
+			} else if (features[i].getFeature().toString() == "KURTOSIS") {
+				lineContent += " 13:" + features[i].getValue();
+			} else if (features[i].getFeature().toString() == "ENTROPY") {
+				lineContent += " 14:" + features[i].getValue();
+			}
+
+		}
+
+		return lineContent;
+	}
+
 	/*
 	 * format used for learning file is <line> .=. <target> <feature>:<value>
 	 * ... <feature>:<value> # <info> <target> .=. +1 | -1 | 0 | <float>
@@ -68,37 +113,28 @@ public class DataGeneratorForInductiveSVM {
 		noOfArtifacts = 0, noOfBrainSignals = 0;
 
 		for (AbstractSegment segment : segments) {
-			if(! (segment instanceof Segment)){
+			if (!(segment instanceof AbstractSegment)) {
 				logger.error("AbstractSegment not instance of Segment! DataGeneratorForInductiveSVM[getContentOfLearningFile]");
 				return null;
 			}
-			outputFeatures = getFeaturesForSegment((Segment)segment);
+			// outputFeatures = getFeaturesForSegment((AbstractSegment)
+			// segment);
 			// we use a binary classification when 1 represent
 			// brain signal and -1 artifact
-			if (segment.getCorrectType() == ResultType.BRAIN_SIGNAL) {
-				// make sure that we have equal no of learning samples
-				if (noOfBrainSignals <= noOfArtifacts) {
-					lineContent += "\n1 ";
-					// noOfBrainSignals++;
-					ok = true;
-				} else
-					ok = false;
-			} else {
-				lineContent += "\n-1 ";
-				noOfArtifacts++;
-				ok = true;
-				// System.out.println("Processing " + segment.getCorrectType());
-			}
-			index = 1;
-			if (ok == true) {
-				for (Double value : outputFeatures) {
-					if (value != null) {
-						lineContent += index + ":" + value + " ";
-					}
-					index++;
-				}
-			}
+			/*
+			 * if (segment.getCorrectType() == ResultType.BRAIN_SIGNAL) { //
+			 * make sure that we have equal no of learning samples if
+			 * (noOfBrainSignals <= noOfArtifacts) { lineContent += "\n1 ";
+			 * noOfBrainSignals++; ok = true; } else ok = false; } else {
+			 * lineContent += "\n-1 "; noOfArtifacts++; ok = true; //
+			 * System.out.println("Processing " + segment.getCorrectType()); }
+			 * index = 1; if (ok == true) { for (Double value : outputFeatures)
+			 * { if (value != null) { lineContent += index + ":" + value + " ";
+			 * } index++; } }
+			 */
+			lineContent += getLineContent(segment) + "\n";
 		}
+
 		return lineContent;
 	}
 
@@ -108,6 +144,9 @@ public class DataGeneratorForInductiveSVM {
 
 		try {
 			String content = getContentOfLearningFile(segments);
+			if (content == null) {
+				System.out.println("Null string content");
+			}
 			fw = new FileWriter(LEARNING_FILENAME);
 			bw = new BufferedWriter(fw);
 			bw.write(content);
@@ -127,18 +166,18 @@ public class DataGeneratorForInductiveSVM {
 
 	}
 
-	public void createSvmInputFiles() {
+	public static void createSvmInputFiles() {
 		SegmentDeserializer deserializer = new SegmentDeserializer();
 		List<AbstractSegment> segments = new ArrayList<AbstractSegment>();
 
 		SegmentRepository repository = deserializer
-				.deserializeSegmentsFromFile("D:/DiplomaCode/artifacts-detection/results/Muscle72.ser");
+				.deserializeSegmentsFromFile("D:/DiplomaCode/artifacts-detection/results/66-102Splited/Muscle_Train.ser");
 		segments.addAll(repository.getSegments());
 		repository = deserializer
-				.deserializeSegmentsFromFile("D:/DiplomaCode/artifacts-detection/results/Occular72.ser");
+				.deserializeSegmentsFromFile("D:/DiplomaCode/artifacts-detection/results/66-102Splited/Occular_Train.ser");
 		segments.addAll(repository.getSegments());
 		repository = deserializer
-				.deserializeSegmentsFromFile("D:/DiplomaCode/artifacts-detection/results/Clean72.ser");
+				.deserializeSegmentsFromFile("D:/DiplomaCode/artifacts-detection/results/66-102Splited/Clean_Train.ser");
 		segments.addAll(repository.getSegments());
 
 		writeToFile(segments);
@@ -148,9 +187,10 @@ public class DataGeneratorForInductiveSVM {
 	public static void computeOutputSVMParameters() {
 		SVMOutput svmOutput = new SVMOutput();
 		List<Double> inputClassification = svmOutput.parseOutputFile(new File(
-				"D:/DiplomaCode/artifacts-detection/svm/svmTest74.csv"));
-		List<Double> outputClassification = svmOutput.parseOutputFile(new File(
-				"D:/DiplomaCode/artifacts-detection/svm/predictionTest16.dat"));
+				"D:/DiplomaCode/artifacts-detection/svm/svm_Test66-102.csv"));
+		List<Double> outputClassification = svmOutput
+				.parseOutputFile(new File(
+						"D:/DiplomaCode/artifacts-detection/svm/svm_prediction66-102.dat"));
 
 		int falseNegative = svmOutput.computeFalseNegativeRate(
 				inputClassification, outputClassification);
@@ -184,5 +224,6 @@ public class DataGeneratorForInductiveSVM {
 
 	public static void main(String[] args) {
 		computeOutputSVMParameters();
+		 //createSvmInputFiles();
 	}
 }
