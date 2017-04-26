@@ -1,0 +1,22 @@
+package edu.utcn.eeg.artifactdetection.model;
+
+public enum FeatureType {
+	MEAN,
+	MEDIAN,
+	RMS,
+	
+	STANDARD_DEVIATION, 
+	
+	DELTA_SPECTRUM, 
+	ALPHA_SPECTRUM, 
+	BETHA_LOW_SPECTRUM, 
+	THETA_SPECTRUM, 
+	GAMMA_LOW_SPECTRUM, 
+	BETHA_HIGH_SPECTRUM, 
+	GAMMA_HIGH_SPECTRUM,
+	
+	SKEWNESS,
+	KURTOSIS, 
+	
+	ENTROPY
+}
