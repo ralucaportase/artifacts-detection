@@ -8,13 +8,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+import org.apache.log4j.Logger;
+
 import com.google.common.collect.Range;
 
+import edu.utcn.eeg.artifactdetection.input.segmentation.LoggerUtil;
 import edu.utcn.eeg.artifactdetection.model.ArtifactType;
 import edu.utcn.eeg.artifactdetection.model.ArtifactsStructure;
 import edu.utcn.eeg.artifactdetection.model.Configuration;
 
 public class ArtifactsLabelsExtractor {
+	
+	private Logger logger = LoggerUtil.logger(ArtifactsLabelsExtractor.class);
+
 
 	public Map<ArtifactType, ArtifactsStructure> parseLabelsDirectory(String directoryName){
 		File folder = new File(directoryName);
@@ -47,7 +53,7 @@ public class ArtifactsLabelsExtractor {
 
 	private int computeIndexFromTime(Scanner scan) {
 		int val = scan.nextInt();
-		System.out.println(val);
+		logger.info(val);
 		return (int)(val*Configuration.RATE);
 	}
 	

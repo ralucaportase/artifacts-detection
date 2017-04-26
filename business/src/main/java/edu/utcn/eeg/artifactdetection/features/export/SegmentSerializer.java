@@ -5,9 +5,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
+import org.apache.log4j.Logger;
+
+import edu.utcn.eeg.artifactdetection.input.segmentation.LoggerUtil;
 import edu.utcn.eeg.artifactdetection.model.SegmentRepository;
 
 public class SegmentSerializer {
+
+	private static Logger logger = LoggerUtil.logger(SegmentSerializer.class);
 
 	public static void serialize(SegmentRepository segment, String path) {
 
@@ -20,7 +25,7 @@ public class SegmentSerializer {
 			out.writeObject(segment);
 			out.close();
 			fileOut.close();
-			System.out.printf("Serialized data " + segment.getName() + " is saved");
+			logger.info("Serialized data " + segment.getName() + " is saved");
 		} catch (IOException i) {
 			i.printStackTrace();
 		}

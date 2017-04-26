@@ -1,22 +1,15 @@
 package edu.utcn.eeg.artifactdetection.model;
 
-import java.io.Serializable;
-
 import com.google.common.base.MoreObjects;
 
-public class Segment implements Serializable {
+public class Segment extends AbstractSegment{
 
 	private static final long serialVersionUID = 1L;
 	private int channelNr;
-	private int initIdx;
-	private int iterIdx;
-
 	private double[] values;
-	private Feature[] features;
-	private ResultType correctType;
 
 	public Segment(double[] values) {
-		this.values = values;
+		this.values = values.clone();
 	}
 
 	public int getChannelNr() {
@@ -25,38 +18,6 @@ public class Segment implements Serializable {
 
 	public void setChannelNr(int channelNr) {
 		this.channelNr = channelNr;
-	}
-
-	public int getInitIdx() {
-		return initIdx;
-	}
-
-	public void setInitIdx(int tInit) {
-		this.initIdx = tInit;
-	}
-
-	public Feature[] getFeatures() {
-		return features;
-	}
-
-	public void setFeatures(Feature[] features) {
-		this.features = features;
-	}
-
-	public int getIterIdx() {
-		return iterIdx;
-	}
-
-	public void setIterIdx(int id) {
-		this.iterIdx = id;
-	}
-
-	public ResultType getCorrectType() {
-		return correctType;
-	}
-
-	public void setCorrectType(ResultType correctType) {
-		this.correctType = correctType;
 	}
 
 	public double[] getValues() {
@@ -71,5 +32,26 @@ public class Segment implements Serializable {
 	public String toString() {
 		return MoreObjects.toStringHelper(this).omitNullValues().add("Channel ", channelNr).add("Iteration ", iterIdx)
 				.add("Label ", correctType).toString();
+	}
+	
+	public SegmentKey getMultiChannelKey(){
+		return new SegmentKey(iterIdx, initIdx);
+	}
+	
+	public Double getFeatureValueForFeature(FeatureType featureType){
+		for (Feature feature : features) {
+			if(feature.getFeature().equals(featureType)){
+				return feature.getValue();
+			}
+		}
+		return null;
+	}
+	
+	public String getValuesToString(){
+		String string = "Start ";
+		for (double d : values) {
+			string+=d+" ";
+		}
+		return string+" End";
 	}
 }
