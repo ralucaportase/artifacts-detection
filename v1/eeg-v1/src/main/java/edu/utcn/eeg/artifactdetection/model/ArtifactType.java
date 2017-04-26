@@ -1,6 +1,7 @@
 package edu.utcn.eeg.artifactdetection.model;
 
 import java.util.Arrays;
+
 import java.util.List;
 
 import com.google.common.collect.Range;

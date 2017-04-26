@@ -3,6 +3,8 @@ package edu.utcn.eeg.artifactdetection.model;
 import java.util.List;
 
 
+
+
 import com.google.common.collect.Range;
 
 public class ArtifactsStructure {
