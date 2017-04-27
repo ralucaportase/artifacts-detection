@@ -34,7 +34,8 @@ recall = np.array(recallDataset).reshape(len(gamma_range), len(C_range))
 
 plt.figure(figsize=(7, 5))
 plt.imshow(precision, interpolation='nearest', cmap=plt.cm.GnBu,
-           norm=MidpointNormalize(vmin=0.1, midpoint=0.85))
+           clim=[10,93])
+		   # norm=MidpointNormalize(vmin=0.0, midpoint=0.85)
 plt.ylabel('gamma')
 plt.xlabel('C')
 plt.colorbar()
@@ -43,8 +44,7 @@ plt.xticks(np.arange(len(C_range)), C_range)
 plt.title('Validation precision')
 
 plt.figure(figsize=(7, 5))
-plt.imshow(recall, interpolation='nearest', cmap=plt.cm.GnBu,
-           norm=MidpointNormalize(vmin=0.1, midpoint=0.98))
+plt.imshow(recall, interpolation='nearest', cmap=plt.cm.GnBu, clim=[50,100])
 plt.ylabel('gamma')
 plt.xlabel('C')
 plt.colorbar()
