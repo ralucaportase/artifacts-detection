@@ -11,6 +11,15 @@ public class SimpleChannelSegmentProvider {
 
 	private static final String PATH = "E:\\Scoala\\licenta\\#0IMPLEMENTATION\\Data\\newDataSet\\elena-doua-canale-13-04\\Occular_Eval.ser";
 
+	private int nrChannel;
+
+	public SimpleChannelSegmentProvider(int nrChannel) {
+		this.nrChannel = nrChannel;
+	}
+
+	/**
+	 * Bring the channels from the channel nrChannel
+	 */
 	public List<Segment> provideSegments() {
 		System.out.println("Start deserializing" + PATH);
 		SegmentDeserializer segmentDeserializer = new SegmentDeserializer();

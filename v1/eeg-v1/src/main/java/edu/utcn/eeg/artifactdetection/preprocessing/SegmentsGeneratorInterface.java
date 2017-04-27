@@ -10,16 +10,18 @@ import edu.utcn.eeg.artifactdetection.preprocessing.exception.FileReadingExcepti
 
 public interface SegmentsGeneratorInterface {
 	/**
-	 * This method reads a file from a path and process that file in order to
-	 * obtain a list of segment of eeg signal.
+	 * This method reads a file from a folder given by path that contains eeg
+	 * files and process that file in order to obtain a list of segment of eeg
+	 * signal.
 	 * 
 	 * @param path
-	 *            The path to the .bin file;
+	 *            The path to the folder nrChannel Number of eeg channel from
+	 *            which the signal is used.
 	 * @return A list of Segments generated from binary file.
-	 * @throws A
-	 *             FileReadingException with the correct error code
+	 * @throws FileReadingException
+	 *             with the correct error code
 	 */
-	List<Segment> generateSegments(String path) throws FileReadingException;
+	List<Segment> generateSegments(String path, int nrChannel) throws FileReadingException;
 
 	/**
 	 * This method reads all the 128 binary files hold in folder given by path

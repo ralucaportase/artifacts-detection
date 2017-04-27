@@ -7,10 +7,15 @@ import java.util.stream.Collectors;
 import edu.utcn.eeg.artifactdetection.helpers.SegmentDeserializer;
 import edu.utcn.eeg.artifactdetection.model.*;
 
-
 public class MultipleSegmentProvider {
 
 	private static final String PATH = "E:\\Scoala\\licenta\\#0IMPLEMENTATION\\Data\\newDataSet\\elena-doua-canale-13-04\\Occular_Multi_Eval.ser";
+
+	private MultiChannelSegmentSelector selector;
+
+	public MultipleSegmentProvider(MultiChannelSegmentSelector selector) {
+		this.selector = selector;
+	}
 
 	public List<MultiChannelSegment> provideSegments() {
 		SegmentDeserializer segmentDeserializer = new SegmentDeserializer();

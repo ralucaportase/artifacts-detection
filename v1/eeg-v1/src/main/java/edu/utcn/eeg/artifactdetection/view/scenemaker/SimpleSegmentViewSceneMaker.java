@@ -34,7 +34,7 @@ public class SimpleSegmentViewSceneMaker extends AbstractSceneMaker {
 	private Button btnNextSegment;
 	private Button btnPreviousSegment;
 	private Label initIndexLabel = new Label("Init index: ");
-	private Label labelLabel = new Label("Label: ");
+	
 
 	public SimpleSegmentViewSceneMaker(Stage stage, List<Segment> segments, int indexOfSegmentToShow) {
 		super(stage);
@@ -52,15 +52,13 @@ public class SimpleSegmentViewSceneMaker extends AbstractSceneMaker {
 		btnPreviousSegment.setText("Previous");
 		addActionHandlerForPreviousButton();
 		btnBack = new Button();
-		btnBack.setText("Back to menu");
+		btnBack.setText("Back to channels list");
 		addActionHandlerForBackButton();
 		HBox hBox = new HBox();
 		hBox.getChildren().addAll(paneWithFlowControl());
 
 		SimpleSegmentChart lineChartFromSegment = new SimpleSegmentChart();
 		hBox.getChildren().addAll(lineChartFromSegment.generateChartFromSegment(segments.get(indexOfSegmentToShow)));
-
-		hBox.getChildren().addAll(paneWithLabelValidation());
 
 		Scene scene = new Scene(hBox, LENGTH_STAGE, HIGH_STAGE);
 		return scene;
@@ -72,7 +70,7 @@ public class SimpleSegmentViewSceneMaker extends AbstractSceneMaker {
 
 			public void handle(ActionEvent event) {
 				System.out.println("back");
-				InitialSceneMaker sm = new InitialSceneMaker(stage);
+				ListOfChannelsSceneMaker sm = new ListOfChannelsSceneMaker(stage);
 				stage.setScene(sm.makeScene());
 			}
 		});
@@ -120,52 +118,11 @@ public class SimpleSegmentViewSceneMaker extends AbstractSceneMaker {
 		pane1.setVgap(50);
 		pane1.setPadding(new Insets(1, 1, 1, 1));
 		initIndexLabel.setText(initIndexLabel.getText() + segments.get(indexOfSegmentToShow).getInitIdx());
-		labelLabel.setText(labelLabel.getText() + segments.get(indexOfSegmentToShow).getCorrectType().name());
 		pane1.add(btnNextSegment, 0, 0);
 		pane1.add(btnPreviousSegment, 0, 1);
 		pane1.add(initIndexLabel, 0, 2);
-		pane1.add(labelLabel, 0, 3);
 		pane1.add(btnBack, 1, 0);
 		return pane1;
-	}
-
-	private GridPane paneWithLabelValidation() {
-		GridPane pane = new GridPane();
-		final ToggleGroup group = new ToggleGroup();
-		VBox vboxChecks = new VBox();
-		vboxChecks.setSpacing(10);
-		vboxChecks.setPadding(new Insets(20));
-		Label label = new Label("Change the label of the segment");
-		RadioButton ocular = new RadioButton("Ocular");
-		ocular.setToggleGroup(group);
-		RadioButton muscular = new RadioButton("Muscular");
-		muscular.setToggleGroup(group);
-		RadioButton clean = new RadioButton("Clean");
-		clean.setToggleGroup(group);
-		group.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
-			public void changed(ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) {
-				if (group.getSelectedToggle() != null) {
-					RadioButton selected = (RadioButton) group.getSelectedToggle();
-					Segment currentSegment = segments.get(indexOfSegmentToShow);
-					if (selected.equals(clean)) {
-						System.out.println("changed label to clean");
-						currentSegment.setCorrectType(ResultType.BRAIN_SIGNAL);
-					} else {
-						if (selected.equals(ocular)) {
-							System.out.println("changed label to ocular");
-							currentSegment.setCorrectType(ResultType.OCCULAR);
-						} else {
-							System.out.println("changed label to muscular");
-							currentSegment.setCorrectType(ResultType.MUSCLE);
-						}
-					}
-				}
-			}
-		});
-		vboxChecks.getChildren().addAll(ocular, muscular, clean);
-		pane.add(label, 0, 0);
-		pane.add(vboxChecks, 0, 1);
-		return pane;
 	}
 
 }
