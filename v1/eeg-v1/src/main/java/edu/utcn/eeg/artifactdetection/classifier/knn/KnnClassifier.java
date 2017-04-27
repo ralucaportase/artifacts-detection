@@ -1,11 +1,11 @@
-package eeg.eeg_processor.classifier.deciziontree;
+package edu.utcn.eeg.artifactdetection.classifier.knn;
 
 import java.util.List;
 
+import edu.utcn.eeg.artifactdetection.classifier.Classifier;
 import edu.utcn.eeg.artifactdetection.model.AbstractSegment;
-import eeg.eeg_processor.classifier.Classifier;
 
-public class DecizionTreeClassifier implements Classifier{
+public class KnnClassifier implements Classifier {
 
 	@Override
 	public List<AbstractSegment> classifySegments(List<AbstractSegment> segments) {

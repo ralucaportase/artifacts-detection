@@ -1,4 +1,4 @@
-package eeg.eeg_processor.classifier;
+package edu.utcn.eeg.artifactdetection.classifier;
 
 import java.util.List;
 
