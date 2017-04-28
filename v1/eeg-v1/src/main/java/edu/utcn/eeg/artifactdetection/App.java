@@ -11,7 +11,6 @@ public class App extends Application {
 	public void start(Stage stage) {
 		stage.setTitle("EEG Processor");
 		WelcomeSceneMaker sm = new WelcomeSceneMaker(stage);
-		//ActionOptionSimpleSceneMaker sm = new ActionOptionSimpleSceneMaker(stage);
 		stage.setScene(sm.makeScene());
 		stage.show();
 	}

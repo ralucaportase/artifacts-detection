@@ -30,7 +30,8 @@ public class WelcomeSceneMaker extends AbstractSceneMaker {
 
 		
 		VBox hBox = new VBox();
-		hBox.getChildren().addAll(createMenuBar(), getInitialPane());
+		//hBox.getChildren().addAll(createMenuBar(), getInitialPane());
+		hBox.getChildren().addAll(createMenuBar());
 		Scene scene = new Scene(hBox, LENGTH_STAGE, HIGH_STAGE);
 		return scene;
 	}

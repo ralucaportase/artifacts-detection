@@ -34,7 +34,6 @@ public class SimpleSegmentViewSceneMaker extends AbstractSceneMaker {
 	private Button btnNextSegment;
 	private Button btnPreviousSegment;
 	private Label initIndexLabel = new Label("Init index: ");
-	
 
 	public SimpleSegmentViewSceneMaker(Stage stage, List<Segment> segments, int indexOfSegmentToShow) {
 		super(stage);
@@ -54,12 +53,12 @@ public class SimpleSegmentViewSceneMaker extends AbstractSceneMaker {
 		btnBack = new Button();
 		btnBack.setText("Back to channels list");
 		addActionHandlerForBackButton();
+	
 		HBox hBox = new HBox();
 		hBox.getChildren().addAll(paneWithFlowControl());
-
 		SimpleSegmentChart lineChartFromSegment = new SimpleSegmentChart();
 		hBox.getChildren().addAll(lineChartFromSegment.generateChartFromSegment(segments.get(indexOfSegmentToShow)));
-
+	
 		Scene scene = new Scene(hBox, LENGTH_STAGE, HIGH_STAGE);
 		return scene;
 	}
