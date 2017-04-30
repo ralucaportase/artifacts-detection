@@ -32,31 +32,13 @@ public class DataGeneratorForInductiveSVM {
 			.logger(DataGeneratorForInductiveSVM.class);
 
 	private static final String LEARNING_FILENAME = Configuration.PROJECT_PATH
-			+ "/svm/svm_Train66-102All.dat";
+			+ "/svm/svm_Train66-102OU.dat";
 
-	private static List<Double> getFeaturesForSegment(Segment segment) {
-		List<Double> outputFeatures = new ArrayList<Double>();
-
-		outputFeatures.add(FeatureExtractor.getFeatureValue(
-				FeatureType.STANDARD_DEVIATION, segment.getValues()));
-		outputFeatures.add(FeatureExtractor.getFeatureValue(
-				FeatureType.ALPHA_SPECTRUM, segment.getValues()));
-		outputFeatures.add(FeatureExtractor.getFeatureValue(
-				FeatureType.BETHA_LOW_SPECTRUM, segment.getValues()));
-		outputFeatures.add(FeatureExtractor.getFeatureValue(
-				FeatureType.BETHA_HIGH_SPECTRUM, segment.getValues()));
-		outputFeatures.add(FeatureExtractor.getFeatureValue(
-				FeatureType.DELTA_SPECTRUM, segment.getValues()));
-		outputFeatures.add(FeatureExtractor.getFeatureValue(
-				FeatureType.GAMMA_LOW_SPECTRUM, segment.getValues()));
-		outputFeatures.add(FeatureExtractor.getFeatureValue(
-				FeatureType.GAMMA_HIGH_SPECTRUM, segment.getValues()));
-		outputFeatures.add(FeatureExtractor.getFeatureValue(
-				FeatureType.THETA_SPECTRUM, segment.getValues()));
-
-		return outputFeatures;
-	}
-
+	/*
+	 * format used for learning file is <line> .=. <target> <feature>:<value>
+	 * ... <feature>:<value> # <info> <target> .=. +1 | -1 | 0 | <float>
+	 * <feature> .=. <integer> | "qid" <value> .=. <float> <info> .=. <string>
+	 */
 	private static String getLineContent(AbstractSegment segment) {
 		String lineContent = "";
 		if (segment.getCorrectType() == ResultType.BRAIN_SIGNAL) {
@@ -65,11 +47,12 @@ public class DataGeneratorForInductiveSVM {
 			lineContent += "1";
 		Feature[] features = segment.getFeatures();
 		for (int i = 0; i < features.length; i++) {
-			if (features[i].getFeature().toString() == "MEAN") {
-				lineContent += " 1:" + features[i].getValue();
-			} else if (features[i].getFeature().toString() == "MEDIAN") {
-				lineContent += " 2:" + features[i].getValue();
-			} else if (features[i].getFeature().toString() == "RMS") {
+			/*
+			 * if (features[i].getFeature().toString() == "MEAN") { lineContent
+			 * += " 1:" + features[i].getValue(); } else if
+			 * (features[i].getFeature().toString() == "MEDIAN") { lineContent
+			 * += " 2:" + features[i].getValue(); } else
+			 */if (features[i].getFeature().toString() == "RMS") {
 				lineContent += " 3:" + features[i].getValue();
 			} else if (features[i].getFeature().toString() == "STANDARD_DEVIATION") {
 				lineContent += " 4:" + features[i].getValue();
@@ -87,11 +70,12 @@ public class DataGeneratorForInductiveSVM {
 				lineContent += " 10:" + features[i].getValue();
 			} else if (features[i].getFeature().toString() == "GAMMA_HIGH_SPECTRUM") {
 				lineContent += " 11:" + features[i].getValue();
-			} else if (features[i].getFeature().toString() == "SKEWNESS") {
-				lineContent += " 12:" + features[i].getValue();
-			} else if (features[i].getFeature().toString() == "KURTOSIS") {
-				lineContent += " 13:" + features[i].getValue();
-			} else if (features[i].getFeature().toString() == "ENTROPY") {
+			} /*
+			 * else if (features[i].getFeature().toString() == "SKEWNESS") {
+			 * lineContent += " 12:" + features[i].getValue(); } else if
+			 * (features[i].getFeature().toString() == "KURTOSIS") { lineContent
+			 * += " 13:" + features[i].getValue(); }
+			 */else if (features[i].getFeature().toString() == "ENTROPY") {
 				lineContent += " 14:" + features[i].getValue();
 			}
 
@@ -100,38 +84,16 @@ public class DataGeneratorForInductiveSVM {
 		return lineContent;
 	}
 
-	/*
-	 * format used for learning file is <line> .=. <target> <feature>:<value>
-	 * ... <feature>:<value> # <info> <target> .=. +1 | -1 | 0 | <float>
-	 * <feature> .=. <integer> | "qid" <value> .=. <float> <info> .=. <string>
-	 */
 	public static String getContentOfLearningFile(List<AbstractSegment> segments) {
 		List<Double> outputFeatures;
 		String lineContent = "";
-		boolean ok = true;
-		int index, // index represents the feature
-		noOfArtifacts = 0, noOfBrainSignals = 0;
 
 		for (AbstractSegment segment : segments) {
 			if (!(segment instanceof AbstractSegment)) {
 				logger.error("AbstractSegment not instance of Segment! DataGeneratorForInductiveSVM[getContentOfLearningFile]");
 				return null;
 			}
-			// outputFeatures = getFeaturesForSegment((AbstractSegment)
-			// segment);
-			// we use a binary classification when 1 represent
-			// brain signal and -1 artifact
-			/*
-			 * if (segment.getCorrectType() == ResultType.BRAIN_SIGNAL) { //
-			 * make sure that we have equal no of learning samples if
-			 * (noOfBrainSignals <= noOfArtifacts) { lineContent += "\n1 ";
-			 * noOfBrainSignals++; ok = true; } else ok = false; } else {
-			 * lineContent += "\n-1 "; noOfArtifacts++; ok = true; //
-			 * System.out.println("Processing " + segment.getCorrectType()); }
-			 * index = 1; if (ok == true) { for (Double value : outputFeatures)
-			 * { if (value != null) { lineContent += index + ":" + value + " ";
-			 * } index++; } }
-			 */
+
 			lineContent += getLineContent(segment) + "\n";
 		}
 
@@ -171,16 +133,22 @@ public class DataGeneratorForInductiveSVM {
 		List<AbstractSegment> segments = new ArrayList<AbstractSegment>();
 
 		SegmentRepository repository = deserializer
-				.deserializeSegmentsFromFile("D:/DiplomaCode/artifacts-detection/results/66-102Splited/Muscle_Train.ser");
+				.deserializeSegmentsFromFile("D:/DiplomaCode/artifacts-detection/results/66-102Splited/Occular_Train.ser");
 		segments.addAll(repository.getSegments());
 		repository = deserializer
-				.deserializeSegmentsFromFile("D:/DiplomaCode/artifacts-detection/results/66-102Splited/Occular_Train.ser");
+				.deserializeSegmentsFromFile("D:/DiplomaCode/artifacts-detection/results/66-102Splited/Muscle_Train.ser");
 		segments.addAll(repository.getSegments());
 		repository = deserializer
 				.deserializeSegmentsFromFile("D:/DiplomaCode/artifacts-detection/results/66-102Splited/Clean_Train.ser");
 		segments.addAll(repository.getSegments());
 
-		writeToFile(segments);
+		DatasetHandler datasetHandler = new DatasetHandler();
+		List<AbstractSegment> oversampledSegments = datasetHandler
+				.getSMOTEOversampling(segments, 5000);
+		List<AbstractSegment> undersampledSegments = datasetHandler
+				.getRandomUndersampling(oversampledSegments);
+
+		writeToFile(undersampledSegments);
 		System.out.println("done writing file!");
 	}
 
@@ -223,7 +191,7 @@ public class DataGeneratorForInductiveSVM {
 	}
 
 	public static void main(String[] args) {
-		computeOutputSVMParameters();
-		 //createSvmInputFiles();
+		 computeOutputSVMParameters();
+		//createSvmInputFiles();
 	}
 }
