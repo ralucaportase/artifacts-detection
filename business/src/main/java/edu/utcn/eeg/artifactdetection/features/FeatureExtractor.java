@@ -36,9 +36,16 @@ public class FeatureExtractor {
 			return timeFeatureExtractor.computeMedian(data);
 		case RMS:
 			return timeFeatureExtractor.computeRootMeanSquare(data);
+		case PEARSON: 
+			return new Double(0);
 		default:
 			return null;
 		}
+	}
+	
+	public static Double getPearsonCoefficientValue(double[] x, double[] y){
+		CorrelationFeaturesExtractor correlationFeaturesExtractor = new CorrelationFeaturesExtractor();
+		return correlationFeaturesExtractor.computePearsonCorrelationCoeficient(x, y);
 	}
 
 }

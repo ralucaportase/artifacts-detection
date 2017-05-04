@@ -1,14 +1,9 @@
 package edu.utcn.eeg.artifactdetection.input.segmentation;
 
-import java.io.File;
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import edu.utcn.eeg.artifactdetection.features.export.SegmentExporter;
-import edu.utcn.eeg.artifactdetection.model.AbstractSegment;
-import edu.utcn.eeg.artifactdetection.model.Configuration;
 import edu.utcn.eeg.artifactdetection.model.SegmentRepository;
 
 public class Main {
@@ -17,7 +12,7 @@ public class Main {
 		System.out.println("Start");
 		LoggerUtil.configure();
 		Logger logger = LoggerUtil.logger(Main.class);
-		FileProcessor fp = new FileProcessor();
+		/*FileProcessor fp = new FileProcessor();
 		String fileName = Configuration.INPUT_FILES; 
 		List<SegmentRepository> segmentRepositories = fp.parseDataDirectory(new File(fileName));
 		
@@ -33,14 +28,16 @@ public class Main {
 		trainSegmRepo.setSegments(trainSegments);
 		SegmentExporter.exportAll(Arrays.asList(trainSegmRepo));
 		
+		*/
+		
+		ArffExporter arffExporter = new ArffExporter();
+		List<SegmentRepository> segmentRepositories = arffExporter.getSegmentRepositories();
+		
+		
 		MultiChannelSegmentation multiChannelSegmentation = new MultiChannelSegmentation(segmentRepositories);
 		multiChannelSegmentation.buildMultichannelSegments();
-		List<SegmentRepository> segmentRepositories2 = multiChannelSegmentation.getSerializableStructures();
-		SegmentExporter.exportAll(segmentRepositories2);
 		
-		
-		//ArffExporter.export();
-	
+		arffExporter.export();
 	}
 	
 	private static SegmentRepository findRepository(List<SegmentRepository>repositories, String name){

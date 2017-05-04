@@ -1,6 +1,7 @@
 package edu.utcn.eeg.artifactdetection.model;
 
 import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
 
 public class Segment extends AbstractSegment{
 
@@ -35,7 +36,7 @@ public class Segment extends AbstractSegment{
 	}
 	
 	public SegmentKey getMultiChannelKey(){
-		return new SegmentKey(iterIdx, initIdx);
+		return new SegmentKey(iterIdx, initIdx,Region.getRegionByChannel(channelNr));
 	}
 	
 	public Double getFeatureValueForFeature(FeatureType featureType){
@@ -54,4 +55,25 @@ public class Segment extends AbstractSegment{
 		}
 		return string+" End";
 	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(super.hashCode(), channelNr);
+	};
+	
+	@Override
+	public boolean equals(Object object){
+		if(!super.equals(object)){
+			return false;
+		}
+		if(!(object instanceof Segment)){
+			return false;
+		}
+		Segment segment = (Segment)object;
+		if(segment.getChannelNr()!=this.getChannelNr()){
+			return false;
+		}
+		return true;
+	}
+	
 }

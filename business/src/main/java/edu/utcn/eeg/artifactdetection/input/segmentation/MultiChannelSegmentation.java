@@ -7,7 +7,6 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 
 import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 
 import edu.utcn.eeg.artifactdetection.builders.FeatureBuilder;
@@ -25,28 +24,28 @@ public class MultiChannelSegmentation {
 	private Logger logger = LoggerUtil.logger(MultiChannelSegmentation.class);
 	private List<SegmentRepository> segmentRepositories;
 	private Multimap<SegmentKey, Segment> multimap;
-	private SegmentRepository occularStructTrain;
-	private SegmentRepository muscleStructTrain;
-	private SegmentRepository brainStructTrain;
-	private SegmentRepository occularStructTest;
-	private SegmentRepository muscleStructTest;
-	private SegmentRepository brainStructTest;
-	private SegmentRepository occularStructEval;
-	private SegmentRepository muscleStructEval;
-	private SegmentRepository brainStructEval;
+//	private SegmentRepository occularStructTrain;
+//	private SegmentRepository muscleStructTrain;
+//	private SegmentRepository brainStructTrain;
+//	private SegmentRepository occularStructTest;
+//	private SegmentRepository muscleStructTest;
+//	private SegmentRepository brainStructTest;
+//	private SegmentRepository occularStructEval;
+//	private SegmentRepository muscleStructEval;
+//	private SegmentRepository brainStructEval;
 
 	public MultiChannelSegmentation(List<SegmentRepository> segmentRepositories){
 		this.segmentRepositories = segmentRepositories;
 		multimap = ArrayListMultimap.create();
-		brainStructEval = new SegmentRepository("Clean_Multi_Eval");
-		muscleStructEval = new SegmentRepository("Muscle_Multi_Eval");
-		occularStructEval = new SegmentRepository("Occular_Multi_Eval");
-		brainStructTest = new SegmentRepository("Clean_Multi_Test");
-		muscleStructTest = new SegmentRepository("Muscle_Multi_Test");
-		occularStructTest = new SegmentRepository("Occular_Multi_Test");
-		brainStructTrain = new SegmentRepository("Clean_Multi_Train");
-		muscleStructTrain = new SegmentRepository("Muscle_Multi_Train");
-		occularStructTrain = new SegmentRepository("Occular_Multi_Train");
+//		brainStructEval = new SegmentRepository("Clean_Multi_Eval");
+//		muscleStructEval = new SegmentRepository("Muscle_Multi_Eval");
+//		occularStructEval = new SegmentRepository("Occular_Multi_Eval");
+//		brainStructTest = new SegmentRepository("Clean_Multi_Test");
+//		muscleStructTest = new SegmentRepository("Muscle_Multi_Test");
+//		occularStructTest = new SegmentRepository("Occular_Multi_Test");
+//		brainStructTrain = new SegmentRepository("Clean_Multi_Train");
+//		muscleStructTrain = new SegmentRepository("Muscle_Multi_Train");
+//		occularStructTrain = new SegmentRepository("Occular_Multi_Train");
 		createMultiChannelSegments();
 	}
 	
@@ -68,7 +67,7 @@ public class MultiChannelSegmentation {
 		Set<SegmentKey> keys = multimap.keySet();
 		int trainSize = keys.size()*(100-Configuration.TEST_PROPORTION-Configuration.EVAL_PROPORTION)/100;
 		int testMaxIndex = trainSize + keys.size()*(Configuration.TEST_PROPORTION)/100 ;
-		
+		MultiChannelFeaturesExtractor multiChannelFeaturesExtractor = new MultiChannelFeaturesExtractor();
 		int i=0;
 		logger.info("Build multichannel segments. Train size: "+trainSize+" Test size: "+(testMaxIndex-trainSize));
 		for (SegmentKey segmentKey : keys) {
@@ -82,14 +81,14 @@ public class MultiChannelSegmentation {
 			segment.setFeatures(computeFeatures(segments));
 			segment.setInitIdx(segments.get(0).getInitIdx());
 			segment.setIterIdx(segments.get(0).getIterIdx());
-			int type = 3; 
-			if(i<trainSize){
-				type = 1;
-			}else if(i<testMaxIndex){
-				type = 2;
-			}
-			
-			addToSerializableStructure(segment,type);
+//			int type = 3; 
+//			if(i<trainSize){
+//				type = 1;
+//			}else if(i<testMaxIndex){
+//				type = 2;
+//			}
+			multiChannelFeaturesExtractor.setMultiChannelFeatureForAllSegments(segment);
+			//addToSerializableStructure(segment,type);
 		}
 	}
 	
@@ -104,7 +103,9 @@ public class MultiChannelSegmentation {
 	private Double getMeanValue(Feature feature, List<Segment> segments){
 		double val = 0;
 		for (Segment segment : segments) {
-			val+=segment.getFeatureValueForFeature(feature.getFeature());
+			if(segment.getFeatureValueForFeature(feature.getFeature())!=null){
+				val+=segment.getFeatureValueForFeature(feature.getFeature());
+			}
 		}
 		return val/segments.size();
 	}
@@ -127,53 +128,53 @@ public class MultiChannelSegmentation {
 		return true;
 	}
 	
-	
-	private void addToSerializableStructure(MultiChannelSegment segment, int type){
-		switch (segment.getCorrectType()) {
-		case OCCULAR:
-			switch (type) {
-			case 1:
-				occularStructTrain.addSegment(segment);
-				break;
-			case 2:
-				occularStructTest.addSegment(segment);
-				break;
-			default:
-				occularStructEval.addSegment(segment);
-				break;
-			}			
-			break;
-		case MUSCLE: 
-			switch (type) {
-			case 1:
-				muscleStructTrain.addSegment(segment);
-				break;
-			case 2:
-				muscleStructTest.addSegment(segment);
-				break;
-			default:
-				muscleStructEval.addSegment(segment);
-				break;
-			}		
-			break;
-		default:
-			switch (type) {
-			case 1:
-				brainStructTrain.addSegment(segment);
-				break;
-			case 2:
-				brainStructTest.addSegment(segment);
-				break;
-			default:
-				brainStructEval.addSegment(segment);
-				break;
-			}		
-			break;
-		}
-	}
-	
-	public List<SegmentRepository> getSerializableStructures(){
-		return Lists.newArrayList(occularStructTrain,occularStructEval,occularStructTest,muscleStructTrain,muscleStructEval,muscleStructTest,brainStructTrain,brainStructEval,brainStructTest);
-	}
+//	
+//	private void addToSerializableStructure(MultiChannelSegment segment, int type){
+//		switch (segment.getCorrectType()) {
+//		case OCCULAR:
+//			switch (type) {
+//			case 1:
+//				occularStructTrain.addSegment(segment);
+//				break;
+//			case 2:
+//				occularStructTest.addSegment(segment);
+//				break;
+//			default:
+//				occularStructEval.addSegment(segment);
+//				break;
+//			}			
+//			break;
+//		case MUSCLE: 
+//			switch (type) {
+//			case 1:
+//				muscleStructTrain.addSegment(segment);
+//				break;
+//			case 2:
+//				muscleStructTest.addSegment(segment);
+//				break;
+//			default:
+//				muscleStructEval.addSegment(segment);
+//				break;
+//			}		
+//			break;
+//		default:
+//			switch (type) {
+//			case 1:
+//				brainStructTrain.addSegment(segment);
+//				break;
+//			case 2:
+//				brainStructTest.addSegment(segment);
+//				break;
+//			default:
+//				brainStructEval.addSegment(segment);
+//				break;
+//			}		
+//			break;
+//		}
+//	}
+//	
+//	public List<SegmentRepository> getSerializableStructures(){
+//		return Lists.newArrayList(occularStructTrain,occularStructEval,occularStructTest,muscleStructTrain,muscleStructEval,muscleStructTest,brainStructTrain,brainStructEval,brainStructTest);
+//	}
 		
 }

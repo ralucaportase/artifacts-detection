@@ -2,6 +2,8 @@ package edu.utcn.eeg.artifactdetection.model;
 
 import java.io.Serializable;
 
+import com.google.common.base.Objects;
+
 public class AbstractSegment implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -41,6 +43,26 @@ public class AbstractSegment implements Serializable {
 
 	public void setCorrectType(ResultType correctType) {
 		this.correctType = correctType;
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(initIdx,iterIdx);
+	};
+	
+	@Override
+	public boolean equals(Object object){
+		if(object==this){
+			return true;
+		}
+		if(!(object instanceof AbstractSegment)){
+			return false;
+		}
+		AbstractSegment segment = (AbstractSegment)object;
+		if(segment.initIdx!=this.initIdx||segment.iterIdx!=this.iterIdx){
+			return false;
+		}
+		return true;
 	}
 
 }

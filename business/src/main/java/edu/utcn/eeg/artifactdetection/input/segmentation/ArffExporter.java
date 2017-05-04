@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.google.common.collect.Lists;
+
 import edu.utcn.eeg.artifactdetection.features.export.ArffGenerator;
 import edu.utcn.eeg.artifactdetection.features.export.SegmentDeserializer;
 import edu.utcn.eeg.artifactdetection.model.AbstractSegment;
@@ -14,18 +16,28 @@ import edu.utcn.eeg.artifactdetection.model.SegmentRepository;
 
 public class ArffExporter {
 	
-	public static void export() throws IOException{
-		SegmentRepository trainRepo = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH+"/TrainData.ser");
-		SegmentRepository cleanRepo = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH+"/Clean_Train.ser");
-		SegmentRepository occularRepo = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH+"/Occular_Train.ser");
-		SegmentRepository muscleRepo = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH+"/Muscle_Train.ser");
-		SegmentRepository cleanTest = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH+"/Clean_Test.ser");
-		SegmentRepository occularTest = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH+"/Occular_Test.ser");
-		SegmentRepository muscleTest = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH+"/Muscle_Test.ser");
-		SegmentRepository cleanEval = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH+"/Clean_Eval.ser");
-		SegmentRepository occularEval = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH+"/Occular_Eval.ser");
-		SegmentRepository muscleEval = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH+"/Muscle_Eval.ser");
-		SegmentRepository old = SegmentDeserializer.deserializeSegmentsFromFile("D:/Projects/Diploma_EEG_Artefact_Detection_Maven/serialized/Occular76-80.ser");
+	private SegmentRepository trainRepo;
+	private SegmentRepository cleanRepo;
+	private SegmentRepository occularRepo;
+	private SegmentRepository muscleRepo;
+	private SegmentRepository cleanTest;
+	private SegmentRepository occularTest;
+	private SegmentRepository muscleTest;
+	private SegmentRepository cleanEval;
+	private SegmentRepository occularEval;
+	private SegmentRepository muscleEval;
+	
+	public ArffExporter(){
+		trainRepo = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH+"/TrainData.ser");
+		cleanRepo = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH+"/Clean_Train.ser");
+		occularRepo = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH+"/Occular_Train.ser");
+		muscleRepo = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH+"/Muscle_Train.ser");
+		cleanTest = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH+"/Clean_Test.ser");
+		occularTest = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH+"/Occular_Test.ser");
+		muscleTest = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH+"/Muscle_Test.ser");
+		cleanEval = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH+"/Clean_Eval.ser");
+		occularEval = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH+"/Occular_Eval.ser");
+		muscleEval = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH+"/Muscle_Eval.ser");
 		System.out.println("Full train "+trainRepo.getSegments().size());
 		System.out.println("Clean "+cleanRepo.getSegments().size());
 		System.out.println("Occular "+occularRepo.getSegments().size());
@@ -36,7 +48,13 @@ public class ArffExporter {
 		System.out.println("Clean eval "+cleanEval.getSegments().size());
 		System.out.println("Occular eval "+occularEval.getSegments().size());
 		System.out.println("Muscle eval "+muscleEval.getSegments().size());
-		
+	}
+	
+	public List<SegmentRepository> getSegmentRepositories(){
+		return Lists.newArrayList(occularRepo,occularEval,occularTest,muscleRepo,muscleEval,muscleTest,cleanRepo,cleanEval,cleanTest);
+	}
+	
+	public void export() throws IOException{
 //		featureFilter.filter(cleanRepo);
 //		//featureFilter.filter(trainRepo);
 //		featureFilter.filter(cleanEval);
