@@ -4,7 +4,7 @@ import java.util.List;
 
 import edu.utcn.eeg.artifactdetection.model.AbstractSegment;
 
-public interface BynaryFileGeneratorInterface {
+public interface FileGeneratorInterface {
 	/**
 	 * This method writes a binary file containing the eeg signal hold in
 	 * overlapping segments.

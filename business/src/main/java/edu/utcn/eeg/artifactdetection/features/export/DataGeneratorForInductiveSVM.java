@@ -32,7 +32,7 @@ public class DataGeneratorForInductiveSVM {
 			.logger(DataGeneratorForInductiveSVM.class);
 
 	private static final String LEARNING_FILENAME = Configuration.PROJECT_PATH
-			+ "/svm/svm_Train66-102OU.dat";
+			+ "/svm/svm_Eval66-102.dat";
 
 	/*
 	 * format used for learning file is <line> .=. <target> <feature>:<value>
@@ -133,22 +133,23 @@ public class DataGeneratorForInductiveSVM {
 		List<AbstractSegment> segments = new ArrayList<AbstractSegment>();
 
 		SegmentRepository repository = deserializer
-				.deserializeSegmentsFromFile("D:/DiplomaCode/artifacts-detection/results/66-102Splited/Occular_Train.ser");
+				.deserializeSegmentsFromFile("D:/DiplomaCode/artifacts-detection/results/66-102Splited/Occular_Eval.ser");
 		segments.addAll(repository.getSegments());
 		repository = deserializer
-				.deserializeSegmentsFromFile("D:/DiplomaCode/artifacts-detection/results/66-102Splited/Muscle_Train.ser");
+				.deserializeSegmentsFromFile("D:/DiplomaCode/artifacts-detection/results/66-102Splited/Muscle_Eval.ser");
 		segments.addAll(repository.getSegments());
 		repository = deserializer
-				.deserializeSegmentsFromFile("D:/DiplomaCode/artifacts-detection/results/66-102Splited/Clean_Train.ser");
+				.deserializeSegmentsFromFile("D:/DiplomaCode/artifacts-detection/results/66-102Splited/Clean_Eval.ser");
 		segments.addAll(repository.getSegments());
 
-		DatasetHandler datasetHandler = new DatasetHandler();
+		/*DatasetHandler datasetHandler = new DatasetHandler();
 		List<AbstractSegment> oversampledSegments = datasetHandler
 				.getSMOTEOversampling(segments, 5000);
 		List<AbstractSegment> undersampledSegments = datasetHandler
 				.getRandomUndersampling(oversampledSegments);
 
-		writeToFile(undersampledSegments);
+		writeToFile(undersampledSegments);*/
+		writeToFile(segments);
 		System.out.println("done writing file!");
 	}
 
@@ -191,7 +192,7 @@ public class DataGeneratorForInductiveSVM {
 	}
 
 	public static void main(String[] args) {
-		 computeOutputSVMParameters();
-		//createSvmInputFiles();
+		//computeOutputSVMParameters();
+		 createSvmInputFiles();
 	}
 }
