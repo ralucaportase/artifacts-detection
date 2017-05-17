@@ -1,4 +1,4 @@
-package edu.utcn.eeg.artifactdetection.postprocessing;
+package edu.utcn.eeg.artifactdetection.helpers;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -9,11 +9,8 @@ import edu.utcn.eeg.artifactdetection.model.AbstractSegment;
 import edu.utcn.eeg.artifactdetection.model.Configuration;
 
 public class OutputFileWriter {
-	
-	private static final String OUTPUT_FILENAME = Configuration.PROJECT_PATH
-			+ "/output/OutputFile.dat";
 
-	public static void writeToFile(String content) {
+	public static void writeToFile(String content, String filePath) {
 		BufferedWriter bw = null;
 		FileWriter fw = null;
 
@@ -21,7 +18,7 @@ public class OutputFileWriter {
 			if (content == null) {
 				System.out.println("Null string content");
 			}
-			fw = new FileWriter(OUTPUT_FILENAME);
+			fw = new FileWriter(filePath);
 			bw = new BufferedWriter(fw);
 			bw.write(content);
 			System.out.println("Done");

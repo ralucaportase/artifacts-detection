@@ -15,4 +15,13 @@ public interface FileGeneratorInterface {
 	 */
 	String generateFileFromSegment(List<AbstractSegment> segments);
 
+	/**
+	 * Method for writing to a file the statistics about every segment
+	 * 
+	 * @param segments
+	 *            A list of overlapping segments containing the eeg signal.
+	 * @return Path to the file generated in current system.
+	 */
+	String outputStatistics(List<AbstractSegment> segments);
+
 }
