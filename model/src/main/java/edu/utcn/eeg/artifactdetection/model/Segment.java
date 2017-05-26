@@ -39,6 +39,10 @@ public class Segment extends AbstractSegment{
 		return new SegmentKey(iterIdx, initIdx,Region.getRegionByChannel(channelNr));
 	}
 	
+	public MultiRegionSegmentKey getMultiRegionSegmentKey(){
+		return new MultiRegionSegmentKey(iterIdx, initIdx);
+	}
+	
 	public Double getFeatureValueForFeature(FeatureType featureType){
 		for (Feature feature : features) {
 			if(feature.getFeature().equals(featureType)){

@@ -21,19 +21,22 @@ public class MultiChannelFeaturesExtractor {
 		// segment);
 		//CorrelationFeaturesExtractor correlationFeaturesExtractor = new CorrelationFeaturesExtractor();
 
-		setFeature(segment, getMultichannelMeanResults(multiChannelSegment, segment));
+		setFeature(segment, getMultichannelMeanResults(multiChannelSegment, segment), getMultichannelMeanMaxCorrResults(multiChannelSegment, segment));
 	}
 
-	private void setFeature(Segment segment, double pearson) {
+	private void setFeature(Segment segment, double pearson, double maxCorrelation) {
 		//double pearson = correlationFeaturesExtractor.computePearsonCorrelationCoeficient(segment.getValues(), mean);
-		Feature[] features = new Feature[segment.getFeatures().length + 1];
+		Feature[] features = new Feature[segment.getFeatures().length + 2];
 		int i = 0;
 		for (Feature feature : segment.getFeatures()) {
 			features[i++] = feature;
 		}
 		Feature feature = new Feature(FeatureType.PEARSON);
 		feature.setValue(pearson);
-		features[i] = feature;
+		features[i++] = feature;
+		Feature feature2 = new Feature(FeatureType.MAX_CORRELATION);
+		feature2.setValue(maxCorrelation);
+		features[i++] = feature2;
 		segment.setFeatures(features);
 	}
 
@@ -63,6 +66,21 @@ public class MultiChannelFeaturesExtractor {
 				double pearson = correlationFeaturesExtractor.computePearsonCorrelationCoeficient(segment.getValues(),
 						otherSegment.getValues());
 				mean+=Math.abs(pearson);
+			}
+		}
+		return mean/(size-1);
+	}
+	
+	private double getMultichannelMeanMaxCorrResults(MultiChannelSegment multiChannelSegment, Segment segment) {
+		List<Segment> segments = multiChannelSegment.getSegments();
+		CorrelationFeaturesExtractor correlationFeaturesExtractor = new CorrelationFeaturesExtractor();
+		int size = segment.getValues().length;
+		double mean = 0;
+		for (Segment otherSegment : segments) {
+			if(!segment.equals(otherSegment)){
+				double maxCorr = correlationFeaturesExtractor.computeCrossCorrelationMaxValue(segment.getValues(),
+						otherSegment.getValues());
+				mean+=Math.abs(maxCorr);
 			}
 		}
 		return mean/(size-1);

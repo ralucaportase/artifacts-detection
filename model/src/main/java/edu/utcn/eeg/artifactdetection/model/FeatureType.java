@@ -20,5 +20,6 @@ public enum FeatureType {
 	
 	ENTROPY,
 	
-	PEARSON
+	PEARSON, 
+	MAX_CORRELATION
 }

@@ -37,7 +37,6 @@ public class CorrelationFeaturesExtractor {
 		for (int i = -y.length + 1; i < y.length; i++) {
 			double slidingY[] = shift(y, i);
 			result[k++] = dot(x, slidingY);
-			System.out.println("dot product:" + result[k-1]);
 		}
 		return result;
 	}
@@ -63,5 +62,19 @@ public class CorrelationFeaturesExtractor {
 			}
 		}
 		return sum/(n*n);
+	}
+	
+	public double computeCrossCorrelationMaxValue(double[] x, double[] y){
+		double[] result = new double[x.length+y.length-1];
+		int k=0;
+		double max  = 0; 
+		for (int i = -y.length + 1; i < y.length; i++) {
+			double slidingY[] = shift(y, i);
+			result[k++] = dot(x, slidingY);
+			if(result[k-1]>max){
+				max = result[k-1];
+			}
+		}
+		return max;
 	}
 }

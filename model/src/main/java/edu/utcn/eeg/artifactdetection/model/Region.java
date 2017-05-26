@@ -34,4 +34,20 @@ public enum Region {
 		return null;
 	}
 	
+	public static Region getRegionByIndex(int index){
+		int featuresNr = MultiChannelFeatureType.values().length;
+		if(index<featuresNr){
+			return Region.A;
+		}
+		if(index<featuresNr*2){
+			return Region.B;
+		}
+		if(index<featuresNr*3){
+			return Region.C;
+		}
+		if(index<featuresNr*4){
+			return Region.D;
+		}
+		throw new IllegalArgumentException("Invalid index");
+	}
 }

@@ -51,7 +51,7 @@ public class ArffExporter {
 	}
 	
 	public List<SegmentRepository> getSegmentRepositories(){
-		return Lists.newArrayList(occularRepo,occularEval,occularTest,muscleRepo,muscleEval,muscleTest,cleanRepo,cleanEval,cleanTest);
+		return Lists.newArrayList(occularRepo,occularEval,occularTest,muscleRepo,muscleEval,muscleTest,cleanRepo,cleanEval,cleanTest,trainRepo);
 	}
 	
 	public void export() throws IOException{
@@ -108,12 +108,15 @@ public class ArffExporter {
 			arffGenerator2.writeSegmentFeatures(segment.getFeatures(), segment.getCorrectType());
 		}
 		
+		DataBalancer dBalancer=new DataBalancer();
+		List<AbstractSegment> trainSegments = dBalancer.undersample(cleanRepo, occularRepo, muscleRepo);
+		
 		ArffGenerator arffGenerator3 = new ArffGenerator(Configuration.RESULTS_PATH+"/WekaFullTrainInput.arff");
-		for (AbstractSegment abstractSegment : trainRepo.getSegments()) {
+		for (AbstractSegment abstractSegment : trainSegments) {
 			arffGenerator3.writeSegmentFeatures(abstractSegment.getFeatures(), abstractSegment.getCorrectType());
 		}
 		
-
+		
 	}
 
 }

@@ -2,6 +2,7 @@ package edu.utcn.eeg.artifactdetection.builders;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 
@@ -15,6 +16,8 @@ import edu.utcn.eeg.artifactdetection.model.ArtifactType;
 import edu.utcn.eeg.artifactdetection.model.ArtifactsStructure;
 import edu.utcn.eeg.artifactdetection.model.Configuration;
 import edu.utcn.eeg.artifactdetection.model.Feature;
+import edu.utcn.eeg.artifactdetection.model.FeatureType;
+import edu.utcn.eeg.artifactdetection.model.Region;
 import edu.utcn.eeg.artifactdetection.model.ResultType;
 import edu.utcn.eeg.artifactdetection.model.Segment;
 import edu.utcn.eeg.artifactdetection.model.SegmentRepository;
@@ -85,8 +88,38 @@ public class StructureBuilder {
 		}
 		return features;
 	}
+	
+	public Feature[] computeMultiRegionFeaturesForSegment(double[] data){
+		Feature[] features = FeatureBuilder.createStandardMultiChannelFeaturesInstances();
+		for (Feature feat : features) {
+			if (FeatureExtractor.getFeatureValue(feat.getFeature(), data) == null) {
+				logger.error("Error with the feature extraction! in StructureBuilder[computeFeaturesForSegment]");
+				return null;
+			}
+			feat.setValue(FeatureExtractor.getFeatureValue(feat.getFeature(), data));
+		}
+		return features;
+	}
+	
+	public Feature[] computeMultiRegionFeaturesForMultiChannelSegment(List<Segment> segments){
+		Feature[] features = FeatureBuilder.createStandardMultiChannelFeaturesPerRegionInstances();
+		Map<Region, List<Segment>> segmentsGroupedByRegion = segments.stream()
+				.collect(Collectors.groupingBy(s->Region.getRegionByChannel(s.getChannelNr())));
+		for (Feature feature : features) {
+			Region region = feature.getRegion();
+			FeatureType type = feature.getFeature();
+			List<Segment> regionSegments = segmentsGroupedByRegion.get(region);
+			double mean = 0; 
+			for (Segment segment : regionSegments) {
+				mean+=segment.getFeatureValueForFeature(type);
+			}
+			mean = mean/regionSegments.size();
+			feature.setValue(mean);
+		}
+		return features;
+	}
 
-	private ResultType computeCorrectType(int startIndex, int channel) {
+	public ResultType computeCorrectType(int startIndex, int channel) {
 		int endIndex = startIndex + Configuration.WINDOW_SIZE;
 		Range<Integer> segmentRange = Range.closed(startIndex, endIndex);
 		if (ArtifactType.REJECT.isSuitableForType(channel)) {

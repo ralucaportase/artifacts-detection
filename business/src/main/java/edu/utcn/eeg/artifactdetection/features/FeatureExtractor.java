@@ -38,6 +38,8 @@ public class FeatureExtractor {
 			return timeFeatureExtractor.computeRootMeanSquare(data);
 		case PEARSON: 
 			return new Double(0);
+		case MAX_CORRELATION: 
+			return new Double(0);
 		default:
 			return null;
 		}

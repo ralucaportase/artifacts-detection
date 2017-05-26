@@ -32,6 +32,7 @@ public class DataBalancer {
 		return resultList;
 	}
 	
+	
 	private List<AbstractSegment> pickRandomly(int value, List<AbstractSegment> allSegments){
 		Collections.shuffle(allSegments);
 		return allSegments.subList(0, value);

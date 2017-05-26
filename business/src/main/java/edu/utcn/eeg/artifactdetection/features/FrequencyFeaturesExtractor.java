@@ -73,7 +73,7 @@ public class FrequencyFeaturesExtractor {
 			double magn = dft.getMagnitudeForBean(i);
 			entropy -= magn*Math.log(magn);
 		}
-		return entropy;
+		return Math.abs(entropy);
 	}
 	
 	
