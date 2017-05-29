@@ -156,10 +156,10 @@ public class DataGeneratorForInductiveSVM {
 	public static void computeOutputSVMParameters() {
 		SVMOutput svmOutput = new SVMOutput();
 		List<Double> inputClassification = svmOutput.parseOutputFile(new File(
-				"D:/DiplomaCode/artifacts-detection/svm/svm_Test66-102.csv"));
+				"D:/DiplomaCode/artifacts-detection/svm/svm_TestCompare.csv"));
 		List<Double> outputClassification = svmOutput
 				.parseOutputFile(new File(
-						"D:/DiplomaCode/artifacts-detection/svm/svm_prediction66-102.dat"));
+						"D:/DiplomaCode/artifacts-detection/svm/svm_prediction9.dat"));
 
 		int falseNegative = svmOutput.computeFalseNegativeRate(
 				inputClassification, outputClassification);
@@ -192,7 +192,7 @@ public class DataGeneratorForInductiveSVM {
 	}
 
 	public static void main(String[] args) {
-		//computeOutputSVMParameters();
-		 createSvmInputFiles();
+		computeOutputSVMParameters();
+		// createSvmInputFiles();
 	}
 }

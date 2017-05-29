@@ -5,12 +5,14 @@ import java.util.List;
 
 import edu.utcn.eeg.artifactdetection.model.AbstractSegment;
 import edu.utcn.eeg.artifactdetection.model.ResultType;
+import edu.utcn.eeg.artifactdetection.model.Segment;
 
 public class OutputRaportParameters {
 
 	private int noOfOcularArtifacts;
 	private int noOfMuscularArtifacts;
 	private Hashtable<Integer, Integer> segmentsType; //hashTabel with segmentsNumber and their status
+	private Hashtable<Integer, Segment> orderedSegments; //hashTabel with segmentsNumber and the segment itself
 
 	public OutputRaportParameters(List<AbstractSegment> segments) {
 		this.noOfOcularArtifacts = 0;
@@ -19,6 +21,7 @@ public class OutputRaportParameters {
 		segmentsType = new Hashtable<Integer, Integer>();
 
 		for (AbstractSegment segment : segments) {
+			orderedSegments.put(segment.getIterIdx(), (Segment)segment);
 			if (segment.getCorrectType() == ResultType.MUSCLE) {
 				this.noOfMuscularArtifacts++;
 				this.segmentsType.put(segment.getIterIdx(), 1);
@@ -33,6 +36,10 @@ public class OutputRaportParameters {
 	
 	public Hashtable<Integer, Integer> getSegmentsType(){
 		return this.segmentsType;
+	}
+	
+	public Hashtable<Integer, Segment> getOrderedSegments(){
+		return this.orderedSegments;
 	}
 
 	public int getNoOfOcularArtifacts() {
