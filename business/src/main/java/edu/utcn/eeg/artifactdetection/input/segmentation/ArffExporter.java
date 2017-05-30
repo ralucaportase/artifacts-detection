@@ -9,6 +9,7 @@ import com.google.common.collect.Lists;
 
 import edu.utcn.eeg.artifactdetection.features.export.ArffGenerator;
 import edu.utcn.eeg.artifactdetection.features.export.SegmentDeserializer;
+import edu.utcn.eeg.artifactdetection.features.export.SegmentSerializer;
 import edu.utcn.eeg.artifactdetection.model.AbstractSegment;
 import edu.utcn.eeg.artifactdetection.model.Configuration;
 import edu.utcn.eeg.artifactdetection.model.ResultType;
@@ -16,7 +17,7 @@ import edu.utcn.eeg.artifactdetection.model.SegmentRepository;
 
 public class ArffExporter {
 	
-	private SegmentRepository trainRepo;
+//	private SegmentRepository trainRepo;
 	private SegmentRepository cleanRepo;
 	private SegmentRepository occularRepo;
 	private SegmentRepository muscleRepo;
@@ -28,7 +29,7 @@ public class ArffExporter {
 	private SegmentRepository muscleEval;
 	
 	public ArffExporter(){
-		trainRepo = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH+"/TrainData.ser");
+		//trainRepo = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH+"/TrainData.ser");
 		cleanRepo = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH+"/Clean_Train.ser");
 		occularRepo = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH+"/Occular_Train.ser");
 		muscleRepo = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH+"/Muscle_Train.ser");
@@ -38,7 +39,7 @@ public class ArffExporter {
 		cleanEval = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH+"/Clean_Eval.ser");
 		occularEval = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH+"/Occular_Eval.ser");
 		muscleEval = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH+"/Muscle_Eval.ser");
-		System.out.println("Full train "+trainRepo.getSegments().size());
+		//System.out.println("Full train "+trainRepo.getSegments().size());
 		System.out.println("Clean "+cleanRepo.getSegments().size());
 		System.out.println("Occular "+occularRepo.getSegments().size());
 		System.out.println("Muscle "+muscleRepo.getSegments().size());
@@ -51,7 +52,7 @@ public class ArffExporter {
 	}
 	
 	public List<SegmentRepository> getSegmentRepositories(){
-		return Lists.newArrayList(occularRepo,occularEval,occularTest,muscleRepo,muscleEval,muscleTest,cleanRepo,cleanEval,cleanTest,trainRepo);
+		return Lists.newArrayList(occularRepo,occularEval,occularTest,muscleRepo,muscleEval,muscleTest,cleanRepo,cleanEval,cleanTest);
 	}
 	
 	public void export() throws IOException{
@@ -93,6 +94,9 @@ public class ArffExporter {
 //				
 //			}
 		}
+		SegmentRepository trainsrep= new SegmentRepository("AllForTrain");
+		trainsrep.setSegments(all);
+		SegmentSerializer.serialize(trainsrep, Configuration.RESULTS_PATH);
 		
 		List<AbstractSegment> testSegm=new ArrayList<>();
 		testSegm.addAll(cleanTest.getSegments());
@@ -107,15 +111,18 @@ public class ArffExporter {
 		for (AbstractSegment segment : testSegm) {
 			arffGenerator2.writeSegmentFeatures(segment.getFeatures(), segment.getCorrectType());
 		}
-		
-		DataBalancer dBalancer=new DataBalancer();
-		List<AbstractSegment> trainSegments = dBalancer.undersample(cleanRepo, occularRepo, muscleRepo);
-		
-		ArffGenerator arffGenerator3 = new ArffGenerator(Configuration.RESULTS_PATH+"/WekaFullTrainInput.arff");
-		for (AbstractSegment abstractSegment : trainSegments) {
-			arffGenerator3.writeSegmentFeatures(abstractSegment.getFeatures(), abstractSegment.getCorrectType());
-		}
-		
+		SegmentRepository teSegmentRepository= new SegmentRepository("AllForTest");
+		teSegmentRepository.setSegments(testSegm);
+		SegmentSerializer.serialize(teSegmentRepository, Configuration.RESULTS_PATH);
+//		
+//		DataBalancer dBalancer=new DataBalancer();
+//		List<AbstractSegment> trainSegments = dBalancer.undersample(cleanRepo, occularRepo, muscleRepo);
+//		
+//		ArffGenerator arffGenerator3 = new ArffGenerator(Configuration.RESULTS_PATH+"/WekaFullTrainInput.arff");
+//		for (AbstractSegment abstractSegment : trainSegments) {
+//			arffGenerator3.writeSegmentFeatures(abstractSegment.getFeatures(), abstractSegment.getCorrectType());
+//		}
+//		
 		
 	}
 
