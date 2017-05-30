@@ -2,6 +2,7 @@ package edu.utcn.eeg.artifactdetection.preprocessing;
 
 import java.util.List;
 import java.util.Map;
+
 import edu.utcn.eeg.artifactdetection.model.MultiChannelSegment;
 import edu.utcn.eeg.artifactdetection.model.MultiChannelSegmentSelector;
 import edu.utcn.eeg.artifactdetection.model.Segment;
@@ -21,7 +22,7 @@ public interface SegmentsGeneratorInterface {
 	 * @throws FileReadingException
 	 *             with the correct error code
 	 */
-	Map<Integer, List<Segment>> generateSegments(String path) throws FileReadingException;
+	Map<Integer, List<Segment>> generateSegments() throws FileReadingException;
 
 	/**
 	 * This method reads the coresponding binary files hold in folder given by

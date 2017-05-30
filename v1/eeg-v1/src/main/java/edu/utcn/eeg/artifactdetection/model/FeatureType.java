@@ -18,5 +18,8 @@ public enum FeatureType {
 	SKEWNESS,
 	KURTOSIS, 
 	
-	ENTROPY
+	ENTROPY,
+	
+	PEARSON, 
+	MAX_CORRELATION
 }
