@@ -5,7 +5,10 @@
 resources/
 resources_not_needed/
 results/
+results_old/
+serialized/
 test/
+DecisionTreesInput_fulldata.xml
 DTinputData.xml
 .metadata
 bin/
