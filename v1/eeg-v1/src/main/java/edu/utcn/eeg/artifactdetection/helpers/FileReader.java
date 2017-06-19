@@ -9,6 +9,16 @@ import java.util.Scanner;
 import edu.utcn.eeg.artifactdetection.model.Configuration;
 
 public class FileReader {
+	
+	private static FileReader instance = null;
+
+	public static FileReader getInstance() {
+		if (instance == null) {
+			instance = new FileReader();
+		}
+		return instance;
+	}
+
 
 	public List<Double> parseTxtFile(File file) {
 		List<Double> fileOutput = new ArrayList<Double>();

@@ -7,7 +7,7 @@ import edu.utcn.eeg.artifactdetection.helpers.OutputFileWriter;
 import edu.utcn.eeg.artifactdetection.model.AbstractSegment;
 import edu.utcn.eeg.artifactdetection.model.Configuration;
 
-public class ClasesFileGenerator extends FileGeneratorInterface {
+public class ClasesFileGenerator extends AbstractFileGenerator {
 
 	@Override
 	public String outputStatistics(List<AbstractSegment> segments) {
@@ -20,10 +20,9 @@ public class ClasesFileGenerator extends FileGeneratorInterface {
 			segmentsTypeFileContent += i + ", " + segmentsType.get(i) + "\n";
 		}
 
-		OutputFileWriter fileWriter = new OutputFileWriter();
 		String filePath = OUTPUT_FILENAME + "statistics.csv";
 
-		OutputFileWriter.writeToFile(segmentsTypeFileContent, filePath);
+		OutputFileWriter.getInstance().writeToFile(segmentsTypeFileContent, filePath);
 
 		return filePath;
 	}

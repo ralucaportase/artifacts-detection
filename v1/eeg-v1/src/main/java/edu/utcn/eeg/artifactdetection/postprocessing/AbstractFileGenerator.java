@@ -8,7 +8,7 @@ import edu.utcn.eeg.artifactdetection.model.AbstractSegment;
 import edu.utcn.eeg.artifactdetection.model.Configuration;
 import edu.utcn.eeg.artifactdetection.model.Segment;
 
-public abstract class FileGeneratorInterface {
+public abstract class AbstractFileGenerator {
 	
 	protected static final String OUTPUT_FILENAME = Configuration.PROJECT_PATH
 			+ "/output/";
@@ -34,15 +34,14 @@ public abstract class FileGeneratorInterface {
 			if (segmentsType.get(i) == 0) { // clean signal
 				values = orderedSegments.get(i).getValues();
 				for (int j = 0; i < values.length; j++) {
-					cleanFileContent += values + " ";
+					cleanFileContent += values[j] + " ";
 				}
 			}
 		}
 
-		OutputFileWriter fileWriter = new OutputFileWriter();
 		String filePath = OUTPUT_FILENAME + "cleanEEG.dat";
 
-		OutputFileWriter.writeToFile(cleanFileContent, filePath);
+		OutputFileWriter.getInstance().writeToFile(cleanFileContent, filePath);
 
 		return filePath;
 	}

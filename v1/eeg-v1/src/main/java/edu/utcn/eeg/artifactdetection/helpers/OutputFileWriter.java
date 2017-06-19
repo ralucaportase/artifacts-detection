@@ -10,7 +10,16 @@ import edu.utcn.eeg.artifactdetection.model.Configuration;
 
 public class OutputFileWriter {
 
-	public static void writeToFile(String content, String filePath) {
+	private static OutputFileWriter instance = null;
+
+	public static OutputFileWriter getInstance() {
+		if (instance == null) {
+			instance = new OutputFileWriter();
+		}
+		return instance;
+	}
+
+	public void writeToFile(String content, String filePath) {
 		BufferedWriter bw = null;
 		FileWriter fw = null;
 
