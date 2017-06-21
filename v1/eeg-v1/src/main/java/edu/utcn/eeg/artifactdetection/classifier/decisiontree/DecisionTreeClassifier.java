@@ -24,18 +24,18 @@ import weka.core.SerializationHelper;
 public class DecisionTreeClassifier implements Classifier{
 
 	@Override
-	public List<AbstractSegment> classifySegments(List<AbstractSegment> segments){
-		List<AbstractSegment> predictedSegments = new ArrayList<>();
+	public List<Segment> classifySegments(List<Segment> segments){
+		List<Segment> predictedSegments = new ArrayList<>();
 		REPTree repTreeClassifier = createClassifier();
 		 ArrayList<Attribute> fvWekaAttributes =  createAttributesList();
 		 
 		Instances isTrainingSet = new Instances("Rel", fvWekaAttributes, segments.size());
 		isTrainingSet.setClassIndex(fvWekaAttributes.size()-1);
 		 
-		for (AbstractSegment segment : segments) {
+		for (Segment segment : segments) {
 			Segment segm = (Segment) segment;
 			Double result = classifySegment(repTreeClassifier, fvWekaAttributes, isTrainingSet, segm);
-			AbstractSegment predicted = createPredictedInstance(segm, result);
+			Segment predicted = createPredictedInstance(segm, result);
 			predictedSegments.add(predicted);
 		}
 		return predictedSegments;
@@ -88,8 +88,8 @@ public class DecisionTreeClassifier implements Classifier{
 		 return fvWekaAttributes;
 	}
 
-	private AbstractSegment createPredictedInstance(Segment segm, Double result) {
-		AbstractSegment predicted = new AbstractSegment();
+	private Segment createPredictedInstance(Segment segm, Double result) {
+		Segment predicted = new Segment(segm.getValues());
 		predicted.setCorrectType(ResultType.values()[result.intValue()]);
 		predicted.setFeatures(segm.getFeatures());
 		predicted.setInitIdx(segm.getInitIdx());

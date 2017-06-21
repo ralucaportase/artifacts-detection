@@ -1,5 +1,12 @@
 package edu.utcn.eeg.artifactdetection.view.scenemaker;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import edu.utcn.eeg.artifactdetection.classifier.Classifier;
+import edu.utcn.eeg.artifactdetection.classifier.decisiontree.DecisionTreeClassifier;
+import edu.utcn.eeg.artifactdetection.model.AbstractSegment;
+import edu.utcn.eeg.artifactdetection.model.Segment;
 import edu.utcn.eeg.artifactdetection.view.provider.SimpleChannelSegmentProvider;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -147,7 +154,11 @@ public class ListOfChannelsSceneMaker extends AbstractSceneMaker {
 			public void handle(ActionEvent event) {
 				System.out.println("vizualize");
 				SimpleChannelSegmentProvider provider = new SimpleChannelSegmentProvider(nrChannel);
-				SimpleSegmentViewSceneMaker sm = new SimpleSegmentViewSceneMaker(stage, provider.provideSegments(), 0);
+				Classifier dt = new DecisionTreeClassifier();
+				List<Segment> testSegm=	provider.provideSegments(nrChannel);	
+				List<Segment> classifiedSegments = dt.classifySegments(testSegm);
+				System.out.println("Here!");
+				SimpleSegmentViewSceneMaker sm = new SimpleSegmentViewSceneMaker(stage, classifiedSegments, 0);
 				stage.setScene(sm.makeScene());
 
 			}

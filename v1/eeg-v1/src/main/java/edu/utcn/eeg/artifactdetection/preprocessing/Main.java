@@ -16,6 +16,6 @@ public class Main {
 		Map<Integer, List<Segment>> segments = segmentsGenerator.generateSegments();
 		DecisionTreeClassifier decisionTreeClassifier = new DecisionTreeClassifier();
 		List<AbstractSegment>abstractSegments = segments.get(78).stream().map(seg->(AbstractSegment)seg).collect(Collectors.toList());
-		decisionTreeClassifier.classifySegments(abstractSegments);
+		//decisionTreeClassifier.classifySegments(abstractSegments);
 	}
 }

@@ -6,11 +6,12 @@ import edu.utcn.eeg.artifactdetection.classifier.Classifier;
 import edu.utcn.eeg.artifactdetection.model.AbstractSegment;
 import edu.utcn.eeg.artifactdetection.model.Feature;
 import edu.utcn.eeg.artifactdetection.model.ResultType;
+import edu.utcn.eeg.artifactdetection.model.Segment;
 
 public class KnnClassifier implements Classifier {
 
 	@Override
-	public List<AbstractSegment> classifySegments(List<AbstractSegment> segments) {
+	public List<Segment> classifySegments(List<Segment> segments) {
 		int numberOfSegments = segments.size();
 		TestRecord[] testRecords = new TestRecord[numberOfSegments];
 		int i = 0;

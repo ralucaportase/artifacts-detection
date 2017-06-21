@@ -3,6 +3,7 @@ package edu.utcn.eeg.artifactdetection.classifier;
 import java.util.List;
 
 import edu.utcn.eeg.artifactdetection.model.AbstractSegment;
+import edu.utcn.eeg.artifactdetection.model.Segment;
 
 public interface Classifier {
 	/**
@@ -12,5 +13,5 @@ public interface Classifier {
 	 *            A list on unlabeled segments.
 	 * @return A list with Segments, all containing label set.
 	 */
-	List<AbstractSegment> classifySegments(List<AbstractSegment> segments);
+	List<Segment> classifySegments(List<Segment> segments);
 	}

@@ -10,13 +10,16 @@ import edu.utcn.eeg.artifactdetection.classifier.Classifier;
 import edu.utcn.eeg.artifactdetection.helpers.FileReader;
 import edu.utcn.eeg.artifactdetection.helpers.OutputFileWriter;
 import edu.utcn.eeg.artifactdetection.model.AbstractSegment;
+import edu.utcn.eeg.artifactdetection.model.Configuration;
 import edu.utcn.eeg.artifactdetection.model.Feature;
 import edu.utcn.eeg.artifactdetection.model.ResultType;
+import edu.utcn.eeg.artifactdetection.model.Segment;
 
 public class SvmClassifier implements Classifier {
 
-	private static String outputFilename = "D:/DiplomaCode/artifacts-detection/svm/svm_TestCompare.csv";
-	private static String inputTestFilename = "D:/DiplomaCode/artifacts-detection"
+	private static String outputFilename = Configuration.PROJECT_PATH
+			+ "/svm/svm_TestCompare.csv";
+	private static String inputTestFilename = Configuration.PROJECT_PATH
 			+ "/svm/svmExperiment.dat";
 
 	public SvmClassifier(String outputFilename, String inputTestFilename) {
@@ -24,7 +27,7 @@ public class SvmClassifier implements Classifier {
 		this.inputTestFilename = inputTestFilename;
 	}
 
-	public List<AbstractSegment> classifySegments(List<AbstractSegment> segments) {
+	public List<Segment> classifySegments(List<Segment> segments) {
 		List<Double> classificationResults = FileReader.getInstance()
 				.parseTxtFile(new File(outputFilename));
 		for (int i = 0; i < classificationResults.size(); i++) {
@@ -102,7 +105,7 @@ public class SvmClassifier implements Classifier {
 			File resultFile) {
 		System.out.println("Start classifying ...");
 
-		String cmd = "D:/DiplomaCode/artifacts-detection/svm/svm_classify.exe";
+		String cmd = Configuration.PROJECT_PATH + "/svm/svm_classify.exe";
 		try {
 			cmd += " " + testingFile.getAbsolutePath() + " "
 					+ modelFile.getAbsolutePath() + " "
@@ -123,19 +126,17 @@ public class SvmClassifier implements Classifier {
 		}
 	}
 
-	public static void classify(List<AbstractSegment> segments) {
-		// exportSegments(segments);
-		// File testFile = new File(SVM_TEST_FILENAME);
-		File testFile = new File(
-				"D:/DiplomaCode/artifacts-detection/svm/AllForTest.dat");
-		File modelFile = new File(
-				"D:/DiplomaCode/artifacts-detection/svm/svm_model9feat.dat");
+	public void classify(List<AbstractSegment> segments) {
+		exportSegments(segments);
+		File testFile = new File(inputTestFilename);
+		/*
+		 * File testFile = new File(
+		 * "D:/DiplomaCode/artifacts-detection/svm/AllForTest.dat");
+		 */
+		File modelFile = new File(Configuration.PROJECT_PATH
+				+ "/svm/svm_model9feat.dat");
 		File predictionFile = new File(outputFilename);
 		callSvmClassify(testFile, modelFile, predictionFile);
-	}
-
-	public static void main(String[] args) {
-		classify(null);
 	}
 
 }

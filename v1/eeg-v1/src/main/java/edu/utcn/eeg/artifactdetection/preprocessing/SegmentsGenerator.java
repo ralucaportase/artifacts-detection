@@ -1,5 +1,6 @@
 package edu.utcn.eeg.artifactdetection.preprocessing;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -26,6 +27,13 @@ public class SegmentsGenerator implements SegmentsGeneratorInterface{
 		
 		Map<Integer, List<Segment>> resultSegments =
 					testSegments.stream().collect(Collectors.groupingBy(Segment::getChannelNr));
+		
+		for(Integer key:resultSegments.keySet()){
+			List<Segment> segms = resultSegments.get(key);
+			Collections.sort(segms);
+			resultSegments.put(key, segms);		
+		}
+		
 		return resultSegments;
 	}
 

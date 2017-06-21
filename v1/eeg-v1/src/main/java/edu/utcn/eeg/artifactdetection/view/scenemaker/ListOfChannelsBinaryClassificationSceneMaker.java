@@ -20,7 +20,7 @@ public class ListOfChannelsBinaryClassificationSceneMaker extends ListOfChannels
 				System.out.println("vizualize classify with bynary");
 				SimpleChannelSegmentProvider provider = new SimpleChannelSegmentProvider(nrChannel);
 				SimpleSegmentLabeldViewSceneMaker sm = new SimpleSegmentLabeledBinaryViewSceneMaker(stage,
-						provider.provideSegments(), 0);
+						provider.provideSegments(nrChannel), 0);
 				stage.setScene(sm.makeScene());
 
 			}
