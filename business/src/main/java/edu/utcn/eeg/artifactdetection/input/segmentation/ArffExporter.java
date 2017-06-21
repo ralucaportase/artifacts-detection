@@ -4,9 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import com.google.common.collect.Lists;
-
 import edu.utcn.eeg.artifactdetection.features.export.ArffGenerator;
 import edu.utcn.eeg.artifactdetection.features.export.SegmentDeserializer;
 import edu.utcn.eeg.artifactdetection.features.export.SegmentSerializer;
@@ -30,29 +28,43 @@ public class ArffExporter {
 	
 	public ArffExporter(){
 		//trainRepo = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH+"/TrainData.ser");
-		cleanRepo = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH+"/Clean_Train.ser");
-		occularRepo = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH+"/Occular_Train.ser");
-		muscleRepo = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH+"/Muscle_Train.ser");
-		cleanTest = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH+"/Clean_Test.ser");
-		occularTest = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH+"/Occular_Test.ser");
-		muscleTest = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH+"/Muscle_Test.ser");
-		cleanEval = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH+"/Clean_Eval.ser");
-		occularEval = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH+"/Occular_Eval.ser");
-		muscleEval = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH+"/Muscle_Eval.ser");
+		this.cleanRepo = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH + "/Clean_Train.ser");
+		this.occularRepo = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH + "/Occular_Train.ser");
+		this.muscleRepo = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH + "/Muscle_Train.ser");
+		this.cleanTest = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH + "/Clean_Test.ser");
+		this.occularTest = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH + "/Occular_Test.ser");
+		this.muscleTest = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH + "/Muscle_Test.ser");
+		this.cleanEval = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH + "/Clean_Eval.ser");
+		this.occularEval = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH + "/Occular_Eval.ser");
+		this.muscleEval = SegmentDeserializer.deserializeSegmentsFromFile(Configuration.RESULTS_PATH + "/Muscle_Eval.ser");
 		//System.out.println("Full train "+trainRepo.getSegments().size());
-		System.out.println("Clean "+cleanRepo.getSegments().size());
-		System.out.println("Occular "+occularRepo.getSegments().size());
-		System.out.println("Muscle "+muscleRepo.getSegments().size());
-		System.out.println("Clean test "+cleanTest.getSegments().size());
-		System.out.println("Occular test "+occularTest.getSegments().size());
-		System.out.println("Muscle test "+muscleTest.getSegments().size());
-		System.out.println("Clean eval "+cleanEval.getSegments().size());
-		System.out.println("Occular eval "+occularEval.getSegments().size());
-		System.out.println("Muscle eval "+muscleEval.getSegments().size());
+		System.out.println("Clean " + this.cleanRepo.getSegments()
+													.size());
+		System.out.println("Occular " + this.occularRepo.getSegments()
+														.size());
+		System.out.println("Muscle " + this.muscleRepo.getSegments()
+													  .size());
+		System.out.println("Clean test " + this.cleanTest.getSegments()
+														 .size());
+		System.out.println("Occular test " + this.occularTest.getSegments()
+															 .size());
+		System.out.println("Muscle test " + this.muscleTest.getSegments()
+														   .size());
+		System.out.println("Clean eval " + this.cleanEval.getSegments()
+														 .size());
+		System.out.println("Occular eval " + this.occularEval.getSegments()
+															 .size());
+		System.out.println("Muscle eval " + this.muscleEval.getSegments()
+														   .size());
+	}
+
+	public ArffExporter(boolean nix)
+	{
+
 	}
 	
 	public List<SegmentRepository> getSegmentRepositories(){
-		return Lists.newArrayList(occularRepo,occularEval,occularTest,muscleRepo,muscleEval,muscleTest,cleanRepo,cleanEval,cleanTest);
+		return Lists.newArrayList(this.occularRepo, this.occularEval, this.occularTest, this.muscleRepo, this.muscleEval, this.muscleTest, this.cleanRepo, this.cleanEval, this.cleanTest);
 	}
 	
 	public void export() throws IOException{
@@ -68,8 +80,9 @@ public class ArffExporter {
 //		featureFilter.filter(occularTest);
 		
 		List<AbstractSegment> cleaned = new ArrayList<>();
-		
-		for (AbstractSegment segm : cleanRepo.getSegments()) {
+
+		for (AbstractSegment segm : this.cleanRepo.getSegments())
+		{
 			if(segm.getCorrectType().equals(ResultType.BRAIN_SIGNAL)){
 				cleaned.add(segm);
 			}
@@ -78,8 +91,8 @@ public class ArffExporter {
 		List<AbstractSegment> all = new ArrayList<>();
 		
 		all.addAll(cleaned);
-		all.addAll(occularRepo.getSegments());
-		all.addAll(muscleRepo.getSegments());
+		all.addAll(this.occularRepo.getSegments());
+		all.addAll(this.muscleRepo.getSegments());
 		
 		Collections.shuffle(all);
 				
@@ -99,12 +112,12 @@ public class ArffExporter {
 		SegmentSerializer.serialize(trainsrep, Configuration.RESULTS_PATH);
 		
 		List<AbstractSegment> testSegm=new ArrayList<>();
-		testSegm.addAll(cleanTest.getSegments());
-		testSegm.addAll(muscleTest.getSegments());
-		testSegm.addAll(occularTest.getSegments());
-		testSegm.addAll(cleanEval.getSegments());
-		testSegm.addAll(muscleEval.getSegments());
-		testSegm.addAll(occularEval.getSegments());
+		testSegm.addAll(this.cleanTest.getSegments());
+		testSegm.addAll(this.muscleTest.getSegments());
+		testSegm.addAll(this.occularTest.getSegments());
+		testSegm.addAll(this.cleanEval.getSegments());
+		testSegm.addAll(this.muscleEval.getSegments());
+		testSegm.addAll(this.occularEval.getSegments());
 		Collections.shuffle(testSegm);
 		ArffGenerator arffGenerator2 = new ArffGenerator(Configuration.ARFF_TEST_NAME);
 		

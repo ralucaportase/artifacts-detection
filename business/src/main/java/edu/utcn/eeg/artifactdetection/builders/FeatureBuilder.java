@@ -27,10 +27,14 @@ public class FeatureBuilder {
 	
 	public static Feature[] createStandardMultiChannelFeaturesPerRegionInstances(){
 		Feature[] features = new Feature[MultiChannelFeatureType.values().length*4];
-		int i=0;
-		for(MultiChannelFeatureType feat: MultiChannelFeatureType.values()){
-			features[i]= new Feature(feat,Region.getRegionByIndex(i));
-			i++;
+		int i = 0;
+		for (int j = 0; j < 4; j++)
+		{
+			for (MultiChannelFeatureType feat : MultiChannelFeatureType.values())
+			{
+				features[i] = new Feature(feat, Region.getRegionByIndex(i));
+				i++;
+			}
 		}
 		return features;
 	}
