@@ -4,15 +4,15 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-
+import java.util.List;
 import org.apache.log4j.Logger;
-
 import edu.utcn.eeg.artifactdetection.input.segmentation.LoggerUtil;
+import edu.utcn.eeg.artifactdetection.model.Segment;
 import edu.utcn.eeg.artifactdetection.model.SegmentRepository;
 
 public class SegmentSerializer {
 
-	private static Logger logger = LoggerUtil.logger(SegmentSerializer.class);
+	private static final Logger logger = LoggerUtil.logger(SegmentSerializer.class);
 
 	public static void serialize(SegmentRepository segment, String path) {
 
@@ -37,5 +37,22 @@ public class SegmentSerializer {
 			dir.mkdirs();
 		}
 		return dir;
+	}
+
+	public static void serializeList(List<Segment> segments, File outputFile)
+	{
+
+		try
+		{
+			FileOutputStream fileOut = new FileOutputStream(outputFile);
+			ObjectOutputStream out = new ObjectOutputStream(fileOut);
+			out.writeObject(segments);
+			out.close();
+			fileOut.close();
+		}
+		catch (IOException i)
+		{
+			i.printStackTrace();
+		}
 	}
 }

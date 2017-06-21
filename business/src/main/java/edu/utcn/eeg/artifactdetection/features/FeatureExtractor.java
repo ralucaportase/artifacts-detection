@@ -7,6 +7,7 @@ public class FeatureExtractor {
 	public static Double getFeatureValue(FeatureType feature, double[] data){
 		TimeFeatureExtractor timeFeatureExtractor = new TimeFeatureExtractor();
 		FrequencyFeaturesExtractor frequencyFeatureExtractor = new FrequencyFeaturesExtractor(data);
+		CorrelationFeaturesExtractor correlationFeaturesExtractor = new CorrelationFeaturesExtractor();
 		switch(feature){
 		case STANDARD_DEVIATION: 
 			return timeFeatureExtractor.computeStandardDeviation(data);

@@ -2,9 +2,9 @@ package edu.utcn.eeg.artifactdetection.model;
 
 public class MultiRegionSegmentKey {
 	private static final long serialVersionUID = 1L;
-	private int initIdx;
-	private int iterIdx;
-	
+    private final int initIdx;
+    private final int iterIdx;
+
 	public MultiRegionSegmentKey(int iterIdx, int initIdx) {
 		this.initIdx = initIdx;
 		this.iterIdx = iterIdx;
@@ -14,10 +14,10 @@ public class MultiRegionSegmentKey {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + initIdx;
-		result = prime * result + iterIdx;
-		return result;
-	}
+        result = prime * result + this.initIdx;
+        result = prime * result + this.iterIdx;
+        return result;
+    }
 
 	@Override
 	public boolean equals(Object obj) {
@@ -28,12 +28,17 @@ public class MultiRegionSegmentKey {
 		if (getClass() != obj.getClass())
 			return false;
 		MultiRegionSegmentKey other = (MultiRegionSegmentKey) obj;
-		if (initIdx != other.initIdx)
-			return false;
-		if (iterIdx != other.iterIdx)
-			return false;
-		return true;
-	}
-	
-	
+        if (this.initIdx != other.initIdx)
+            return false;
+        if (this.iterIdx != other.iterIdx)
+            return false;
+        return true;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Multikey_" + this.iterIdx + "_" + this.initIdx;
+    }
+
 }
