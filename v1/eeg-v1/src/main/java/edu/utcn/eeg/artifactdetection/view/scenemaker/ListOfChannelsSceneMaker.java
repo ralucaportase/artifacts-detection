@@ -1,5 +1,6 @@
 package edu.utcn.eeg.artifactdetection.view.scenemaker;
 
+import java.io.File;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -8,6 +9,7 @@ import edu.utcn.eeg.artifactdetection.classifier.decisiontree.DecisionTreeClassi
 import edu.utcn.eeg.artifactdetection.model.AbstractSegment;
 import edu.utcn.eeg.artifactdetection.model.Segment;
 import edu.utcn.eeg.artifactdetection.view.provider.SimpleChannelSegmentProvider;
+import java_cup.internal_error;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -19,6 +21,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.scene.layout.VBox;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class ListOfChannelsSceneMaker extends AbstractSceneMaker {
 
@@ -27,6 +31,10 @@ public class ListOfChannelsSceneMaker extends AbstractSceneMaker {
 	protected Button[] btnChannels;
 	protected Label[] labelChannels;
 
+	protected ComboBox regionComboBox;
+	protected ComboBox channelComboBox;
+	final Button visualizeButton = new Button("Visualize!");
+
 	public ListOfChannelsSceneMaker(Stage stage) {
 		super(stage);
 	}
@@ -34,10 +42,10 @@ public class ListOfChannelsSceneMaker extends AbstractSceneMaker {
 	@Override
 	public Scene makeScene() {
 		VBox hBox = new VBox();
-		HBox listBox =new HBox();
+		HBox listBox = new HBox();
 		listBox.getChildren().addAll(getInitialPane());
 		listBox.setAlignment(Pos.BASELINE_CENTER);
-		hBox.getChildren().addAll(createMenuBar(),getInitialPane());
+		hBox.getChildren().addAll(createMenuBar(), getInitialPane());
 		hBox.setMinWidth(stage.getWidth());
 		hBox.setAlignment(Pos.CENTER);
 		Scene scene = new Scene(hBox, LENGTH_STAGE, HIGH_STAGE);
@@ -48,92 +56,56 @@ public class ListOfChannelsSceneMaker extends AbstractSceneMaker {
 
 		ScrollPane pane1 = new ScrollPane();
 		HBox root = new HBox();
-		
-		VBox rootA = new VBox();
-		HBox hboxA = new HBox();
-		Label labelA=new Label("Channels group A");
-		hboxA.getChildren().addAll(labelA);
-		hboxA.setAlignment(Pos.BASELINE_CENTER);
-		rootA.getChildren().addAll(hboxA);
-		
+
 		VBox rootB = new VBox();
 		HBox hboxB = new HBox();
-		Label labelB=new Label("Channels group B");
+		Label labelB = new Label("Headset configuration");
 		hboxB.setAlignment(Pos.BASELINE_CENTER);
 		hboxB.getChildren().addAll(labelB);
-		rootB.getChildren().addAll(hboxB);
-		
-		VBox rootC = new VBox();
-		HBox hboxC = new HBox();
-		Label labelC=new Label("Channels group C");
-		hboxC.setAlignment(Pos.BASELINE_CENTER);
-		hboxC.getChildren().addAll(labelC);
-		rootC.getChildren().addAll(hboxC);
-		
-		VBox rootD = new VBox();
-		HBox hboxD = new HBox();
-		Label labelD=new Label("Channels group D");
-		hboxD.getChildren().addAll(labelD);
-		hboxD.setAlignment(Pos.BASELINE_CENTER);
-		rootD.getChildren().addAll(hboxD);
-		
-		rootA.setSpacing(10);
-		rootA.setPadding(new Insets(10));
+
+		Image image = new Image("file:src/resources/headset.png");
+		ImageView iv = new ImageView();
+		iv.setFitWidth(600);
+		iv.setFitHeight(575);
+		iv.setImage(image);
+
+		rootB.getChildren().addAll(hboxB, iv);
 		rootB.setSpacing(10);
 		rootB.setPadding(new Insets(10));
-		rootC.setSpacing(10);
-		rootC.setPadding(new Insets(10));
-		rootD.setSpacing(10);
-		rootD.setPadding(new Insets(10));
 
-		btnChannels = new Button[NR_CHANNELS];
-		labelChannels = new Label[NR_CHANNELS];
+		Label regionsLabel = new Label("Region ");
+		Label channelsLabel = new Label("Channel no ");
+
+		regionComboBox = new ComboBox();
+		regionComboBox.getItems().addAll("A", "B", "C", "D");
+
+		// regionComboBox.setPromptText("A");
+
+		channelComboBox = new ComboBox();
+
 		for (int i = 0; i < NR_CHANNELS / 4; i++) {
-			HBox hbox = new HBox();
-			btnChannels[i] = new Button();
-			btnChannels[i].setMinSize(100, 20);
-			btnChannels[i].setText("Vizualize");
-			addActionHandlerForButtonVizualize(btnChannels[i], i + 1);
-			labelChannels[i] = new Label("Channel " + i);
-			labelChannels[i].setMinSize(100, 20);
-			hbox.getChildren().addAll(labelChannels[i], btnChannels[i]);
-			rootA.getChildren().addAll(hbox);
+			channelComboBox.getItems().add(i);
 		}
-		for (int i = NR_CHANNELS / 4; i < NR_CHANNELS / 2; i++) {
-			HBox hbox = new HBox();
-			btnChannels[i] = new Button();
-			btnChannels[i].setMinSize(100, 20);
-			btnChannels[i].setText("Vizualize");
-			addActionHandlerForButtonVizualize(btnChannels[i], i + 1);
-			labelChannels[i] = new Label("Channel " + i);
-			labelChannels[i].setMinSize(100, 20);
-			hbox.getChildren().addAll(labelChannels[i], btnChannels[i]);
-			rootB.getChildren().addAll(hbox);
-		}
-		for (int i = NR_CHANNELS / 2; i < NR_CHANNELS / 4 + NR_CHANNELS / 2; i++) {
-			HBox hbox = new HBox();
-			btnChannels[i] = new Button();
-			btnChannels[i].setMinSize(100, 20);
-			btnChannels[i].setText("Vizualize");
-			addActionHandlerForButtonVizualize(btnChannels[i], i + 1);
-			labelChannels[i] = new Label("Channel " + i);
-			labelChannels[i].setMinSize(100, 20);
-			hbox.getChildren().addAll(labelChannels[i], btnChannels[i]);
-			rootC.getChildren().addAll(hbox);
-		}
-		for (int i = NR_CHANNELS / 4 + NR_CHANNELS / 2; i < NR_CHANNELS; i++) {
-			HBox hbox = new HBox();
-			btnChannels[i] = new Button();
-			btnChannels[i].setMinSize(100, 20);
-			btnChannels[i].setText("Vizualize");
-			addActionHandlerForButtonVizualize(btnChannels[i], i + 1);
-			labelChannels[i] = new Label("Channel " + i);
-			labelChannels[i].setMinSize(100, 20);
-			hbox.getChildren().addAll(labelChannels[i], btnChannels[i]);
-			rootD.getChildren().addAll(hbox);
-		}
-		root.getChildren().addAll(rootA, rootB, rootC, rootD);
-		root.setAlignment(Pos.BASELINE_CENTER);
+		HBox channelsHBox = new HBox();
+		channelsHBox.getChildren().addAll(channelsLabel, channelComboBox);
+		channelsHBox.setAlignment(Pos.BASELINE_CENTER);
+
+		addActionHandlerForButtonVizualize(visualizeButton);
+
+		GridPane grid = new GridPane();
+		grid.setVgap(4);
+		grid.setHgap(10);
+		grid.setPadding(new Insets(10, 30, 20, 50));
+		grid.add(new Label("Choose channel set"), 0, 0);
+		grid.add(new Label(" "), 0, 1);
+		grid.add(new Label("Region: "), 0, 2);
+		grid.add(regionComboBox, 1, 2);
+		grid.add(new Label("Channel no:"), 0, 3);
+		grid.add(channelComboBox, 1, 3);
+		grid.add(visualizeButton, 0, 4);
+
+		root.getChildren().addAll(grid, rootB);
+		root.setAlignment(Pos.CENTER_RIGHT);
 		pane1.setContent(root);
 		pane1.setPannable(true); // it means that the user should be able to pan
 									// the viewport by using the mouse.
@@ -148,21 +120,48 @@ public class ListOfChannelsSceneMaker extends AbstractSceneMaker {
 	 * @param btn
 	 * @param nrChannel
 	 */
-	protected void addActionHandlerForButtonVizualize(Button btn, int nrChannel) {
+	protected void addActionHandlerForButtonVizualize(Button btn) {
 		btn.setOnAction(new EventHandler<ActionEvent>() {
 
 			public void handle(ActionEvent event) {
-				System.out.println("vizualize");
-				SimpleChannelSegmentProvider provider = new SimpleChannelSegmentProvider(nrChannel);
-				Classifier dt = new DecisionTreeClassifier();
-				List<Segment> testSegm=	provider.provideSegments(nrChannel);	
-				List<Segment> classifiedSegments = dt.classifySegments(testSegm);
-				System.out.println("Here!");
-				SimpleSegmentViewSceneMaker sm = new SimpleSegmentViewSceneMaker(stage, classifiedSegments, 0);
+				int regionIdx = getRegionComboBoxValue();
+				int channelIdx = Integer.parseInt(channelComboBox.getValue()
+						.toString());
+				int nrChannel = channelIdx + regionIdx * 32;
+				System.out.println(channelIdx + " " + regionIdx + " "
+						+ nrChannel);
+				SimpleChannelSegmentProvider provider = new SimpleChannelSegmentProvider(
+						nrChannel);
+				//Classifier dt = new DecisionTreeClassifier();
+				List<Segment> testSegm = provider.provideSegments(nrChannel);
+				//List<Segment> classifiedSegments = dt
+				//		.classifySegments(testSegm);
+				SimpleSegmentViewSceneMaker sm = new SimpleSegmentViewSceneMaker(
+						stage, testSegm, 0);
 				stage.setScene(sm.makeScene());
-
 			}
 		});
 	}
 
+	int getRegionComboBoxValue() {
+		int regionIdx;
+		switch (regionComboBox.getValue().toString()) {
+		case "A":
+			regionIdx = 0;
+			break;
+		case "B":
+			regionIdx = 1;
+			break;
+		case "C":
+			regionIdx = 2;
+			break;
+		case "D":
+			regionIdx = 3;
+			break;
+		default:
+			regionIdx = 0;
+			break;
+		}
+		return regionIdx;
+	}
 }

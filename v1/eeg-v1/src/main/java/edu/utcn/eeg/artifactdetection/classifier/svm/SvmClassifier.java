@@ -22,12 +22,17 @@ public class SvmClassifier implements Classifier {
 	private static String inputTestFilename = Configuration.PROJECT_PATH
 			+ "/svm/svmExperiment.dat";
 
+	public SvmClassifier() {
+
+	}
+
 	public SvmClassifier(String outputFilename, String inputTestFilename) {
 		this.outputFilename = outputFilename;
 		this.inputTestFilename = inputTestFilename;
 	}
 
 	public List<Segment> classifySegments(List<Segment> segments) {
+		classify(segments);
 		List<Double> classificationResults = FileReader.getInstance()
 				.parseTxtFile(new File(outputFilename));
 		for (int i = 0; i < classificationResults.size(); i++) {
@@ -37,7 +42,7 @@ public class SvmClassifier implements Classifier {
 				segments.get(i).setCorrectType(ResultType.MUSCLE);
 			}
 		}
-		return null;
+		return segments;
 	}
 
 	/*
@@ -90,7 +95,7 @@ public class SvmClassifier implements Classifier {
 		return lineContent;
 	}
 
-	public void exportSegments(List<AbstractSegment> segments) {
+	public void exportSegments(List<Segment> segments) {
 		String lineContent = "";
 
 		for (AbstractSegment segment : segments) {
@@ -126,7 +131,7 @@ public class SvmClassifier implements Classifier {
 		}
 	}
 
-	public void classify(List<AbstractSegment> segments) {
+	public void classify(List<Segment> segments) {
 		exportSegments(segments);
 		File testFile = new File(inputTestFilename);
 		/*

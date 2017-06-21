@@ -19,13 +19,20 @@ public class ListOfChannelsMulticlassClassificationSceneMaker extends ListOfChan
 		super(stage);
 		
 	}
-
-	protected void addActionHandlerForButtonVizualize(Button btn, int nrChannel) {
+	
+	protected void addActionHandlerForButtonVizualize(Button btn) {
 		btn.setOnAction(new EventHandler<ActionEvent>() {
 
 			public void handle(ActionEvent event) {
 				System.out.println("vizualize classify with MULTICLASS");
 				System.out.println("Elena , I am trying!");
+				
+				int regionIdx = getRegionComboBoxValue();
+				int channelIdx = Integer.parseInt(channelComboBox.getValue()
+						.toString());
+				int nrChannel = channelIdx + regionIdx * 32;
+				System.out.println(channelIdx + " " + regionIdx + " "
+						+ nrChannel);
 				SimpleChannelSegmentProvider provider = new SimpleChannelSegmentProvider(nrChannel);
 				Classifier dt = new DecisionTreeClassifier();
 				List<Segment> testSegm=	provider.provideSegments(nrChannel);
@@ -35,7 +42,6 @@ public class ListOfChannelsMulticlassClassificationSceneMaker extends ListOfChan
 				SimpleSegmentLabeldViewSceneMaker sm = new SimpleSegmentLabeldViewSceneMaker(stage,
 						classifiedSegments, 0);
 				stage.setScene(sm.makeScene());
-
 			}
 		});
 	}
