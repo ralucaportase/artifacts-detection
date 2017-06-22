@@ -21,7 +21,7 @@ public abstract class AbstractFileGenerator {
 	 *            A list of overlapping segments containing the eeg signal.
 	 * @return Path to the file generated in current system.
 	 */
-	String generateFileFromSegment(List<AbstractSegment> segments){
+	public String generateFileFromSegment(List<Segment> segments){
 		String cleanFileContent = "";
 		double values[];
 		OutputRaportParameters reportParameters = new OutputRaportParameters(
@@ -53,6 +53,6 @@ public abstract class AbstractFileGenerator {
 	 *            A list of overlapping segments containing the eeg signal.
 	 * @return Path to the file generated in current system.
 	 */
-	abstract String outputStatistics(List<AbstractSegment> segments);
+	public abstract String outputStatistics(List<Segment> segments);
 
 }

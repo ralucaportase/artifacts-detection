@@ -14,7 +14,7 @@ public class OutputRaportParameters {
 	private Hashtable<Integer, Integer> segmentsType; //hashTabel with segmentsNumber and their status
 	private Hashtable<Integer, Segment> orderedSegments; //hashTabel with segmentsNumber and the segment itself
 
-	public OutputRaportParameters(List<AbstractSegment> segments) {
+	public OutputRaportParameters(List<Segment> segments) {
 		this.noOfOcularArtifacts = 0;
 		this.noOfMuscularArtifacts = 0;
 		

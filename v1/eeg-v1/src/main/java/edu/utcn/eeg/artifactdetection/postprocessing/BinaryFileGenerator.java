@@ -11,7 +11,7 @@ import edu.utcn.eeg.artifactdetection.model.Segment;
 public class BinaryFileGenerator extends AbstractFileGenerator {
 
 	@Override
-	public String outputStatistics(List<AbstractSegment> segments) {
+	public String outputStatistics(List<Segment> segments) {
 		String segmentsTypeFileContent = "";
 		OutputRaportParameters reportParameters = new OutputRaportParameters(
 				segments);

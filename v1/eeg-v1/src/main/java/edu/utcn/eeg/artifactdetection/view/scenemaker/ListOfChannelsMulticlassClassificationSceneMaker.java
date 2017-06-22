@@ -37,8 +37,7 @@ public class ListOfChannelsMulticlassClassificationSceneMaker extends ListOfChan
 
 			public void handle(ActionEvent event) {
 				System.out.println("vizualize classify with MULTICLASS");
-				System.out.println("Elena , I am trying!");
-
+				
 				int regionIdx = getRegionComboBoxValue();
 				int channelIdx = Integer.parseInt(channelComboBox.getValue().toString());
 				int nrChannel = channelIdx + regionIdx * 32;
