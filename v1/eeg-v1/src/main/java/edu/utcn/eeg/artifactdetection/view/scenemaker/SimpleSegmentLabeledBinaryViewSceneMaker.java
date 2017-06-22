@@ -2,6 +2,7 @@ package edu.utcn.eeg.artifactdetection.view.scenemaker;
 
 import java.util.List;
 
+import edu.utcn.eeg.artifactdetection.classifier.svm.SvmClassifier;
 import edu.utcn.eeg.artifactdetection.model.ResultType;
 import edu.utcn.eeg.artifactdetection.model.Segment;
 import javafx.beans.value.ChangeListener;
@@ -20,7 +21,7 @@ import javafx.stage.Stage;
 public class SimpleSegmentLabeledBinaryViewSceneMaker extends SimpleSegmentLabeldViewSceneMaker{
 
 	public SimpleSegmentLabeledBinaryViewSceneMaker(Stage stage, List<Segment> segments, int indexOfSegmentToShow) {
-		super(stage, segments, indexOfSegmentToShow);
+		super(stage, new SvmClassifier(),segments, indexOfSegmentToShow);
 		
 	}
 	

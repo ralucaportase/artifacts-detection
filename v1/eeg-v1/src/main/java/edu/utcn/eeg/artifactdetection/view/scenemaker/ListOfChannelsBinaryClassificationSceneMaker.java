@@ -16,7 +16,7 @@ public class ListOfChannelsBinaryClassificationSceneMaker extends ListOfChannels
 
 	public ListOfChannelsBinaryClassificationSceneMaker(Stage stage) {
 		super(stage);
-		
+
 	}
 
 	protected void addActionHandlerForButtonVizualize(Button btn) {
@@ -24,24 +24,21 @@ public class ListOfChannelsBinaryClassificationSceneMaker extends ListOfChannels
 
 			public void handle(ActionEvent event) {
 				System.out.println("vizualize classify with SVM");
-				
+
 				int regionIdx = getRegionComboBoxValue();
-				int channelIdx = Integer.parseInt(channelComboBox.getValue()
-						.toString());
+				int channelIdx = Integer.parseInt(channelComboBox.getValue().toString());
 				int nrChannel = channelIdx + regionIdx * 32;
-				System.out.println(channelIdx + " " + regionIdx + " Channel "
-						+ nrChannel);
+				System.out.println(channelIdx + " " + regionIdx + " Channel " + nrChannel);
 				SimpleChannelSegmentProvider provider = new SimpleChannelSegmentProvider(nrChannel);
 				Classifier svm = new SvmClassifier();
-				List<Segment> testSegm=	provider.provideSegments(nrChannel);
+				List<Segment> testSegm = provider.provideSegments(nrChannel);
 				List<Segment> classifiedSegments = svm.classifySegments(testSegm);
-				
-				SimpleSegmentLabeldViewSceneMaker sm = new SimpleSegmentLabeldViewSceneMaker(stage,
+
+				SimpleSegmentLabeldViewSceneMaker sm = new SimpleSegmentLabeldViewSceneMaker(stage, svm,
 						classifiedSegments, 0);
 				stage.setScene(sm.makeScene());
 			}
 		});
 	}
 
-	
 }

@@ -1,6 +1,9 @@
 package edu.utcn.eeg.artifactdetection.view.scenemaker;
 
 import javafx.stage.Stage;
+import edu.utcn.eeg.artifactdetection.classifier.Classifier;
+import edu.utcn.eeg.artifactdetection.classifier.decisiontree.DecisionTreeClassifier;
+import edu.utcn.eeg.artifactdetection.classifier.knn.KnnClassifier;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -8,6 +11,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 
+@SuppressWarnings("restriction")
 public abstract class AbstractSceneMaker {
 
 	protected final static int LENGTH_STAGE = 950;
@@ -95,9 +99,9 @@ public abstract class AbstractSceneMaker {
 
 			@Override
 			public void handle(ActionEvent e) {
-
+				Classifier knn = new KnnClassifier();
 				ListOfChannelsMulticlassClassificationSceneMaker sm = new ListOfChannelsMulticlassClassificationSceneMaker(
-						stage);
+						stage, knn);
 				stage.setScene(sm.makeScene());
 				System.out.println("Knn");
 			}
@@ -107,8 +111,9 @@ public abstract class AbstractSceneMaker {
 
 			@Override
 			public void handle(ActionEvent e) {
+				Classifier dt = new DecisionTreeClassifier();
 				ListOfChannelsMulticlassClassificationSceneMaker sm = new ListOfChannelsMulticlassClassificationSceneMaker(
-						stage);
+						stage, dt);
 				stage.setScene(sm.makeScene());
 				System.out.println("DT");
 			}
@@ -122,8 +127,7 @@ public abstract class AbstractSceneMaker {
 
 			@Override
 			public void handle(ActionEvent e) {
-				ListOfRegionsBinaryClassificationSceneMaker sm = new ListOfRegionsBinaryClassificationSceneMaker(
-						stage);
+				ListOfRegionsBinaryClassificationSceneMaker sm = new ListOfRegionsBinaryClassificationSceneMaker(stage);
 				stage.setScene(sm.makeScene());
 			}
 		});

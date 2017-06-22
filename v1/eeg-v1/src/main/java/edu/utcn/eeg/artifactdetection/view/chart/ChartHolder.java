@@ -10,6 +10,9 @@ public class ChartHolder {
 	final NumberAxis xAxis = new NumberAxis();
 	final NumberAxis yAxis = new NumberAxis();
 
+	private final int MAX_VALUE_OF_DATA = 15;
+	private final int MIN_VALUE_OF_DATA = -15;
+
 	private LineChart<Number, Number> lineChart = new LineChart<Number, Number>(xAxis, yAxis);
 
 	public ChartHolder(String chartName) {
@@ -22,6 +25,8 @@ public class ChartHolder {
 
 	public void addSeries(double[] values, String seriesName) {
 		int n = values.length;
+		values[0] = MAX_VALUE_OF_DATA;
+		values[1] = MIN_VALUE_OF_DATA;
 		XYChart.Series series = new XYChart.Series();
 		series.setName(seriesName);
 

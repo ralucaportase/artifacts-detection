@@ -2,6 +2,7 @@ package edu.utcn.eeg.artifactdetection.view.scenemaker;
 
 import java.util.List;
 
+import edu.utcn.eeg.artifactdetection.classifier.Classifier;
 import edu.utcn.eeg.artifactdetection.model.ResultType;
 import edu.utcn.eeg.artifactdetection.model.Segment;
 import edu.utcn.eeg.artifactdetection.view.chart.SimpleSegmentChart;
@@ -31,12 +32,14 @@ public class SimpleSegmentLabeldViewSceneMaker extends AbstractSceneMaker {
 	protected Button btnPreviousSegment;
 	protected Label initIndexLabel = new Label("Init index: ");
 	protected Label labelLabel = new Label("Label: ");
+	private Classifier clasiffier;
 
-	public SimpleSegmentLabeldViewSceneMaker(Stage stage, List<Segment> segments, int indexOfSegmentToShow) {
+	public SimpleSegmentLabeldViewSceneMaker(Stage stage, Classifier clasiffier, List<Segment> segments,
+			int indexOfSegmentToShow) {
 		super(stage);
 		this.segments = segments;
 		this.indexOfSegmentToShow = indexOfSegmentToShow;
-
+		this.clasiffier = clasiffier;
 	}
 
 	public Scene makeScene() {
@@ -68,7 +71,8 @@ public class SimpleSegmentLabeldViewSceneMaker extends AbstractSceneMaker {
 
 			public void handle(ActionEvent event) {
 				System.out.println("back");
-				ListOfChannelsMulticlassClassificationSceneMaker sm = new ListOfChannelsMulticlassClassificationSceneMaker(stage);
+				ListOfChannelsMulticlassClassificationSceneMaker sm = new ListOfChannelsMulticlassClassificationSceneMaker(
+						stage, clasiffier);
 				stage.setScene(sm.makeScene());
 			}
 		});
@@ -81,8 +85,8 @@ public class SimpleSegmentLabeldViewSceneMaker extends AbstractSceneMaker {
 			public void handle(ActionEvent event) {
 				if (indexOfSegmentToShow < segments.size() - 1) {
 					indexOfSegmentToShow++;
-					SimpleSegmentLabeldViewSceneMaker sm = new SimpleSegmentLabeldViewSceneMaker(stage, segments,
-							indexOfSegmentToShow);
+					SimpleSegmentLabeldViewSceneMaker sm = new SimpleSegmentLabeldViewSceneMaker(stage, clasiffier,
+							segments, indexOfSegmentToShow);
 					stage.setScene(sm.makeScene());
 				} else {
 					System.out.println("no more segments");
@@ -98,7 +102,7 @@ public class SimpleSegmentLabeldViewSceneMaker extends AbstractSceneMaker {
 			public void handle(ActionEvent event) {
 				if (indexOfSegmentToShow > 0) {
 					indexOfSegmentToShow--;
-					SimpleSegmentLabeldViewSceneMaker sm = new SimpleSegmentLabeldViewSceneMaker(stage, segments,
+					SimpleSegmentLabeldViewSceneMaker sm = new SimpleSegmentLabeldViewSceneMaker(stage, clasiffier,segments,
 							indexOfSegmentToShow);
 					stage.setScene(sm.makeScene());
 				} else {

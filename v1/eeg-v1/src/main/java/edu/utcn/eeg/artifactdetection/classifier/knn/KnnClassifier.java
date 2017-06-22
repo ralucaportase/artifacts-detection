@@ -22,8 +22,9 @@ public class KnnClassifier implements Classifier {
 		}
 		int[] predictedValues = KnnManager.predict("artefacte_train.txt", testRecords, 1, new EuclideanDistance());
 		for (int j = 0; j < segments.size(); j++) {
-			segments.get(j).setCorrectType(calculateResultType(predictedValues[i]));
+			segments.get(j).setCorrectType(calculateResultType(predictedValues[j]));
 		}
+		System.out.println("I was here, Ramona!");
 		return segments;
 	}
 
