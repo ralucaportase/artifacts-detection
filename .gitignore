@@ -8,6 +8,7 @@ results/
 results_old/
 serialized/
 test/
+svm/
 DecisionTreesInput_fulldata.xml
 DTinputData.xml
 .metadata
