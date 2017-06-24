@@ -13,14 +13,13 @@ public class OutputRaportParameters {
 
 	private int noOfOcularArtifacts;
 	private int noOfMuscularArtifacts;
-	private LinkedHashMap<Integer, Integer> segmentsType; // hashTabel with
-															// segmentsNumber
-															// and their status
-	private LinkedHashMap<Integer, Segment> orderedSegments; // hashTabel with
-																// segmentsNumber
-																// and the
-																// segment
-																// itself
+	// hashTabel with segmentsNumber for non overlapping segments and their
+	// status
+	private LinkedHashMap<Integer, Integer> segmentsType;
+	// hashTabel with segmentsNumber and their status for all segments
+	private LinkedHashMap<Integer, Integer> overlappingSegmentsType;
+	// hashTabel with segmentsNumber and the segment itself
+	private LinkedHashMap<Integer, Segment> orderedSegments;
 
 	public OutputRaportParameters(List<Segment> segments) {
 		this.noOfOcularArtifacts = 0;
@@ -28,26 +27,37 @@ public class OutputRaportParameters {
 
 		segmentsType = new LinkedHashMap<Integer, Integer>();
 		orderedSegments = new LinkedHashMap<Integer, Segment>();
+		overlappingSegmentsType = new LinkedHashMap<Integer, Integer>();
 
 		for (Segment segment : segments) {
-			if (segment.getIterIdx() == 0) {
-				int index = segment.getInitIdx();
-				orderedSegments.put(index, segment);
-				if (segment.getCorrectType() == ResultType.MUSCLE) {
-					this.noOfMuscularArtifacts++;
+			int index = segment.getInitIdx();
+			orderedSegments.put(index, segment);
+			if (segment.getCorrectType() == ResultType.MUSCLE) {
+				this.noOfMuscularArtifacts++;
+				this.overlappingSegmentsType.put(index, 1);
+				if (segment.getIterIdx() == 0)
 					this.segmentsType.put(index, 1);
-				} else if (segment.getCorrectType() == ResultType.OCCULAR) {
-					this.noOfOcularArtifacts++;
+			} else if (segment.getCorrectType() == ResultType.OCCULAR) {
+				this.noOfOcularArtifacts++;
+				this.overlappingSegmentsType.put(index, 2);
+				if (segment.getIterIdx() == 0)
 					this.segmentsType.put(index, 2);
-				} else
+			} else {
+				this.overlappingSegmentsType.put(index, 0);
+				if (segment.getIterIdx() == 0)
 					this.segmentsType.put(index, 0);
 			}
+
 		}
 
 	}
 
 	public LinkedHashMap<Integer, Integer> getSegmentsType() {
 		return this.segmentsType;
+	}
+
+	public LinkedHashMap<Integer, Integer> getOverlappingSegmentsType() {
+		return this.overlappingSegmentsType;
 	}
 
 	public LinkedHashMap<Integer, Segment> getOrderedSegments() {
