@@ -1,6 +1,7 @@
 package edu.utcn.eeg.artifactdetection.postprocessing;
 
 import java.util.Hashtable;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import edu.utcn.eeg.artifactdetection.helpers.OutputFileWriter;
@@ -15,7 +16,7 @@ public class ClasesFileGenerator extends AbstractFileGenerator {
 		String segmentsTypeFileContent = "";
 		OutputRaportParameters reportParameters = new OutputRaportParameters(
 				segments);
-		Hashtable<Integer, Integer> segmentsType = reportParameters
+		LinkedHashMap<Integer, Integer> segmentsType = reportParameters
 				.getSegmentsType();
 		for (int i = 0; i < segmentsType.size(); i++) {
 			segmentsTypeFileContent += i + ", " + segmentsType.get(i) + "\n";

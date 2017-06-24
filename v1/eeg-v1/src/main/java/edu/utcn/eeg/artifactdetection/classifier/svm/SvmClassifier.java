@@ -139,7 +139,7 @@ public class SvmClassifier implements Classifier {
 		 * "D:/DiplomaCode/artifacts-detection/svm/AllForTest.dat");
 		 */
 		File modelFile = new File(Configuration.PROJECT_PATH
-				+ "/svm/svm_model9feat.dat");
+				+ "/svm/AllForTrain_model9feat.dat");
 		File predictionFile = new File(outputFilename);
 		callSvmClassify(testFile, modelFile, predictionFile);
 	}
