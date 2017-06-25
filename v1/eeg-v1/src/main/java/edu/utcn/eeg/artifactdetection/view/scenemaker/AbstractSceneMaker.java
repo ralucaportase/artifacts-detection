@@ -36,7 +36,7 @@ public abstract class AbstractSceneMaker {
 		MenuBar menuBar = new MenuBar();
 
 		Menu menu1 = new Menu("Load file");
-		Menu menu2 = new Menu("Vizualize EEG");
+		Menu menu2 = new Menu("Visualize EEG");
 		Menu menu3 = new Menu("Extract artefact from EEG");
 
 		MenuItem menuItem11 = new MenuItem("Load from D://EEG//Data");
@@ -74,7 +74,7 @@ public abstract class AbstractSceneMaker {
 
 			@Override
 			public void handle(ActionEvent e) {
-				System.out.println("Vizualize Multiple channel processing");
+				System.out.println("Visualize Multiple channel processing");
 				ListOfRegionsSceneMaker sm = new ListOfRegionsSceneMaker(stage);
 				stage.setScene(sm.makeScene());
 			}

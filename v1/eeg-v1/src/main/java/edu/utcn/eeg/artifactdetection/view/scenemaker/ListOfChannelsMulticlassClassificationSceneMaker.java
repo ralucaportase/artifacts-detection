@@ -13,11 +13,13 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
-public class ListOfChannelsMulticlassClassificationSceneMaker extends ListOfChannelsSceneMaker {
+public class ListOfChannelsMulticlassClassificationSceneMaker extends
+		ListOfChannelsSceneMaker {
 
 	private Classifier clasiffier;
 
-	public ListOfChannelsMulticlassClassificationSceneMaker(Stage stage, Classifier clasiffier) {
+	public ListOfChannelsMulticlassClassificationSceneMaker(Stage stage,
+			Classifier clasiffier) {
 		super(stage);
 		this.clasiffier = clasiffier;
 
@@ -37,17 +39,21 @@ public class ListOfChannelsMulticlassClassificationSceneMaker extends ListOfChan
 
 			public void handle(ActionEvent event) {
 				System.out.println("vizualize classify with MULTICLASS");
-				
-				int regionIdx = getRegionComboBoxValue();
-				int channelIdx = Integer.parseInt(channelComboBox.getValue().toString());
-				int nrChannel = channelIdx + regionIdx * 32;
-				System.out.println(channelIdx + " " + regionIdx + " " + nrChannel);
-				SimpleChannelSegmentProvider provider = new SimpleChannelSegmentProvider(nrChannel);
-				List<Segment> testSegm = provider.provideSegments(nrChannel);
-				List<Segment> classifiedSegments = clasiffier.classifySegments(testSegm);
 
-				SimpleSegmentLabeldViewSceneMaker sm = new SimpleSegmentLabeldViewSceneMaker(stage,clasiffier, classifiedSegments,
-						0);
+				int regionIdx = getRegionComboBoxValue();
+				int channelIdx = Integer.parseInt(channelComboBox.getValue()
+						.toString());
+				int nrChannel = channelIdx + regionIdx * 32;
+				System.out.println(channelIdx + " " + regionIdx + " "
+						+ nrChannel);
+				SimpleChannelSegmentProvider provider = new SimpleChannelSegmentProvider(
+						nrChannel);
+				List<Segment> testSegm = provider.provideSegments(nrChannel);
+				List<Segment> classifiedSegments = clasiffier
+						.classifySegments(testSegm);
+
+				SimpleSegmentLabeldViewSceneMaker sm = new SimpleSegmentLabeldViewSceneMaker(
+						stage, clasiffier, classifiedSegments, 0, 1);
 				stage.setScene(sm.makeScene());
 			}
 		});

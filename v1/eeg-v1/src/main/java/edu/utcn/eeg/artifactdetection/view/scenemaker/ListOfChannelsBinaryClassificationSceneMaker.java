@@ -12,7 +12,8 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
-public class ListOfChannelsBinaryClassificationSceneMaker extends ListOfChannelsSceneMaker {
+public class ListOfChannelsBinaryClassificationSceneMaker extends
+		ListOfChannelsSceneMaker {
 
 	public ListOfChannelsBinaryClassificationSceneMaker(Stage stage) {
 		super(stage);
@@ -26,16 +27,20 @@ public class ListOfChannelsBinaryClassificationSceneMaker extends ListOfChannels
 				System.out.println("vizualize classify with SVM");
 
 				int regionIdx = getRegionComboBoxValue();
-				int channelIdx = Integer.parseInt(channelComboBox.getValue().toString());
+				int channelIdx = Integer.parseInt(channelComboBox.getValue()
+						.toString());
 				int nrChannel = channelIdx + regionIdx * 32;
-				System.out.println(channelIdx + " " + regionIdx + " Channel " + nrChannel);
-				SimpleChannelSegmentProvider provider = new SimpleChannelSegmentProvider(nrChannel);
+				System.out.println(channelIdx + " " + regionIdx + " Channel "
+						+ nrChannel);
+				SimpleChannelSegmentProvider provider = new SimpleChannelSegmentProvider(
+						nrChannel);
 				Classifier svm = new SvmClassifier();
 				List<Segment> testSegm = provider.provideSegments(nrChannel);
-				List<Segment> classifiedSegments = svm.classifySegments(testSegm);
+				List<Segment> classifiedSegments = svm
+						.classifySegments(testSegm);
 
-				SimpleSegmentLabeldViewSceneMaker sm = new SimpleSegmentLabeldViewSceneMaker(stage, svm,
-						classifiedSegments, 0);
+				SimpleSegmentLabeldViewSceneMaker sm = new SimpleSegmentLabeledBinaryViewSceneMaker(
+						stage, classifiedSegments, 0);
 				stage.setScene(sm.makeScene());
 			}
 		});

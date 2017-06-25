@@ -102,9 +102,12 @@ public class DatasetHandler {
 	}
 
 	/**
+	 * Function for computing the euclidian distance between 2 segments
 	 * 
 	 * @param segment1
+	 *            - AbstractSegment
 	 * @param segment2
+	 *            - AbstractSegment
 	 * @return euclidian distance between 2 segments
 	 */
 	private double computeDistance(AbstractSegment segment1,
@@ -158,6 +161,7 @@ public class DatasetHandler {
 		List<AbstractSegment> outputSegmentList = new ArrayList<AbstractSegment>();
 		AbstractSegment newSegment, neighbourSegment;
 		Feature[] features, neighbourFeatures, newFeatures;
+		double randomValue;
 
 		for (AbstractSegment segment : segments) {
 			outputSegmentList.add(segment);
@@ -168,7 +172,7 @@ public class DatasetHandler {
 				features = segment.getFeatures();
 				neighbourFeatures = neighbourSegment.getFeatures();
 				newFeatures = FeatureBuilder.createStandardFeaturesInstances();
-				double randomValue = Math.random();
+				randomValue = Math.random();
 				for (int i = 0; i < features.length; i++) {
 					newFeatures[i].setValue(features[i].getValue()
 							+ (features[i].getValue() - neighbourFeatures[i]

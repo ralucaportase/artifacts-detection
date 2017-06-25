@@ -30,9 +30,9 @@ public class DataGeneratorForInductiveSVM {
 
 	private static Logger logger = LoggerUtil
 			.logger(DataGeneratorForInductiveSVM.class);
-
-	private static final String LEARNING_FILENAME = Configuration.PROJECT_PATH
-			+ "/svm/svm_Eval66-102.dat";
+//Configuration.PROJECT_PATH
+	private static final String LEARNING_FILENAME = "D:/DiplomaCode/artifacts-detection"
+			+ "/svm/AllForTest.dat";
 
 	/*
 	 * format used for learning file is <line> .=. <target> <feature>:<value>
@@ -58,17 +58,17 @@ public class DataGeneratorForInductiveSVM {
 				lineContent += " 4:" + features[i].getValue();
 			} else if (features[i].getFeature().toString() == "DELTA_SPECTRUM") {
 				lineContent += " 5:" + features[i].getValue();
-			} else if (features[i].getFeature().toString() == "ALPHA_SPECTRUM") {
+			} /*else if (features[i].getFeature().toString() == "ALPHA_SPECTRUM") {
 				lineContent += " 6:" + features[i].getValue();
 			} else if (features[i].getFeature().toString() == "BETHA_LOW_SPECTRUM") {
 				lineContent += " 7:" + features[i].getValue();
-			} else if (features[i].getFeature().toString() == "THETA_SPECTRUM") {
+			} */else if (features[i].getFeature().toString() == "THETA_SPECTRUM") {
 				lineContent += " 8:" + features[i].getValue();
 			} else if (features[i].getFeature().toString() == "GAMMA_LOW_SPECTRUM") {
 				lineContent += " 9:" + features[i].getValue();
-			} else if (features[i].getFeature().toString() == "BETHA_HIGH_SPECTRUM") {
+			} /*else if (features[i].getFeature().toString() == "BETHA_HIGH_SPECTRUM") {
 				lineContent += " 10:" + features[i].getValue();
-			} else if (features[i].getFeature().toString() == "GAMMA_HIGH_SPECTRUM") {
+			}*/ else if (features[i].getFeature().toString() == "GAMMA_HIGH_SPECTRUM") {
 				lineContent += " 11:" + features[i].getValue();
 			} /*
 			 * else if (features[i].getFeature().toString() == "SKEWNESS") {
@@ -77,6 +77,10 @@ public class DataGeneratorForInductiveSVM {
 			 * += " 13:" + features[i].getValue(); }
 			 */else if (features[i].getFeature().toString() == "ENTROPY") {
 				lineContent += " 14:" + features[i].getValue();
+			} else if (features[i].getFeature().toString() == "PEARSON") {
+				lineContent += " 15:" + features[i].getValue();
+			} else if (features[i].getFeature().toString() == "MAX_CORRELATION") {
+				lineContent += " 16:" + features[i].getValue();
 			}
 
 		}
@@ -132,7 +136,7 @@ public class DataGeneratorForInductiveSVM {
 		SegmentDeserializer deserializer = new SegmentDeserializer();
 		List<AbstractSegment> segments = new ArrayList<AbstractSegment>();
 
-		SegmentRepository repository = deserializer
+		/*SegmentRepository repository = deserializer
 				.deserializeSegmentsFromFile("D:/DiplomaCode/artifacts-detection/results/66-102Splited/Occular_Eval.ser");
 		segments.addAll(repository.getSegments());
 		repository = deserializer
@@ -140,6 +144,10 @@ public class DataGeneratorForInductiveSVM {
 		segments.addAll(repository.getSegments());
 		repository = deserializer
 				.deserializeSegmentsFromFile("D:/DiplomaCode/artifacts-detection/results/66-102Splited/Clean_Eval.ser");
+		segments.addAll(repository.getSegments());*/
+		
+		SegmentRepository repository = deserializer
+				.deserializeSegmentsFromFile("D:/DiplomaCode/artifacts-detection/results/AllForTest.ser");
 		segments.addAll(repository.getSegments());
 
 		/*DatasetHandler datasetHandler = new DatasetHandler();
@@ -148,7 +156,11 @@ public class DataGeneratorForInductiveSVM {
 		List<AbstractSegment> undersampledSegments = datasetHandler
 				.getRandomUndersampling(oversampledSegments);
 
-		writeToFile(undersampledSegments);*/
+		writeToFile(undersampledSegments);
+		SegmentSerializer serializer = new SegmentSerializer();
+		SegmentRepository segmentRepo = new SegmentRepository("UndersampledSmoteForTrain");
+		segmentRepo.setSegments(undersampledSegments);
+		serializer.serialize(segmentRepo, "D:/DiplomaCode/artifacts-detection/results/");*/
 		writeToFile(segments);
 		System.out.println("done writing file!");
 	}
@@ -156,10 +168,10 @@ public class DataGeneratorForInductiveSVM {
 	public static void computeOutputSVMParameters() {
 		SVMOutput svmOutput = new SVMOutput();
 		List<Double> inputClassification = svmOutput.parseOutputFile(new File(
-				"D:/DiplomaCode/artifacts-detection/svm/svm_TestCompare.csv"));
+				"D:/DiplomaCode/artifacts-detection/svm/AllForTest.csv"));
 		List<Double> outputClassification = svmOutput
 				.parseOutputFile(new File(
-						"D:/DiplomaCode/artifacts-detection/svm/svm_prediction9.dat"));
+						"D:/DiplomaCode/artifacts-detection/svm/AllTrainPrediction9.dat"));
 
 		int falseNegative = svmOutput.computeFalseNegativeRate(
 				inputClassification, outputClassification);
@@ -193,6 +205,6 @@ public class DataGeneratorForInductiveSVM {
 
 	public static void main(String[] args) {
 		computeOutputSVMParameters();
-		// createSvmInputFiles();
+		//createSvmInputFiles();
 	}
 }

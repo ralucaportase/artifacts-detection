@@ -1,5 +1,7 @@
 package edu.utcn.eeg.artifactdetection.view.chart;
 
+import java.awt.Color;
+
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
@@ -13,13 +15,16 @@ public class ChartHolder {
 	private final int MAX_VALUE_OF_DATA = 15;
 	private final int MIN_VALUE_OF_DATA = -15;
 
-	private LineChart<Number, Number> lineChart = new LineChart<Number, Number>(xAxis, yAxis);
+	private LineChart<Number, Number> lineChart = new LineChart<Number, Number>(
+			xAxis, yAxis);
 
 	public ChartHolder(String chartName) {
 
 		lineChart.setTitle(chartName);
-		xAxis.setLabel("Value");
 		lineChart.setCreateSymbols(false);
+		lineChart.setPrefHeight(590);
+		lineChart.setPrefWidth(630);
+		lineChart.setLegendVisible(false);
 
 	}
 
