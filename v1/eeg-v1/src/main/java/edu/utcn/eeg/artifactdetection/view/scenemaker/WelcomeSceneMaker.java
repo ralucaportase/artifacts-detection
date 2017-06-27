@@ -12,6 +12,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.Pane;
@@ -30,8 +32,12 @@ public class WelcomeSceneMaker extends AbstractSceneMaker {
 
 		
 		VBox hBox = new VBox();
-		//hBox.getChildren().addAll(createMenuBar(), getInitialPane());
-		hBox.getChildren().addAll(createMenuBar());
+		Image image = new Image("file:src/resources/welcome2.jpg");
+		ImageView iv = new ImageView();
+		iv.setFitWidth(super.LENGTH_STAGE);
+		iv.setFitHeight(super.HIGH_STAGE);
+		iv.setImage(image);		
+		hBox.getChildren().addAll(createMenuBar(),iv);
 		Scene scene = new Scene(hBox, LENGTH_STAGE, HIGH_STAGE);
 		return scene;
 	}
