@@ -1,7 +1,6 @@
 package edu.utcn.eeg.artifactdetection.classifier.knn;
 
 import java.util.List;
-
 import edu.utcn.eeg.artifactdetection.classifier.Classifier;
 import edu.utcn.eeg.artifactdetection.model.AbstractSegment;
 import edu.utcn.eeg.artifactdetection.model.Feature;
@@ -20,11 +19,15 @@ public class KnnClassifier implements Classifier {
 			testRecords[i] = currentRecord;
 			i++;
 		}
-		int[] predictedValues = KnnManager.predict("artefacte_train.txt", testRecords, 1, new EuclideanDistance());
+		int[] predictedValues = KnnManager.predict("artefacte_train.txt", testRecords, 10, new ManhattenDistance());
+		System.out.println("KNN algoritm is running - K=10 and distance Manhatten");
 		for (int j = 0; j < segments.size(); j++) {
+			//System.out.println(segments.get(j) + "going to be set " + calculateResultType(predictedValues[j])
+			//		+ "and it was " + segments.get(j).getCorrectType());
 			segments.get(j).setCorrectType(calculateResultType(predictedValues[j]));
+			//System.out.println(segments.get(j) + "has now " + segments.get(j).getCorrectType());
 		}
-		System.out.println("I was here, Ramona!");
+		System.out.println("Prediction is over!");
 		return segments;
 	}
 

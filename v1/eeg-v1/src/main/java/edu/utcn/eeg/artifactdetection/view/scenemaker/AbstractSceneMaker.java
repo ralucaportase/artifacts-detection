@@ -48,16 +48,9 @@ public abstract class AbstractSceneMaker {
 			}
 		});
 
-		MenuItem menuItem12 = new MenuItem("Load from specified path");
-		menuItem12.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent e) {
-				System.out.println("load from specified path");
-			}
-		});
+		
 		menu1.getItems().add(menuItem11);
-		menu1.getItems().add(menuItem12);
+		
 
 		MenuItem menuItem21 = new MenuItem("Single channel processing");
 		menuItem21.setOnAction(new EventHandler<ActionEvent>() {
@@ -136,44 +129,12 @@ public abstract class AbstractSceneMaker {
 		menu312.getItems().addAll(menuItem3121, menuItem3122);
 		menu31.getItems().addAll(menuItem311, menu312);
 
-		Menu menu32 = new Menu("Multiple channel processing");
-		MenuItem menuItem321 = new MenuItem("Binary classification");
-		menuItem321.setOnAction(new EventHandler<ActionEvent>() {
+		
+		
+		
+		
 
-			@Override
-			public void handle(ActionEvent e) {
-				ListOfRegionsBinaryClassificationSceneMaker sm = new ListOfRegionsBinaryClassificationSceneMaker(
-						stage);
-				stage.setScene(sm.makeScene());
-			}
-		});
-		Menu menu322 = new Menu("Multiclass clasification");
-		MenuItem menuItem3221 = new MenuItem("KNN");
-		menuItem3221.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent e) {
-				System.out.println("multi multi knn");
-				ListOfRegionMulticlassClassificationSceneMaker sm = new ListOfRegionMulticlassClassificationSceneMaker(
-						stage);
-				stage.setScene(sm.makeScene());
-			}
-		});
-		MenuItem menuItem3222 = new MenuItem("Decizion tree");
-		menuItem3222.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent e) {
-				ListOfRegionMulticlassClassificationSceneMaker sm = new ListOfRegionMulticlassClassificationSceneMaker(
-						stage);
-				stage.setScene(sm.makeScene());
-				System.out.println("multi DT");
-			}
-		});
-		menu322.getItems().addAll(menuItem3221, menuItem3222);
-		menu32.getItems().addAll(menuItem321, menu322);
-
-		menu3.getItems().addAll(menu31, menu32);
+		menu3.getItems().addAll(menu31);
 
 		menuBar.getMenus().addAll(menu1, menu2, menu3);
 		menuBar.prefWidthProperty().bind(stage.widthProperty());
