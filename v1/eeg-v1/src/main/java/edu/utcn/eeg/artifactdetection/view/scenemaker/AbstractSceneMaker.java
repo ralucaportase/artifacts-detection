@@ -64,7 +64,8 @@ public abstract class AbstractSceneMaker {
 
 			@Override
 			public void handle(ActionEvent e) {
-				ListOfChannelsSceneMaker sm = new ListOfChannelsSceneMaker(stage);
+				ListOfChannelsSceneMaker sm = new ListOfChannelsSceneMaker(
+						stage);
 				stage.setScene(sm.makeScene());
 			}
 		});
@@ -83,16 +84,30 @@ public abstract class AbstractSceneMaker {
 		menu2.getItems().add(menuItem22);
 
 		Menu menu31 = new Menu("Single channel processing");
-		MenuItem menuItem311 = new MenuItem("Binary classification");
-		menuItem311.setOnAction(new EventHandler<ActionEvent>() {
+		Menu menuItem311 = new Menu("Binary classification");
+
+		MenuItem menuItem3111 = new MenuItem("SVM");
+		menuItem3111.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent e) {
 				ListOfChannelsBinaryClassificationSceneMaker sm = new ListOfChannelsBinaryClassificationSceneMaker(
-						stage);
+						stage, "svm");
 				stage.setScene(sm.makeScene());
 			}
 		});
+		MenuItem menuItem3112 = new MenuItem("Validate clasificators");
+		menuItem3112.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent e) {
+				ListOfChannelsBinaryClassificationSceneMaker sm = new ListOfChannelsBinaryClassificationSceneMaker(
+						stage, "all");
+				stage.setScene(sm.makeScene());
+			}
+		});
+		menuItem311.getItems().addAll(menuItem3111, menuItem3112);
+
 		Menu menu312 = new Menu("Multiclass classification");
 		MenuItem menuItem3121 = new MenuItem("KNN");
 		menuItem3121.setOnAction(new EventHandler<ActionEvent>() {
@@ -127,7 +142,8 @@ public abstract class AbstractSceneMaker {
 
 			@Override
 			public void handle(ActionEvent e) {
-				ListOfRegionsBinaryClassificationSceneMaker sm = new ListOfRegionsBinaryClassificationSceneMaker(stage);
+				ListOfRegionsBinaryClassificationSceneMaker sm = new ListOfRegionsBinaryClassificationSceneMaker(
+						stage);
 				stage.setScene(sm.makeScene());
 			}
 		});

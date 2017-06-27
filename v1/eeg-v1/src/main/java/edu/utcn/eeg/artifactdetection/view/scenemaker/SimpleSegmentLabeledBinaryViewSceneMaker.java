@@ -23,10 +23,13 @@ import javafx.stage.Stage;
 public class SimpleSegmentLabeledBinaryViewSceneMaker extends
 		SimpleSegmentLabeldViewSceneMaker {
 
-	public SimpleSegmentLabeledBinaryViewSceneMaker(Stage stage,
-			List<Segment> segments, int indexOfSegmentToShow) {
-		super(stage, new SvmClassifier(), segments, indexOfSegmentToShow, 0);
+	private String clasificator;
 
+	public SimpleSegmentLabeledBinaryViewSceneMaker(Stage stage,
+			List<Segment> segments, int indexOfSegmentToShow,
+			String clasificator) {
+		super(stage, new SvmClassifier(), segments, indexOfSegmentToShow, 0);
+		this.clasificator = clasificator;
 	}
 
 	protected GridPane paneWithLabelValidation() {
@@ -77,7 +80,7 @@ public class SimpleSegmentLabeledBinaryViewSceneMaker extends
 			public void handle(ActionEvent event) {
 				System.out.println("back");
 				ListOfChannelsBinaryClassificationSceneMaker sm = new ListOfChannelsBinaryClassificationSceneMaker(
-						stage);
+						stage, clasificator);
 				stage.setScene(sm.makeScene());
 			}
 		});
@@ -91,7 +94,7 @@ public class SimpleSegmentLabeledBinaryViewSceneMaker extends
 				if (indexOfSegmentToShow < segments.size() - 1) {
 					indexOfSegmentToShow++;
 					SimpleSegmentLabeledBinaryViewSceneMaker sm = new SimpleSegmentLabeledBinaryViewSceneMaker(
-							stage, segments, indexOfSegmentToShow);
+							stage, segments, indexOfSegmentToShow, clasificator);
 					stage.setScene(sm.makeScene());
 				} else {
 					System.out.println("no more segments");
@@ -108,7 +111,7 @@ public class SimpleSegmentLabeledBinaryViewSceneMaker extends
 				if (indexOfSegmentToShow > 0) {
 					indexOfSegmentToShow--;
 					SimpleSegmentLabeledBinaryViewSceneMaker sm = new SimpleSegmentLabeledBinaryViewSceneMaker(
-							stage, segments, indexOfSegmentToShow);
+							stage, segments, indexOfSegmentToShow, clasificator);
 					stage.setScene(sm.makeScene());
 				} else {
 					System.out.println("no more segments");
