@@ -2,6 +2,7 @@ package edu.utcn.eeg.artifactdetection.view.chart;
 
 import java.awt.Color;
 
+import javafx.scene.Node;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
@@ -40,7 +41,7 @@ public class ChartHolder {
 		}
 
 		lineChart.getData().addAll(series);
-
+		
 	}
 
 	public LineChart<Number, Number> getLineChart() {

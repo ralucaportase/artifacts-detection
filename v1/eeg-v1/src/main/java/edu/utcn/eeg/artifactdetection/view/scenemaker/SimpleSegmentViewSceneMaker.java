@@ -38,6 +38,7 @@ public class SimpleSegmentViewSceneMaker extends AbstractSceneMaker {
 	private Button btnNextSegment;
 	private Button btnPreviousSegment;
 	private Label initIndexLabel = new Label("Init index: ");
+	private Label channelNrLabel = new Label("Channel number: ");
 
 	public SimpleSegmentViewSceneMaker(Stage stage, List<Segment> segments,
 			int indexOfSegmentToShow) {
@@ -69,6 +70,7 @@ public class SimpleSegmentViewSceneMaker extends AbstractSceneMaker {
 		VBox vBox = new VBox();
 		vBox.getChildren().addAll(hBox, this.paneWithFlowControl());
 		Scene scene = new Scene(vBox, LENGTH_STAGE, HIGH_STAGE);
+		scene.getStylesheets().add("file:src/resources/stylesheet.css");
 		return scene;
 	}
 
@@ -128,6 +130,8 @@ public class SimpleSegmentViewSceneMaker extends AbstractSceneMaker {
 						new Label(""),
 						initIndexLabel,
 						new Label(""),
+						channelNrLabel,
+						new Label(""),
 						constructPaneWithSegmentInfo(segments
 								.get(indexOfSegmentToShow)));
 		return vbox;
@@ -142,6 +146,8 @@ public class SimpleSegmentViewSceneMaker extends AbstractSceneMaker {
 		pane1.setPadding(new Insets(1, 1, 1, 1));
 		initIndexLabel.setText(initIndexLabel.getText()
 				+ segments.get(indexOfSegmentToShow).getInitIdx());
+		channelNrLabel.setText(channelNrLabel.getText()
+				+ segments.get(indexOfSegmentToShow).getChannelNr());
 		pane1.add(btnNextSegment, 12, 0);
 		pane1.add(btnPreviousSegment, 11, 0);
 		pane1.add(btnBack, 10, 0);

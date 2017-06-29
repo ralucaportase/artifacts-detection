@@ -69,6 +69,9 @@ public class MultipleSegmentViewSceneMaker extends AbstractSceneMaker {
 
 		
 		Scene scene = new Scene(hBox, LENGTH_STAGE, HIGH_STAGE);
+		scene.getStylesheets().add("file:src/resources/stylesheet.css");
+		
+		
 		return scene;
 	}
 
@@ -128,10 +131,10 @@ public class MultipleSegmentViewSceneMaker extends AbstractSceneMaker {
 		pane1.setVgap(50);
 		pane1.setPadding(new Insets(1, 1, 1, 1));
 		initIndexLabel.setText(initIndexLabel.getText() + segments.get(indexOfSegmentToShow).getInitIdx());
-		pane1.add(btnNextSegment, 0, 0);
-		pane1.add(btnPreviousSegment, 0, 1);
-		pane1.add(initIndexLabel, 0, 2);
-		pane1.add(btnBack, 1, 0);
+		pane1.add(btnNextSegment, 0, 1);
+		pane1.add(btnPreviousSegment, 0, 2);
+		pane1.add(initIndexLabel, 0, 3);
+		pane1.add(btnBack, 0, 0);
 		return pane1;
 	}
 

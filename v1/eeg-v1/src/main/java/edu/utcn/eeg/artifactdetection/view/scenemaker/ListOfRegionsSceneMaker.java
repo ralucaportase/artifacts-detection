@@ -33,6 +33,7 @@ public class ListOfRegionsSceneMaker extends AbstractSceneMaker {
 		VBox hBox = new VBox();
 		hBox.getChildren().addAll(createMenuBar(), getInitialPane());
 		Scene scene = new Scene(hBox, LENGTH_STAGE, HIGH_STAGE);
+		scene.getStylesheets().add("file:src/resources/stylesheet.css");
 		return scene;
 	}
 

@@ -49,6 +49,7 @@ public class ListOfChannelsSceneMaker extends AbstractSceneMaker {
 		hBox.setMinWidth(stage.getWidth());
 		hBox.setAlignment(Pos.CENTER);
 		Scene scene = new Scene(hBox, LENGTH_STAGE, HIGH_STAGE);
+		scene.getStylesheets().add("file:src/resources/stylesheet.css");
 		return scene;
 	}
 
@@ -125,19 +126,19 @@ public class ListOfChannelsSceneMaker extends AbstractSceneMaker {
 
 			public void handle(ActionEvent event) {
 				int regionIdx = getRegionComboBoxValue();
-				int channelIdx = Integer.parseInt(channelComboBox.getValue()
-						.toString());
+				int channelIdx ;
+				if (channelComboBox.getValue() != null){
+					channelIdx = Integer.parseInt(channelComboBox.getValue().toString());}else {
+						channelIdx = 0;
+					}
 				int nrChannel = channelIdx + regionIdx * 32;
-				System.out.println(channelIdx + " " + regionIdx + " "
-						+ nrChannel);
-				SimpleChannelSegmentProvider provider = new SimpleChannelSegmentProvider(
-						nrChannel);
-				//Classifier dt = new DecisionTreeClassifier();
+				System.out.println(channelIdx + " " + regionIdx + " " + nrChannel);
+				SimpleChannelSegmentProvider provider = new SimpleChannelSegmentProvider(nrChannel);
+				// Classifier dt = new DecisionTreeClassifier();
 				List<Segment> testSegm = provider.provideSegments(nrChannel);
-				//List<Segment> classifiedSegments = dt
-				//		.classifySegments(testSegm);
-				SimpleSegmentViewSceneMaker sm = new SimpleSegmentViewSceneMaker(
-						stage, testSegm, 0);
+				// List<Segment> classifiedSegments = dt
+				// .classifySegments(testSegm);
+				SimpleSegmentViewSceneMaker sm = new SimpleSegmentViewSceneMaker(stage, testSegm, 0);
 				stage.setScene(sm.makeScene());
 			}
 		});
@@ -145,22 +146,26 @@ public class ListOfChannelsSceneMaker extends AbstractSceneMaker {
 
 	int getRegionComboBoxValue() {
 		int regionIdx;
-		switch (regionComboBox.getValue().toString()) {
-		case "A":
+		if (regionComboBox.getValue() == null) {
 			regionIdx = 0;
-			break;
-		case "B":
-			regionIdx = 1;
-			break;
-		case "C":
-			regionIdx = 2;
-			break;
-		case "D":
-			regionIdx = 3;
-			break;
-		default:
-			regionIdx = 0;
-			break;
+		} else {
+			switch (regionComboBox.getValue().toString()) {
+			case "A":
+				regionIdx = 0;
+				break;
+			case "B":
+				regionIdx = 1;
+				break;
+			case "C":
+				regionIdx = 2;
+				break;
+			case "D":
+				regionIdx = 3;
+				break;
+			default:
+				regionIdx = 0;
+				break;
+			}
 		}
 		return regionIdx;
 	}

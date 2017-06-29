@@ -39,34 +39,10 @@ public class WelcomeSceneMaker extends AbstractSceneMaker {
 		iv.setImage(image);		
 		hBox.getChildren().addAll(createMenuBar(),iv);
 		Scene scene = new Scene(hBox, LENGTH_STAGE, HIGH_STAGE);
+		scene.getStylesheets().add("file:src/resources/stylesheet.css");
 		return scene;
 	}
 
-	private Pane getInitialPane() {
-
-		btnLoad = new Button();
-		btnLoad.setText("Load EEG ");
-		addActionHandlerForButton();
-		GridPane pane1 = new GridPane();
-		pane1.setAlignment(Pos.TOP_CENTER);
-		pane1.setHgap(50);
-		pane1.setVgap(50);
-		pane1.setPadding(new Insets(1, 1, 1, 1));
-		pane1.add(btnLoad, 1, 1);
-		return pane1;
-	}
-
-	private void addActionHandlerForButton() {
-		btnLoad.setOnAction(new EventHandler<ActionEvent>() {
-
-			public void handle(ActionEvent event) {
-				System.out.println("load --- nothing here so far");
-				//InitialSceneMaker sm = new InitialSceneMaker(stage);
-			//	stage.setScene(sm.makeScene());
-
-			}
-		});
-	}
 	
 	
 }

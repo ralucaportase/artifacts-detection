@@ -41,6 +41,7 @@ public class SimpleSegmentLabeldViewSceneMaker extends AbstractSceneMaker {
 	protected Button btnGenerateReport;
 	protected Button btnGenerateClenSignal;
 	protected Label initIndexLabel = new Label("Init index: ");
+	private Label channelNrLabel = new Label("Channel number: ");
 	protected Label labelLabel = new Label("Type:  ");
 	private Classifier clasiffier;
 	protected int type; // 0 for binary, 1 for clases
@@ -85,6 +86,7 @@ public class SimpleSegmentLabeldViewSceneMaker extends AbstractSceneMaker {
 		VBox vBox = new VBox();
 		vBox.getChildren().addAll(hBox, this.paneWithFlowControl());
 		Scene scene = new Scene(vBox, LENGTH_STAGE, HIGH_STAGE);
+		scene.getStylesheets().add("file:src/resources/stylesheet.css");
 		return scene;
 	}
 
@@ -171,11 +173,13 @@ public class SimpleSegmentLabeldViewSceneMaker extends AbstractSceneMaker {
 		pane1.setPadding(new Insets(1, 1, 1, 1));
 		initIndexLabel.setText(initIndexLabel.getText()
 				+ segments.get(indexOfSegmentToShow).getInitIdx());
-		pane1.add(btnNextSegment, 8, 0);
-		pane1.add(btnPreviousSegment, 7, 0);
-		pane1.add(btnBack, 6, 0);
-		pane1.add(btnGenerateClenSignal, 5, 0);
-		pane1.add(btnGenerateReport, 4, 0);
+		channelNrLabel.setText(channelNrLabel.getText()
+				+ segments.get(indexOfSegmentToShow).getChannelNr());
+		pane1.add(btnNextSegment, 7, 0);
+		pane1.add(btnPreviousSegment, 6, 0);
+		pane1.add(btnBack, 5, 0);
+		pane1.add(btnGenerateClenSignal, 4, 0);
+		pane1.add(btnGenerateReport, 3, 0);
 
 		return pane1;
 	}
@@ -252,6 +256,8 @@ public class SimpleSegmentLabeldViewSceneMaker extends AbstractSceneMaker {
 						paneWithLabelValidation(),
 						new Label(""),
 						initIndexLabel,
+						new Label(""),
+						channelNrLabel,
 						new Label(""),
 						constructPaneWithSegmentInfo(segments
 								.get(indexOfSegmentToShow)));
