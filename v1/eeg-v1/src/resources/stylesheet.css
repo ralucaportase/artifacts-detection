@@ -1,0 +1,25 @@
+ .root{
+    -fx-font-family: "Courier New";
+    -fx-base: #224947;
+    -fx-background: #000000;
+}
+ .button {
+    -fx-background-color: #224947;
+}
+.chart-content {
+	-fx-background-color: #000000;
+}
+.chart {
+    -fx-padding: 10px;
+    -fx-background-color: #000000;
+}
+.chart-plot-background {
+    -fx-background-color: #25383C;
+}
+.chart-vertical-grid-lines {
+    -fx-stroke: #3278fa;
+}
+.chart-horizontal-grid-lines {
+    -fx-stroke: #3278fa;
+}
+.default-color0.chart-series-line { -fx-stroke: #00CDCD; }
