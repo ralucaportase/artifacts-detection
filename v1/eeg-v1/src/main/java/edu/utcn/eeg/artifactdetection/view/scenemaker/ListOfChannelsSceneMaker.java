@@ -64,7 +64,7 @@ public class ListOfChannelsSceneMaker extends AbstractSceneMaker {
 		hboxB.setAlignment(Pos.BASELINE_CENTER);
 		hboxB.getChildren().addAll(labelB);
 
-		Image image = new Image("file:src/resources/headset.png");
+		Image image = new Image("file:src/resources/casca.png");
 		ImageView iv = new ImageView();
 		iv.setFitWidth(600);
 		iv.setFitHeight(575);
