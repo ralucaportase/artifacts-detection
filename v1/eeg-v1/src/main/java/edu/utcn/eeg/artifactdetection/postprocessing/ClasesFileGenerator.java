@@ -23,8 +23,8 @@ public class ClasesFileGenerator extends AbstractFileGenerator {
 				+ " has " + reportParameters.getNoOfMuscularArtifacts()
 				+ " muscular artifacts and "
 				+ reportParameters.getNoOfOcularArtifacts()
-				+ "ocular artifacts" + " from "
-				+ overlappingSegmentsType.size() + " windows with artifacts.\n";
+				+ " ocular artifacts" + " from "
+				+ overlappingSegmentsType.size() + " windows.\n";
 
 		segmentsTypeFileContent += "0 = brain signal, 1 = muscle artifact, 2 = ocular artifact \n";
 

@@ -2,7 +2,7 @@ package edu.utcn.eeg.artifactdetection.view.scenemaker;
 
 import java.util.List;
 
-import edu.utcn.eeg.artifactdetection.classifier.svm.SvmClassifier;
+import edu.utcn.eeg.artifactdetection.classifier.svm.SvmBinaryClassifier;
 import edu.utcn.eeg.artifactdetection.model.ResultType;
 import edu.utcn.eeg.artifactdetection.model.Segment;
 import edu.utcn.eeg.artifactdetection.postprocessing.AbstractFileGenerator;
@@ -28,7 +28,7 @@ public class SimpleSegmentLabeledBinaryViewSceneMaker extends
 	public SimpleSegmentLabeledBinaryViewSceneMaker(Stage stage,
 			List<Segment> segments, int indexOfSegmentToShow,
 			String clasificator) {
-		super(stage, new SvmClassifier(), segments, indexOfSegmentToShow, 0);
+		super(stage, new SvmBinaryClassifier(), segments, indexOfSegmentToShow, 0);
 		this.clasificator = clasificator;
 	}
 

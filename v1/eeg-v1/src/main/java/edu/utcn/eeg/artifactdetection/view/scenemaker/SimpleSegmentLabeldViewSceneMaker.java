@@ -11,6 +11,7 @@ import edu.utcn.eeg.artifactdetection.model.ResultType;
 import edu.utcn.eeg.artifactdetection.model.Segment;
 import edu.utcn.eeg.artifactdetection.postprocessing.AbstractFileGenerator;
 import edu.utcn.eeg.artifactdetection.postprocessing.BinaryFileGenerator;
+import edu.utcn.eeg.artifactdetection.postprocessing.ClasesFileGenerator;
 import edu.utcn.eeg.artifactdetection.view.chart.SimpleSegmentChart;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -96,7 +97,7 @@ public class SimpleSegmentLabeldViewSceneMaker extends AbstractSceneMaker {
 
 			public void handle(ActionEvent event) {
 				System.out.println("generate clean");
-				AbstractFileGenerator fileGenerator = new BinaryFileGenerator();
+				AbstractFileGenerator fileGenerator = new ClasesFileGenerator();
 				fileGenerator.generateFileFromSegment(segments);
 				System.out.println("File with clean signal was generated");
 			}
@@ -109,7 +110,7 @@ public class SimpleSegmentLabeldViewSceneMaker extends AbstractSceneMaker {
 
 			public void handle(ActionEvent event) {
 				System.out.println("generate report");
-				AbstractFileGenerator fileGenerator = new BinaryFileGenerator();
+				AbstractFileGenerator fileGenerator = new ClasesFileGenerator();
 				fileGenerator.outputStatistics(segments);
 				System.out.println("Statistics was generated!");
 			}

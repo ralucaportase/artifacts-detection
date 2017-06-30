@@ -15,26 +15,28 @@ import edu.utcn.eeg.artifactdetection.model.Feature;
 import edu.utcn.eeg.artifactdetection.model.ResultType;
 import edu.utcn.eeg.artifactdetection.model.Segment;
 
-public class SvmClassifier implements Classifier {
+public class SvmBinaryClassifier implements Classifier {
 
-	private static String outputFilename = Configuration.PROJECT_PATH
+	protected String outputBinaryFilename = Configuration.PROJECT_PATH
 			+ "/svm/svm_TestCompare.csv";
-	private static String inputTestFilename = Configuration.PROJECT_PATH
+	protected String inputBinaryTestFilename = Configuration.PROJECT_PATH
 			+ "/svm/svmExperiment.dat";
+	protected String binaryModelFilename = Configuration.PROJECT_PATH
+			+ "/svm/AllForTrain_model9feat.dat";
 
-	public SvmClassifier() {
+	public SvmBinaryClassifier() {
 
 	}
 
-	public SvmClassifier(String outputFilename, String inputTestFilename) {
-		this.outputFilename = outputFilename;
-		this.inputTestFilename = inputTestFilename;
+	public SvmBinaryClassifier(String outputFilename, String inputTestFilename) {
+		this.outputBinaryFilename = outputFilename;
+		this.inputBinaryTestFilename = inputTestFilename;
 	}
 
 	public List<Segment> classifySegments(List<Segment> segments) {
 		classify(segments);
 		List<Double> classificationResults = FileReader.getInstance()
-				.parseTxtFile(new File(outputFilename));
+				.parseTxtFile(new File(outputBinaryFilename));
 		for (int i = 0; i < classificationResults.size(); i++) {
 			if (classificationResults.get(i) < 0) {
 				segments.get(i).setCorrectType(ResultType.BRAIN_SIGNAL);
@@ -50,9 +52,10 @@ public class SvmClassifier implements Classifier {
 	 * ... <feature>:<value> # <info> <target> .=. +1 | -1 | 0 | <float>
 	 * <feature> .=. <integer> | "qid" <value> .=. <float> <info> .=. <string>
 	 */
-	private static String createLineContent(AbstractSegment segment) {
+	private static String createLineContent(AbstractSegment segment,
+			ResultType negativeExample) {
 		String lineContent = "";
-		if (segment.getCorrectType() == ResultType.BRAIN_SIGNAL) {
+		if (segment.getCorrectType() == negativeExample) {
 			lineContent += "-1";
 		} else
 			lineContent += "1";
@@ -95,15 +98,15 @@ public class SvmClassifier implements Classifier {
 		return lineContent;
 	}
 
-	public void exportSegments(List<Segment> segments) {
+	public void exportSegments(List<Segment> segments,
+			ResultType negativeExample, String fileName) {
 		String lineContent = "";
 
 		for (AbstractSegment segment : segments) {
-			lineContent += createLineContent(segment) + "\n";
+			lineContent += createLineContent(segment, negativeExample) + "\n";
 		}
 
-		OutputFileWriter.getInstance().writeToFile(lineContent,
-				inputTestFilename);
+		OutputFileWriter.getInstance().writeToFile(lineContent, fileName);
 	}
 
 	public static void callSvmClassify(File testingFile, File modelFile,
@@ -132,15 +135,11 @@ public class SvmClassifier implements Classifier {
 	}
 
 	public void classify(List<Segment> segments) {
-		exportSegments(segments);
-		File testFile = new File(inputTestFilename);
-		/*
-		 * File testFile = new File(
-		 * "D:/DiplomaCode/artifacts-detection/svm/AllForTest.dat");
-		 */
-		File modelFile = new File(Configuration.PROJECT_PATH
-				+ "/svm/AllForTrain_model9feat.dat");
-		File predictionFile = new File(outputFilename);
+		exportSegments(segments, ResultType.BRAIN_SIGNAL,
+				inputBinaryTestFilename);
+		File testFile = new File(inputBinaryTestFilename);
+		File modelFile = new File(binaryModelFilename);
+		File predictionFile = new File(outputBinaryFilename);
 		callSvmClassify(testFile, modelFile, predictionFile);
 	}
 

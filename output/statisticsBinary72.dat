@@ -1,4 +1,4 @@
-Channel 73 has 49 from 530 windows with artifacts.
+Channel 72 has 50 from 530 windows with artifacts.
 166600, Brain
 166728, Brain
 166856, Brain
@@ -96,7 +96,7 @@ Channel 73 has 49 from 530 windows with artifacts.
 179144, Brain
 179272, Brain
 179400, Brain
-179656, Artefact
+179656, Brain
 179784, Artefact
 179912, Artefact
 180168, Artefact
@@ -104,7 +104,7 @@ Channel 73 has 49 from 530 windows with artifacts.
 180424, Artefact
 180552, Artefact
 180680, Artefact
-180936, Brain
+180936, Artefact
 181192, Brain
 181320, Brain
 181448, Brain
@@ -329,7 +329,7 @@ Channel 73 has 49 from 530 windows with artifacts.
 211144, Artefact
 211400, Artefact
 211528, Artefact
-211656, Brain
+211656, Artefact
 211784, Brain
 211912, Brain
 212040, Brain

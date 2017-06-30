@@ -5,7 +5,7 @@ import java.util.List;
 import edu.utcn.eeg.artifactdetection.classifier.Classifier;
 import edu.utcn.eeg.artifactdetection.classifier.decisiontree.DecisionTreeClassifier;
 import edu.utcn.eeg.artifactdetection.classifier.knn.KnnClassifier;
-import edu.utcn.eeg.artifactdetection.classifier.svm.SvmClassifier;
+import edu.utcn.eeg.artifactdetection.classifier.svm.SvmBinaryClassifier;
 import edu.utcn.eeg.artifactdetection.model.Segment;
 import edu.utcn.eeg.artifactdetection.postprocessing.ResultsValidator;
 import edu.utcn.eeg.artifactdetection.view.provider.SimpleChannelSegmentProvider;
@@ -52,7 +52,7 @@ public class ListOfChannelsBinaryClassificationSceneMaker extends
 
 	private List<Segment> getCorrespondinClasifiedSegments(
 			List<Segment> testSegm) {
-		Classifier svm = new SvmClassifier();
+		Classifier svm = new SvmBinaryClassifier();
 		List<Segment> classifiedSegments;
 		List<Segment> svmSegments = svm.classifySegments(testSegm);
 		if (clasificator.equalsIgnoreCase("all")) {

@@ -4,6 +4,7 @@ import javafx.stage.Stage;
 import edu.utcn.eeg.artifactdetection.classifier.Classifier;
 import edu.utcn.eeg.artifactdetection.classifier.decisiontree.DecisionTreeClassifier;
 import edu.utcn.eeg.artifactdetection.classifier.knn.KnnClassifier;
+import edu.utcn.eeg.artifactdetection.classifier.svm.SvmClassesClassifier;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -48,9 +49,7 @@ public abstract class AbstractSceneMaker {
 			}
 		});
 
-		
 		menu1.getItems().add(menuItem11);
-		
 
 		MenuItem menuItem21 = new MenuItem("Single channel processing");
 		menuItem21.setOnAction(new EventHandler<ActionEvent>() {
@@ -89,7 +88,7 @@ public abstract class AbstractSceneMaker {
 				stage.setScene(sm.makeScene());
 			}
 		});
-		MenuItem menuItem3112 = new MenuItem("Validate clasificators");
+		MenuItem menuItem3112 = new MenuItem("Error correction clasificators");
 		menuItem3112.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -126,13 +125,20 @@ public abstract class AbstractSceneMaker {
 				System.out.println("DT");
 			}
 		});
-		menu312.getItems().addAll(menuItem3121, menuItem3122);
-		menu31.getItems().addAll(menuItem311, menu312);
+		MenuItem menuItem3123 = new MenuItem("SVM");
+		menuItem3123.setOnAction(new EventHandler<ActionEvent>() {
 
-		
-		
-		
-		
+			@Override
+			public void handle(ActionEvent e) {
+				Classifier svm = new SvmClassesClassifier();
+				ListOfChannelsMulticlassClassificationSceneMaker sm = new ListOfChannelsMulticlassClassificationSceneMaker(
+						stage, svm);
+				stage.setScene(sm.makeScene());
+				System.out.println("DT");
+			}
+		});
+		menu312.getItems().addAll(menuItem3121, menuItem3122, menuItem3123);
+		menu31.getItems().addAll(menuItem311, menu312);
 
 		menu3.getItems().addAll(menu31);
 
