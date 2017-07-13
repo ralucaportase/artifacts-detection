@@ -145,12 +145,13 @@ public class ListOfChannelsSceneMaker extends AbstractSceneMaker {
 					System.out.println(testSegm);
 					if (testSegm.equals(null)) {
 						System.out.println("list of segments null");
-						errorLabel.setText("Segments from that channel are not available!");
+						errorLabel.setText("Channel not available!");
 					} else {
 						SimpleSegmentViewSceneMaker sm = new SimpleSegmentViewSceneMaker(stage, testSegm, 0);
 						stage.setScene(sm.makeScene());
 					}
 				}
+				else errorLabel.setText("Channel not available!");
 			}
 		});
 	}

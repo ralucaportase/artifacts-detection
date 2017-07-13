@@ -129,8 +129,8 @@ public class SvmBinaryClassifier implements Classifier {
 				System.out.println(line);
 			}*/
 		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException("Exception while classifying SVM-Light");
+			//e.printStackTrace();
+			//throw new RuntimeException("Exception while classifying SVM-Light");
 		}
 	}
 

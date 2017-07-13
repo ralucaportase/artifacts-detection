@@ -25,6 +25,7 @@ public class ListOfChannelsBinaryClassificationSceneMaker extends
 		this.clasificator = clasificator;
 	}
 
+	@SuppressWarnings("restriction")
 	protected void addActionHandlerForButtonVizualize(Button btn) {
 		btn.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -37,24 +38,28 @@ public class ListOfChannelsBinaryClassificationSceneMaker extends
 				int nrChannel = channelIdx + regionIdx * 32;
 				System.out.println(channelIdx + " " + regionIdx + " Channel "
 						+ nrChannel);
-				SimpleChannelSegmentProvider provider = new SimpleChannelSegmentProvider(
-						nrChannel);
+				if (nrChannel >= 72) {
+					SimpleChannelSegmentProvider provider = new SimpleChannelSegmentProvider(
+							nrChannel);
 
-				List<Segment> testSegm = provider.provideSegments(nrChannel);
-				if (testSegm == null) {
-					System.out.println("list of segments null");
-					errorLabel.setText("Segments from that channel are not available!");
-				} else {
-					List<Segment> classifiedSegments = getCorrespondinClasifiedSegments(testSegm);
-					if (clasificator == null) {
-						System.out.println("classifier null");
-						errorLabel.setText("Choose a classifier!");
+					List<Segment> testSegm = provider
+							.provideSegments(nrChannel);
+					if (testSegm == null) {
+						System.out.println("list of segments null");
+						errorLabel.setText("Channel not available!");
 					} else {
-						SimpleSegmentLabeldViewSceneMaker sm = new SimpleSegmentLabeledBinaryViewSceneMaker(stage,
-								classifiedSegments, 0, clasificator);
-						stage.setScene(sm.makeScene());
+						List<Segment> classifiedSegments = getCorrespondinClasifiedSegments(testSegm);
+						if (clasificator == null) {
+							System.out.println("classifier null");
+							errorLabel.setText("Choose a classifier!");
+						} else {
+							SimpleSegmentLabeldViewSceneMaker sm = new SimpleSegmentLabeledBinaryViewSceneMaker(
+									stage, classifiedSegments, 0, clasificator);
+							stage.setScene(sm.makeScene());
+						}
 					}
-				}
+				} else
+					errorLabel.setText("Channel not available!");
 			}
 		});
 	}

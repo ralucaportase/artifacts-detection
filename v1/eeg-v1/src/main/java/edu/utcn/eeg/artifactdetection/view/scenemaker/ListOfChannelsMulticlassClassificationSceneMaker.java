@@ -13,11 +13,13 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
-public class ListOfChannelsMulticlassClassificationSceneMaker extends ListOfChannelsSceneMaker {
+public class ListOfChannelsMulticlassClassificationSceneMaker extends
+		ListOfChannelsSceneMaker {
 
 	private Classifier clasiffier;
 
-	public ListOfChannelsMulticlassClassificationSceneMaker(Stage stage, Classifier clasiffier) {
+	public ListOfChannelsMulticlassClassificationSceneMaker(Stage stage,
+			Classifier clasiffier) {
 		super(stage);
 		this.clasiffier = clasiffier;
 
@@ -41,30 +43,39 @@ public class ListOfChannelsMulticlassClassificationSceneMaker extends ListOfChan
 				int regionIdx = getRegionComboBoxValue();
 				int channelIdx;
 				if (channelComboBox.getValue() != null) {
-					channelIdx = Integer.parseInt(channelComboBox.getValue().toString());
+					channelIdx = Integer.parseInt(channelComboBox.getValue()
+							.toString());
 				} else {
 					channelIdx = 0;
 				}
 				int nrChannel = channelIdx + regionIdx * 32;
-				System.out.println(channelIdx + " " + regionIdx + " " + nrChannel);
-				SimpleChannelSegmentProvider provider = new SimpleChannelSegmentProvider(nrChannel);
-				List<Segment> testSegm = provider.provideSegments(nrChannel);
-				System.out.println(testSegm);
-				if (testSegm == null) {
-					System.out.println("list of segments null");
-					errorLabel.setText("Segments from that channel are not available!");
-				} else {
-
-					List<Segment> classifiedSegments = clasiffier.classifySegments(testSegm);
-					if (clasiffier == null) {
-						System.out.println("classifier null");
-						errorLabel.setText("Choose a classifier!");
+				System.out.println(channelIdx + " " + regionIdx + " "
+						+ nrChannel);
+				if (nrChannel >= 72) {
+					SimpleChannelSegmentProvider provider = new SimpleChannelSegmentProvider(
+							nrChannel);
+					List<Segment> testSegm = provider
+							.provideSegments(nrChannel);
+					System.out.println(testSegm);
+					if (testSegm == null) {
+						System.out.println("list of segments null");
+						errorLabel
+								.setText("Channel not available!");
 					} else {
-						SimpleSegmentLabeldViewSceneMaker sm = new SimpleSegmentLabeldViewSceneMaker(stage, clasiffier,
-								classifiedSegments, 0, 1);
-						stage.setScene(sm.makeScene());
+
+						List<Segment> classifiedSegments = clasiffier
+								.classifySegments(testSegm);
+						if (clasiffier == null) {
+							System.out.println("classifier null");
+							errorLabel.setText("Choose a classifier!");
+						} else {
+							SimpleSegmentLabeldViewSceneMaker sm = new SimpleSegmentLabeldViewSceneMaker(
+									stage, clasiffier, classifiedSegments, 0, 1);
+							stage.setScene(sm.makeScene());
+						}
 					}
 				}
+				else errorLabel.setText("Channel not available!");
 			}
 		});
 	}

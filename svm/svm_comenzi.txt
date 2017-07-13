@@ -1,0 +1,3 @@
+./svm_learn -t 2 -g 0.000001 -c 10 inputFile.dat modelFile.dat
+
+./svm_classify.exe TestFile.dat modelFile.dat predictionFile.dat
