@@ -41,11 +41,20 @@ public class ListOfChannelsBinaryClassificationSceneMaker extends
 						nrChannel);
 
 				List<Segment> testSegm = provider.provideSegments(nrChannel);
-				List<Segment> classifiedSegments = getCorrespondinClasifiedSegments(testSegm);
-
-				SimpleSegmentLabeldViewSceneMaker sm = new SimpleSegmentLabeledBinaryViewSceneMaker(
-						stage, classifiedSegments, 0, clasificator);
-				stage.setScene(sm.makeScene());
+				if (testSegm == null) {
+					System.out.println("list of segments null");
+					errorLabel.setText("Segments from that channel are not available!");
+				} else {
+					List<Segment> classifiedSegments = getCorrespondinClasifiedSegments(testSegm);
+					if (clasificator == null) {
+						System.out.println("classifier null");
+						errorLabel.setText("Choose a classifier!");
+					} else {
+						SimpleSegmentLabeldViewSceneMaker sm = new SimpleSegmentLabeledBinaryViewSceneMaker(stage,
+								classifiedSegments, 0, clasificator);
+						stage.setScene(sm.makeScene());
+					}
+				}
 			}
 		});
 	}

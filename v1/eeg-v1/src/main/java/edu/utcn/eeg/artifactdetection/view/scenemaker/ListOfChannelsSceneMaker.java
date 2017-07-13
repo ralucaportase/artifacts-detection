@@ -30,7 +30,7 @@ public class ListOfChannelsSceneMaker extends AbstractSceneMaker {
 
 	protected Button[] btnChannels;
 	protected Label[] labelChannels;
-
+	protected Label errorLabel = new Label("");
 	protected ComboBox regionComboBox;
 	protected ComboBox channelComboBox;
 	final Button visualizeButton = new Button("Visualize!");
@@ -104,6 +104,7 @@ public class ListOfChannelsSceneMaker extends AbstractSceneMaker {
 		grid.add(new Label("Channel no:"), 0, 3);
 		grid.add(channelComboBox, 1, 3);
 		grid.add(visualizeButton, 0, 4);
+		grid.add(errorLabel, 0, 5);
 
 		root.getChildren().addAll(grid, rootB);
 		root.setAlignment(Pos.CENTER_RIGHT);
@@ -141,9 +142,14 @@ public class ListOfChannelsSceneMaker extends AbstractSceneMaker {
 							nrChannel);
 					List<Segment> testSegm = provider
 							.provideSegments(nrChannel);
-					SimpleSegmentViewSceneMaker sm = new SimpleSegmentViewSceneMaker(
-							stage, testSegm, 0);
-					stage.setScene(sm.makeScene());
+					System.out.println(testSegm);
+					if (testSegm.equals(null)) {
+						System.out.println("list of segments null");
+						errorLabel.setText("Segments from that channel are not available!");
+					} else {
+						SimpleSegmentViewSceneMaker sm = new SimpleSegmentViewSceneMaker(stage, testSegm, 0);
+						stage.setScene(sm.makeScene());
+					}
 				}
 			}
 		});
