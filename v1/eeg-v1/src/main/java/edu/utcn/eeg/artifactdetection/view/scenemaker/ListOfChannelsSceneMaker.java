@@ -126,20 +126,25 @@ public class ListOfChannelsSceneMaker extends AbstractSceneMaker {
 
 			public void handle(ActionEvent event) {
 				int regionIdx = getRegionComboBoxValue();
-				int channelIdx ;
-				if (channelComboBox.getValue() != null){
-					channelIdx = Integer.parseInt(channelComboBox.getValue().toString());}else {
-						channelIdx = 0;
-					}
+				int channelIdx;
+				if (channelComboBox.getValue() != null) {
+					channelIdx = Integer.parseInt(channelComboBox.getValue()
+							.toString());
+				} else {
+					channelIdx = 0;
+				}
 				int nrChannel = channelIdx + regionIdx * 32;
-				System.out.println(channelIdx + " " + regionIdx + " " + nrChannel);
-				SimpleChannelSegmentProvider provider = new SimpleChannelSegmentProvider(nrChannel);
-				// Classifier dt = new DecisionTreeClassifier();
-				List<Segment> testSegm = provider.provideSegments(nrChannel);
-				// List<Segment> classifiedSegments = dt
-				// .classifySegments(testSegm);
-				SimpleSegmentViewSceneMaker sm = new SimpleSegmentViewSceneMaker(stage, testSegm, 0);
-				stage.setScene(sm.makeScene());
+				System.out.println(channelIdx + " " + regionIdx + " "
+						+ nrChannel);
+				if (nrChannel >= 72) {
+					SimpleChannelSegmentProvider provider = new SimpleChannelSegmentProvider(
+							nrChannel);
+					List<Segment> testSegm = provider
+							.provideSegments(nrChannel);
+					SimpleSegmentViewSceneMaker sm = new SimpleSegmentViewSceneMaker(
+							stage, testSegm, 0);
+					stage.setScene(sm.makeScene());
+				}
 			}
 		});
 	}

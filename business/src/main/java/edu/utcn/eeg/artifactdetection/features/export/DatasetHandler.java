@@ -25,8 +25,8 @@ public class DatasetHandler {
 		for (AbstractSegment segment : segments) {
 			if (segment.getCorrectType() == ResultType.BRAIN_SIGNAL) {
 				consecutiveCount++;
-				if (consecutiveCount % 3 == 0
-						&& noOfBrainSignals <= noOfArtifacts) {
+				if (consecutiveCount % 2 == 0
+						&& noOfBrainSignals <= noOfArtifacts + 1000) {
 					noOfBrainSignals++;
 					outputSegmentList.add(segment);
 				}

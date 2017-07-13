@@ -32,7 +32,7 @@ public class DataGeneratorForInductiveSVM {
 			.logger(DataGeneratorForInductiveSVM.class);
 //Configuration.PROJECT_PATH
 	private static final String LEARNING_FILENAME = "D:/DiplomaCode/artifacts-detection"
-			+ "/svm/AllForTest.dat";
+			+ "/svm/AllForTrainUO+.dat";
 
 	/*
 	 * format used for learning file is <line> .=. <target> <feature>:<value>
@@ -147,21 +147,21 @@ public class DataGeneratorForInductiveSVM {
 		segments.addAll(repository.getSegments());*/
 		
 		SegmentRepository repository = deserializer
-				.deserializeSegmentsFromFile("D:/DiplomaCode/artifacts-detection/results/AllForTest.ser");
+				.deserializeSegmentsFromFile("D:/DiplomaCode/artifacts-detection/results/AllForTrain.ser");
 		segments.addAll(repository.getSegments());
 
-		/*DatasetHandler datasetHandler = new DatasetHandler();
+		DatasetHandler datasetHandler = new DatasetHandler();
 		List<AbstractSegment> oversampledSegments = datasetHandler
 				.getSMOTEOversampling(segments, 5000);
 		List<AbstractSegment> undersampledSegments = datasetHandler
 				.getRandomUndersampling(oversampledSegments);
 
 		writeToFile(undersampledSegments);
-		SegmentSerializer serializer = new SegmentSerializer();
+		/*SegmentSerializer serializer = new SegmentSerializer();
 		SegmentRepository segmentRepo = new SegmentRepository("UndersampledSmoteForTrain");
 		segmentRepo.setSegments(undersampledSegments);
-		serializer.serialize(segmentRepo, "D:/DiplomaCode/artifacts-detection/results/");*/
-		writeToFile(segments);
+		//serializer.serialize(segmentRepo, "D:/DiplomaCode/artifacts-detection/results/");
+		//writeToFile(segmentRepo);*/
 		System.out.println("done writing file!");
 	}
 
@@ -204,7 +204,7 @@ public class DataGeneratorForInductiveSVM {
 	}
 
 	public static void main(String[] args) {
-		computeOutputSVMParameters();
-		//createSvmInputFiles();
+		//computeOutputSVMParameters();
+		createSvmInputFiles();
 	}
 }

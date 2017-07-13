@@ -125,9 +125,9 @@ public class SvmBinaryClassifier implements Classifier {
 			InputStream istr = proc.getInputStream();
 			BufferedReader in = new BufferedReader(new InputStreamReader(istr));
 			String line;
-			while ((line = in.readLine()) != null) {
+			/*while ((line = in.readLine()) != null) {
 				System.out.println(line);
-			}
+			}*/
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException("Exception while classifying SVM-Light");

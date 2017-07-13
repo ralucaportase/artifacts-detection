@@ -37,7 +37,7 @@ public class SvmClassesClassifier extends SvmBinaryClassifier {
 				artifactsSegments.add(segments.get(i));
 		}
 
-		// call classfier again for artifacts
+		// call classifier again for artifacts
 		classifyArtifacts(artifactsSegments);
 		List<Double> artyfactsClassificationResults = FileReader.getInstance()
 				.parseTxtFile(new File(outputClassesFilename));
