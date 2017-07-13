@@ -9,7 +9,7 @@ import edu.utcn.eeg.artifactdetection.model.*;
 
 public class MultipleSegmentProvider {
 
-	private static final String PATH = "E:\\Scoala\\licenta\\#0IMPLEMENTATION\\Data\\newDataSet\\elena-doua-canale-13-04\\Occular_Multi_Eval.ser";
+	private static final String PATH = "E:\\Scoala\\licenta\\#0IMPLEMENTATION\\Data\\newDataSet\\elena-doua-canale-13-04\\Clean_Multi_Test.ser";
 
 	private MultiChannelSegmentSelector selector;
 
