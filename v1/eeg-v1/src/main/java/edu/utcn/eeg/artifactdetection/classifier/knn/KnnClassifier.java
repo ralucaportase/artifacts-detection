@@ -1,7 +1,11 @@
 package edu.utcn.eeg.artifactdetection.classifier.knn;
 
 import java.util.List;
+
+import org.apache.log4j.Logger;
+
 import edu.utcn.eeg.artifactdetection.classifier.Classifier;
+import edu.utcn.eeg.artifactdetection.helpers.LoggerUtil;
 import edu.utcn.eeg.artifactdetection.model.AbstractSegment;
 import edu.utcn.eeg.artifactdetection.model.Feature;
 import edu.utcn.eeg.artifactdetection.model.ResultType;
@@ -10,6 +14,8 @@ import edu.utcn.eeg.artifactdetection.model.Segment;
 public class KnnClassifier implements Classifier {
 	
 	private static final int NUMBER_FEATURES = 9;
+	Logger logger = LoggerUtil.logger(getClass());
+
 
 	@Override
 	public List<Segment> classifySegments(List<Segment> segments) {
@@ -22,16 +28,16 @@ public class KnnClassifier implements Classifier {
 			i++;
 		}
 		int[] predictedValues = KnnManager.predict("artefacte_train2.txt", testRecords, 10, new ManhattenDistance());
-		System.out.println("KNN algoritm is running - K=10 and distance Manhatten");
+		logger.info("KNN algoritm is running - K=10 and distance Manhatten");
 		for (int j = 0; j < segments.size(); j++) {
-			// System.out.println(segments.get(j) + "going to be set " +
+			// logger.info(segments.get(j) + "going to be set " +
 			// calculateResultType(predictedValues[j])
 			// + "and it was " + segments.get(j).getCorrectType());
 			segments.get(j).setCorrectType(calculateResultType(predictedValues[j]));
-			// System.out.println(segments.get(j) + "has now " +
+			// logger.info(segments.get(j) + "has now " +
 			// segments.get(j).getCorrectType());
 		}
-		System.out.println("Prediction is over!");
+		logger.info("Prediction is over!");
 		return segments;
 	}
 

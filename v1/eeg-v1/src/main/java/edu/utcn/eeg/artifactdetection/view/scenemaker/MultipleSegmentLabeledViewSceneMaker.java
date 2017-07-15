@@ -71,7 +71,7 @@ public class MultipleSegmentLabeledViewSceneMaker extends AbstractSceneMaker {
 		btnBack.setOnAction(new EventHandler<ActionEvent>() {
 
 			public void handle(ActionEvent event) {
-				System.out.println("back");
+				logger.info("back");
 				ListOfRegionMulticlassClassificationSceneMaker sm = new ListOfRegionMulticlassClassificationSceneMaker(stage);
 				stage.setScene(sm.makeScene());
 			}
@@ -89,7 +89,7 @@ public class MultipleSegmentLabeledViewSceneMaker extends AbstractSceneMaker {
 							indexOfSegmentToShow);
 					stage.setScene(sm.makeScene());
 				} else {
-					System.out.println("no more segments");
+					logger.info("no more segments");
 				}
 			}
 		});
@@ -106,7 +106,7 @@ public class MultipleSegmentLabeledViewSceneMaker extends AbstractSceneMaker {
 							indexOfSegmentToShow);
 					stage.setScene(sm.makeScene());
 				} else {
-					System.out.println("no more segments");
+					logger.info("no more segments");
 				}
 			}
 		});
@@ -149,14 +149,14 @@ public class MultipleSegmentLabeledViewSceneMaker extends AbstractSceneMaker {
 					RadioButton selected = (RadioButton) group.getSelectedToggle();
 					MultiChannelSegment currentSegment = segments.get(indexOfSegmentToShow);
 					if (selected.equals(clean)) {
-						System.out.println("changed label to clean");
+						logger.info("changed label to clean");
 						currentSegment.setCorrectType(ResultType.BRAIN_SIGNAL);
 					} else {
 						if (selected.equals(ocular)) {
-							System.out.println("changed label to ocular");
+							logger.info("changed label to ocular");
 							currentSegment.setCorrectType(ResultType.OCCULAR);
 						} else {
-							System.out.println("changed label to muscular");
+							logger.info("changed label to muscular");
 							currentSegment.setCorrectType(ResultType.MUSCLE);
 						}
 					}

@@ -3,14 +3,16 @@ package edu.utcn.eeg.artifactdetection.view.scenemaker;
 import java.text.DecimalFormat;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import edu.utcn.eeg.artifactdetection.classifier.Classifier;
+import edu.utcn.eeg.artifactdetection.helpers.LoggerUtil;
 import edu.utcn.eeg.artifactdetection.model.AbstractSegment;
 import edu.utcn.eeg.artifactdetection.model.Feature;
 import edu.utcn.eeg.artifactdetection.model.FeatureType;
 import edu.utcn.eeg.artifactdetection.model.ResultType;
 import edu.utcn.eeg.artifactdetection.model.Segment;
 import edu.utcn.eeg.artifactdetection.postprocessing.AbstractFileGenerator;
-import edu.utcn.eeg.artifactdetection.postprocessing.BinaryFileGenerator;
 import edu.utcn.eeg.artifactdetection.postprocessing.ClasesFileGenerator;
 import edu.utcn.eeg.artifactdetection.view.chart.SimpleSegmentChart;
 import javafx.beans.value.ChangeListener;
@@ -18,7 +20,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -32,6 +33,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class SimpleSegmentLabeldViewSceneMaker extends AbstractSceneMaker {
+
+	Logger logger = LoggerUtil.logger(getClass());
 
 	protected List<Segment> segments;
 	protected int indexOfSegmentToShow;
@@ -57,6 +60,7 @@ public class SimpleSegmentLabeldViewSceneMaker extends AbstractSceneMaker {
 		this.type = type;
 	}
 
+	@Override
 	public Scene makeScene() {
 
 		btnNextSegment = new Button();
@@ -95,11 +99,12 @@ public class SimpleSegmentLabeldViewSceneMaker extends AbstractSceneMaker {
 	protected void addActionHandlerForGenerateClenSignal() {
 		btnGenerateClenSignal.setOnAction(new EventHandler<ActionEvent>() {
 
+			@Override
 			public void handle(ActionEvent event) {
-				System.out.println("generate clean");
+				logger.info("generate clean");
 				AbstractFileGenerator fileGenerator = new ClasesFileGenerator();
 				fileGenerator.generateFileFromSegment(segments);
-				System.out.println("File with clean signal was generated");
+				logger.info("File with clean signal was generated");
 			}
 		});
 	}
@@ -108,11 +113,12 @@ public class SimpleSegmentLabeldViewSceneMaker extends AbstractSceneMaker {
 	protected void addActionHandlerForbtnGenerateReport() {
 		btnGenerateReport.setOnAction(new EventHandler<ActionEvent>() {
 
+			@Override
 			public void handle(ActionEvent event) {
-				System.out.println("generate report");
+				logger.info("generate report");
 				AbstractFileGenerator fileGenerator = new ClasesFileGenerator();
 				fileGenerator.outputStatistics(segments);
-				System.out.println("Statistics was generated!");
+				logger.info("Statistics was generated!");
 			}
 		});
 	}
@@ -121,8 +127,9 @@ public class SimpleSegmentLabeldViewSceneMaker extends AbstractSceneMaker {
 	protected void addActionHandlerForBackButton() {
 		btnBack.setOnAction(new EventHandler<ActionEvent>() {
 
+			@Override
 			public void handle(ActionEvent event) {
-				System.out.println("back");
+				logger.info("back");
 				ListOfChannelsMulticlassClassificationSceneMaker sm = new ListOfChannelsMulticlassClassificationSceneMaker(
 						stage, clasiffier);
 				stage.setScene(sm.makeScene());
@@ -134,6 +141,7 @@ public class SimpleSegmentLabeldViewSceneMaker extends AbstractSceneMaker {
 	protected void addActionHandlerForNextButton() {
 		btnNextSegment.setOnAction(new EventHandler<ActionEvent>() {
 
+			@Override
 			public void handle(ActionEvent event) {
 				if (indexOfSegmentToShow < segments.size() - 1) {
 					indexOfSegmentToShow++;
@@ -142,7 +150,7 @@ public class SimpleSegmentLabeldViewSceneMaker extends AbstractSceneMaker {
 							type);
 					stage.setScene(sm.makeScene());
 				} else {
-					System.out.println("no more segments");
+					logger.info("no more segments");
 				}
 			}
 		});
@@ -152,6 +160,7 @@ public class SimpleSegmentLabeldViewSceneMaker extends AbstractSceneMaker {
 	protected void addActionHandlerForPreviousButton() {
 		btnPreviousSegment.setOnAction(new EventHandler<ActionEvent>() {
 
+			@Override
 			public void handle(ActionEvent event) {
 				if (indexOfSegmentToShow > 0) {
 					indexOfSegmentToShow--;
@@ -160,7 +169,7 @@ public class SimpleSegmentLabeldViewSceneMaker extends AbstractSceneMaker {
 							type);
 					stage.setScene(sm.makeScene());
 				} else {
-					System.out.println("no more segments");
+					logger.info("no more segments");
 				}
 			}
 		});
@@ -200,6 +209,7 @@ public class SimpleSegmentLabeldViewSceneMaker extends AbstractSceneMaker {
 		clean.setToggleGroup(group);
 		group.selectedToggleProperty().addListener(
 				new ChangeListener<Toggle>() {
+					@Override
 					public void changed(ObservableValue<? extends Toggle> ov,
 							Toggle old_toggle, Toggle new_toggle) {
 						if (group.getSelectedToggle() != null) {
@@ -208,7 +218,7 @@ public class SimpleSegmentLabeldViewSceneMaker extends AbstractSceneMaker {
 							Segment currentSegment = segments
 									.get(indexOfSegmentToShow);
 							if (selected.equals(clean)) {
-								System.out.println("changed label to clean");
+								logger.info("changed label to clean");
 								currentSegment
 										.setCorrectType(ResultType.BRAIN_SIGNAL);
 							} else {

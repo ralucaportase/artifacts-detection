@@ -79,7 +79,7 @@ public class SimpleSegmentViewSceneMaker extends AbstractSceneMaker {
 		btnBack.setOnAction(new EventHandler<ActionEvent>() {
 
 			public void handle(ActionEvent event) {
-				System.out.println("back");
+				logger.info("back");
 				ListOfChannelsSceneMaker sm = new ListOfChannelsSceneMaker(
 						stage);
 				stage.setScene(sm.makeScene());
@@ -98,7 +98,7 @@ public class SimpleSegmentViewSceneMaker extends AbstractSceneMaker {
 							stage, segments, indexOfSegmentToShow);
 					stage.setScene(sm.makeScene());
 				} else {
-					System.out.println("no more segments");
+					logger.info("no more segments");
 				}
 			}
 		});
@@ -115,7 +115,7 @@ public class SimpleSegmentViewSceneMaker extends AbstractSceneMaker {
 							stage, segments, indexOfSegmentToShow);
 					stage.setScene(sm.makeScene());
 				} else {
-					System.out.println("no more segments");
+					logger.info("no more segments");
 				}
 			}
 		});

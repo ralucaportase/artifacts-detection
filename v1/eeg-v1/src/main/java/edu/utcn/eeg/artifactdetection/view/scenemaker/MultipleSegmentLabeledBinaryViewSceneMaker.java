@@ -2,6 +2,9 @@ package edu.utcn.eeg.artifactdetection.view.scenemaker;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
+import edu.utcn.eeg.artifactdetection.helpers.LoggerUtil;
 import edu.utcn.eeg.artifactdetection.model.MultiChannelSegment;
 import edu.utcn.eeg.artifactdetection.model.ResultType;
 import javafx.beans.value.ChangeListener;
@@ -19,11 +22,14 @@ import javafx.stage.Stage;
 
 public class MultipleSegmentLabeledBinaryViewSceneMaker extends MultipleSegmentLabeledViewSceneMaker{
 
+	Logger logger = LoggerUtil.logger(getClass());
+
 	public MultipleSegmentLabeledBinaryViewSceneMaker(Stage stage, List<MultiChannelSegment> segments,
 			int indexOfSegmentToShow) {
 		super(stage, segments, indexOfSegmentToShow);
 	}
 
+	@Override
 	protected GridPane paneWithLabelValidation() {
 		GridPane pane = new GridPane();
 		final ToggleGroup group = new ToggleGroup();
@@ -36,16 +42,17 @@ public class MultipleSegmentLabeledBinaryViewSceneMaker extends MultipleSegmentL
 		RadioButton clean = new RadioButton("Clean");
 		clean.setToggleGroup(group);
 		group.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+			@Override
 			public void changed(ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) {
 				if (group.getSelectedToggle() != null) {
 					RadioButton selected = (RadioButton) group.getSelectedToggle();
 					MultiChannelSegment currentSegment = segments.get(indexOfSegmentToShow);
 					if (selected.equals(clean)) {
-						System.out.println("changed label to clean");
+						logger.info("changed label to clean");
 						currentSegment.setCorrectType(ResultType.BRAIN_SIGNAL);
 					} else {
 						if (selected.equals(artef)) {
-							System.out.println("artef");
+							logger.info("artef");
 							currentSegment.setCorrectType(ResultType.OCCULAR);
 						}
 					}
@@ -59,10 +66,12 @@ public class MultipleSegmentLabeledBinaryViewSceneMaker extends MultipleSegmentL
 	}
 	
 	
+	@Override
 	@SuppressWarnings("restriction")
 	protected void addActionHandlerForNextButton() {
 		btnNextSegment.setOnAction(new EventHandler<ActionEvent>() {
 
+			@Override
 			public void handle(ActionEvent event) {
 				if (indexOfSegmentToShow < segments.size() - 1) {
 					indexOfSegmentToShow++;
@@ -70,16 +79,18 @@ public class MultipleSegmentLabeledBinaryViewSceneMaker extends MultipleSegmentL
 							indexOfSegmentToShow);
 					stage.setScene(sm.makeScene());
 				} else {
-					System.out.println("no more segments");
+					logger.info("no more segments");
 				}
 			}
 		});
 	}
 	
+	@Override
 	@SuppressWarnings("restriction")
 	protected void addActionHandlerForPreviousButton() {
 		btnPreviousSegment.setOnAction(new EventHandler<ActionEvent>() {
 
+			@Override
 			public void handle(ActionEvent event) {
 				if (indexOfSegmentToShow > 0) {
 					indexOfSegmentToShow--;
@@ -87,18 +98,20 @@ public class MultipleSegmentLabeledBinaryViewSceneMaker extends MultipleSegmentL
 							indexOfSegmentToShow);
 					stage.setScene(sm.makeScene());
 				} else {
-					System.out.println("no more segments");
+					logger.info("no more segments");
 				}
 			}
 		});
 	}
 	
+	@Override
 	@SuppressWarnings("restriction")
 	protected void addActionHandlerForBackButton() {
 		btnBack.setOnAction(new EventHandler<ActionEvent>() {
 
+			@Override
 			public void handle(ActionEvent event) {
-				System.out.println("back");
+				logger.info("back");
 				ListOfRegionsBinaryClassificationSceneMaker sm = new ListOfRegionsBinaryClassificationSceneMaker(stage);
 				stage.setScene(sm.makeScene());
 			}

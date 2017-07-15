@@ -6,8 +6,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import edu.utcn.eeg.artifactdetection.classifier.Classifier;
 import edu.utcn.eeg.artifactdetection.helpers.FileReader;
+import edu.utcn.eeg.artifactdetection.helpers.LoggerUtil;
 import edu.utcn.eeg.artifactdetection.helpers.OutputFileWriter;
 import edu.utcn.eeg.artifactdetection.model.AbstractSegment;
 import edu.utcn.eeg.artifactdetection.model.Configuration;
@@ -16,6 +19,8 @@ import edu.utcn.eeg.artifactdetection.model.ResultType;
 import edu.utcn.eeg.artifactdetection.model.Segment;
 
 public class SvmBinaryClassifier implements Classifier {
+
+	static Logger logger = LoggerUtil.logger(SvmBinaryClassifier.class);
 
 	protected String outputBinaryFilename = Configuration.PROJECT_PATH
 			+ "/svm/svm_TestCompare.csv";
@@ -33,6 +38,7 @@ public class SvmBinaryClassifier implements Classifier {
 		this.inputBinaryTestFilename = inputTestFilename;
 	}
 
+	@Override
 	public List<Segment> classifySegments(List<Segment> segments) {
 		classify(segments);
 		List<Double> classificationResults = FileReader.getInstance()
@@ -111,14 +117,14 @@ public class SvmBinaryClassifier implements Classifier {
 
 	public static void callSvmClassify(File testingFile, File modelFile,
 			File resultFile) {
-		System.out.println("Start classifying ...");
+		logger.info("Start classifying ...");
 
 		String cmd = Configuration.PROJECT_PATH + "/svm/svm_classify.exe";
 		try {
 			cmd += " " + testingFile.getAbsolutePath() + " "
 					+ modelFile.getAbsolutePath() + " "
 					+ resultFile.getAbsolutePath();
-			System.out.println("Classify cmd: " + cmd);
+			logger.info("Classify cmd: " + cmd);
 
 			Process proc = Runtime.getRuntime().exec(cmd);
 
@@ -126,7 +132,7 @@ public class SvmBinaryClassifier implements Classifier {
 			BufferedReader in = new BufferedReader(new InputStreamReader(istr));
 			String line;
 			/*while ((line = in.readLine()) != null) {
-				System.out.println(line);
+				logger.info(line);
 			}*/
 		} catch (Exception e) {
 			//e.printStackTrace();

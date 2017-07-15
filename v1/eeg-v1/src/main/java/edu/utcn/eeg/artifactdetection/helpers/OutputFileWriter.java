@@ -3,14 +3,13 @@ package edu.utcn.eeg.artifactdetection.helpers;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.List;
 
-import edu.utcn.eeg.artifactdetection.model.AbstractSegment;
-import edu.utcn.eeg.artifactdetection.model.Configuration;
+import org.apache.log4j.Logger;
 
 public class OutputFileWriter {
 
 	private static OutputFileWriter instance = null;
+	Logger logger = LoggerUtil.logger(getClass());
 
 	public static OutputFileWriter getInstance() {
 		if (instance == null) {
@@ -25,12 +24,12 @@ public class OutputFileWriter {
 
 		try {
 			if (content == null) {
-				System.out.println("Null string content");
+				logger.info("Null string content");
 			}
 			fw = new FileWriter(filePath);
 			bw = new BufferedWriter(fw);
 			bw.write(content);
-			System.out.println("Done");
+			logger.info("Done");
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {

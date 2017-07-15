@@ -80,7 +80,7 @@ public class MultipleSegmentViewSceneMaker extends AbstractSceneMaker {
 		btnBack.setOnAction(new EventHandler<ActionEvent>() {
 
 			public void handle(ActionEvent event) {
-				System.out.println("back");
+				logger.info("back");
 				ListOfRegionsSceneMaker sm = new ListOfRegionsSceneMaker(stage);
 				stage.setScene(sm.makeScene());
 			}
@@ -98,7 +98,7 @@ public class MultipleSegmentViewSceneMaker extends AbstractSceneMaker {
 							indexOfSegmentToShow);
 					stage.setScene(sm.makeScene());
 				} else {
-					System.out.println("no more segments");
+					logger.info("no more segments");
 				}
 			}
 		});
@@ -115,7 +115,7 @@ public class MultipleSegmentViewSceneMaker extends AbstractSceneMaker {
 							indexOfSegmentToShow);
 					stage.setScene(sm.makeScene());
 				} else {
-					System.out.println("no more segments");
+					logger.info("no more segments");
 				}
 			}
 		});

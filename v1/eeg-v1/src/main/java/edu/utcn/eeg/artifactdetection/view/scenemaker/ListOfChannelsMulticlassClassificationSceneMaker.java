@@ -1,11 +1,11 @@
 package edu.utcn.eeg.artifactdetection.view.scenemaker;
 
 import java.util.List;
-import java.util.stream.Collectors;
+
+import org.apache.log4j.Logger;
 
 import edu.utcn.eeg.artifactdetection.classifier.Classifier;
-import edu.utcn.eeg.artifactdetection.classifier.decisiontree.DecisionTreeClassifier;
-import edu.utcn.eeg.artifactdetection.model.AbstractSegment;
+import edu.utcn.eeg.artifactdetection.helpers.LoggerUtil;
 import edu.utcn.eeg.artifactdetection.model.Segment;
 import edu.utcn.eeg.artifactdetection.view.provider.SimpleChannelSegmentProvider;
 import javafx.event.ActionEvent;
@@ -17,6 +17,8 @@ public class ListOfChannelsMulticlassClassificationSceneMaker extends
 		ListOfChannelsSceneMaker {
 
 	private Classifier clasiffier;
+	Logger logger = LoggerUtil.logger(getClass());
+
 
 	public ListOfChannelsMulticlassClassificationSceneMaker(Stage stage,
 			Classifier clasiffier) {
@@ -33,12 +35,14 @@ public class ListOfChannelsMulticlassClassificationSceneMaker extends
 		this.clasiffier = clasiffier;
 	}
 
+	@Override
 	@SuppressWarnings("restriction")
 	protected void addActionHandlerForButtonVizualize(Button btn) {
 		btn.setOnAction(new EventHandler<ActionEvent>() {
 
+			@Override
 			public void handle(ActionEvent event) {
-				System.out.println("vizualize classify with MULTICLASS");
+				logger.info("vizualize classify with MULTICLASS");
 
 				int regionIdx = getRegionComboBoxValue();
 				int channelIdx;
@@ -49,16 +53,16 @@ public class ListOfChannelsMulticlassClassificationSceneMaker extends
 					channelIdx = 0;
 				}
 				int nrChannel = channelIdx + regionIdx * 32;
-				System.out.println(channelIdx + " " + regionIdx + " "
+				logger.info(channelIdx + " " + regionIdx + " "
 						+ nrChannel);
 				if (nrChannel >= 72) {
 					SimpleChannelSegmentProvider provider = new SimpleChannelSegmentProvider(
 							nrChannel);
 					List<Segment> testSegm = provider
 							.provideSegments(nrChannel);
-					System.out.println(testSegm);
+					logger.info(testSegm);
 					if (testSegm == null) {
-						System.out.println("list of segments null");
+						logger.error("list of segments null");
 						errorLabel
 								.setText("Channel not available!");
 					} else {
@@ -66,7 +70,7 @@ public class ListOfChannelsMulticlassClassificationSceneMaker extends
 						List<Segment> classifiedSegments = clasiffier
 								.classifySegments(testSegm);
 						if (clasiffier == null) {
-							System.out.println("classifier null");
+							logger.error("classifier null");
 							errorLabel.setText("Choose a classifier!");
 						} else {
 							SimpleSegmentLabeldViewSceneMaker sm = new SimpleSegmentLabeldViewSceneMaker(

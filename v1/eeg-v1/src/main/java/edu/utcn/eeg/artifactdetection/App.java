@@ -1,6 +1,7 @@
 package edu.utcn.eeg.artifactdetection;
 
-import edu.utcn.eeg.artifactdetection.view.scenemaker.*;
+import edu.utcn.eeg.artifactdetection.helpers.LoggerUtil;
+import edu.utcn.eeg.artifactdetection.view.scenemaker.WelcomeSceneMaker;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -15,7 +16,8 @@ public class App extends Application {
 		stage.show();
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
+		LoggerUtil.configure();
 		launch(args);
 	}
 }

@@ -80,7 +80,7 @@ public class ListOfRegionsSceneMaker extends AbstractSceneMaker {
 		btn.setOnAction(new EventHandler<ActionEvent>() {
 
 			public void handle(ActionEvent event) {
-				System.out.println("vizualize");
+				logger.info("vizualize");
 				MultipleSegmentProvider provider = new MultipleSegmentProvider(MultiChannelSegmentSelector.A);
 				MultipleSegmentViewSceneMaker sm = new MultipleSegmentViewSceneMaker(stage, provider.provideSegments(),
 						0);

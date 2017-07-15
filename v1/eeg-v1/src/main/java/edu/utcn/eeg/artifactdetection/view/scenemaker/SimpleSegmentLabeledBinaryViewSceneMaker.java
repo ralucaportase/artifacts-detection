@@ -54,7 +54,7 @@ public class SimpleSegmentLabeledBinaryViewSceneMaker extends
 							Segment currentSegment = segments
 									.get(indexOfSegmentToShow);
 							if (selected.equals(clean)) {
-								System.out.println("changed label to clean");
+								logger.info("changed label to clean");
 								currentSegment
 										.setCorrectType(ResultType.BRAIN_SIGNAL);
 							} else {
@@ -78,7 +78,7 @@ public class SimpleSegmentLabeledBinaryViewSceneMaker extends
 	protected void addActionHandlerForBackButton() {
 		btnBack.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
-				System.out.println("back");
+				logger.info("back");
 				ListOfChannelsBinaryClassificationSceneMaker sm = new ListOfChannelsBinaryClassificationSceneMaker(
 						stage, clasificator);
 				stage.setScene(sm.makeScene());
@@ -97,7 +97,7 @@ public class SimpleSegmentLabeledBinaryViewSceneMaker extends
 							stage, segments, indexOfSegmentToShow, clasificator);
 					stage.setScene(sm.makeScene());
 				} else {
-					System.out.println("no more segments");
+					logger.info("no more segments");
 				}
 			}
 		});
@@ -114,7 +114,7 @@ public class SimpleSegmentLabeledBinaryViewSceneMaker extends
 							stage, segments, indexOfSegmentToShow, clasificator);
 					stage.setScene(sm.makeScene());
 				} else {
-					System.out.println("no more segments");
+					logger.info("no more segments");
 				}
 			}
 		});
@@ -125,10 +125,10 @@ public class SimpleSegmentLabeledBinaryViewSceneMaker extends
 		btnGenerateClenSignal.setOnAction(new EventHandler<ActionEvent>() {
 
 			public void handle(ActionEvent event) {
-				System.out.println("generate clean");
+				logger.info("generate clean");
 				AbstractFileGenerator fileGenerator = new BinaryFileGenerator();
 				fileGenerator.generateFileFromSegment(segments);
-				System.out.println("File with clean signal was generated");
+				logger.info("File with clean signal was generated");
 			}
 		});
 	}
@@ -138,10 +138,10 @@ public class SimpleSegmentLabeledBinaryViewSceneMaker extends
 		btnGenerateReport.setOnAction(new EventHandler<ActionEvent>() {
 
 			public void handle(ActionEvent event) {
-				System.out.println("generate report");
+				logger.info("generate report");
 				AbstractFileGenerator fileGenerator = new BinaryFileGenerator();
 				fileGenerator.outputStatistics(segments);
-				System.out.println("Statistics was generated!");
+				logger.info("Statistics was generated!");
 			}
 		});
 	}

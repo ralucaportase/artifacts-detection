@@ -25,14 +25,14 @@ public class SimpleChannelSegmentProvider {
 	 * Bring the channels from the channel nrChannel
 	 */
 	public List<Segment> provideSegments(int channel) {
-//		System.out.println("Start deserializing" + PATH);
+//		logger.info("Start deserializing" + PATH);
 //		SegmentDeserializer segmentDeserializer = new SegmentDeserializer();
 //		SegmentRepository repo = segmentDeserializer.deserializeSegmentsFromFile(PATH);
 //		List<AbstractSegment> segmentsAbstract = repo.getSegments();
 //		List<Segment> segments = segmentsAbstract.stream().map(s -> (Segment) s).collect(Collectors.toList());
-//		System.out.println("Deserialized all");
+//		logger.info("Deserialized all");
 //		for (Segment s : segments) {
-//			System.out.println(s.getInitIdx());
+//			logger.info(s.getInitIdx());
 //		}
 		
 		SegmentsGeneratorInterface gen=new SegmentsGenerator();

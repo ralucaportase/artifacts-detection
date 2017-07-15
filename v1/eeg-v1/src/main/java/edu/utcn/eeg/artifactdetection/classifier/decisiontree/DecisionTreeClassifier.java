@@ -7,8 +7,10 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import edu.utcn.eeg.artifactdetection.classifier.Classifier;
-import edu.utcn.eeg.artifactdetection.model.AbstractSegment;
+import edu.utcn.eeg.artifactdetection.helpers.LoggerUtil;
 import edu.utcn.eeg.artifactdetection.model.Configuration;
 import edu.utcn.eeg.artifactdetection.model.FeatureType;
 import edu.utcn.eeg.artifactdetection.model.ResultType;
@@ -22,6 +24,7 @@ import weka.core.Instances;
 import weka.core.SerializationHelper;
 
 public class DecisionTreeClassifier implements Classifier{
+	Logger logger = LoggerUtil.logger(getClass());
 
 	@Override
 	public List<Segment> classifySegments(List<Segment> segments){
@@ -33,7 +36,7 @@ public class DecisionTreeClassifier implements Classifier{
 		isTrainingSet.setClassIndex(fvWekaAttributes.size()-1);
 		 
 		for (Segment segment : segments) {
-			Segment segm = (Segment) segment;
+			Segment segm = segment;
 			Double result = classifySegment(repTreeClassifier, fvWekaAttributes, isTrainingSet, segm);
 			Segment predicted = createPredictedInstance(segm, result);
 			predictedSegments.add(predicted);
@@ -110,7 +113,7 @@ public class DecisionTreeClassifier implements Classifier{
 		 // evaluate classifier and print some statistics
 		 Evaluation eval = new Evaluation(data);
 		 eval.evaluateModel(repTreeClassifier, data);
-		 System.out.println(eval.toClassDetailsString());
+		 logger.info(eval.toClassDetailsString());
 	}
 
 }

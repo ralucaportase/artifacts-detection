@@ -1,16 +1,19 @@
 package edu.utcn.eeg.artifactdetection.view.scenemaker;
 
-import javafx.stage.Stage;
+import org.apache.log4j.Logger;
+
 import edu.utcn.eeg.artifactdetection.classifier.Classifier;
 import edu.utcn.eeg.artifactdetection.classifier.decisiontree.DecisionTreeClassifier;
 import edu.utcn.eeg.artifactdetection.classifier.knn.KnnClassifier;
 import edu.utcn.eeg.artifactdetection.classifier.svm.SvmClassesClassifier;
+import edu.utcn.eeg.artifactdetection.helpers.LoggerUtil;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.stage.Stage;
 
 @SuppressWarnings("restriction")
 public abstract class AbstractSceneMaker {
@@ -18,7 +21,9 @@ public abstract class AbstractSceneMaker {
 	protected final static int LENGTH_STAGE = 950;
 	protected final static int HIGH_STAGE = 650;
 	protected Stage stage;
+	Logger logger = LoggerUtil.logger(getClass());
 
+	
 	public AbstractSceneMaker(Stage stage) {
 		this.stage = stage;
 	}
@@ -45,7 +50,7 @@ public abstract class AbstractSceneMaker {
 
 			@Override
 			public void handle(ActionEvent e) {
-				System.out.println("load a file from D");
+				logger.info("load a file from D");
 			}
 		});
 
@@ -67,7 +72,7 @@ public abstract class AbstractSceneMaker {
 
 			@Override
 			public void handle(ActionEvent e) {
-				System.out.println("Visualize Multiple channel processing");
+				logger.info("Visualize Multiple channel processing");
 				ListOfRegionsSceneMaker sm = new ListOfRegionsSceneMaker(stage);
 				stage.setScene(sm.makeScene());
 			}
@@ -110,10 +115,10 @@ public abstract class AbstractSceneMaker {
 				ListOfChannelsMulticlassClassificationSceneMaker sm = new ListOfChannelsMulticlassClassificationSceneMaker(
 						stage, knn);
 				stage.setScene(sm.makeScene());
-				System.out.println("Knn");
+				logger.info("Knn");
 			}
 		});
-		MenuItem menuItem3122 = new MenuItem("Decizion tree");
+		MenuItem menuItem3122 = new MenuItem("Decision tree");
 		menuItem3122.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -122,7 +127,7 @@ public abstract class AbstractSceneMaker {
 				ListOfChannelsMulticlassClassificationSceneMaker sm = new ListOfChannelsMulticlassClassificationSceneMaker(
 						stage, dt);
 				stage.setScene(sm.makeScene());
-				System.out.println("DT");
+				logger.info("DT");
 			}
 		});
 		MenuItem menuItem3123 = new MenuItem("SVM");
@@ -134,7 +139,7 @@ public abstract class AbstractSceneMaker {
 				ListOfChannelsMulticlassClassificationSceneMaker sm = new ListOfChannelsMulticlassClassificationSceneMaker(
 						stage, svm);
 				stage.setScene(sm.makeScene());
-				System.out.println("DT");
+				logger.info("SVM");
 			}
 		});
 		menu312.getItems().addAll(menuItem3121, menuItem3122, menuItem3123);

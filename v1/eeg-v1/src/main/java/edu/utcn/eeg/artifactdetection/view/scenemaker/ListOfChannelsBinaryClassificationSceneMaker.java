@@ -2,10 +2,13 @@ package edu.utcn.eeg.artifactdetection.view.scenemaker;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import edu.utcn.eeg.artifactdetection.classifier.Classifier;
 import edu.utcn.eeg.artifactdetection.classifier.decisiontree.DecisionTreeClassifier;
 import edu.utcn.eeg.artifactdetection.classifier.knn.KnnClassifier;
 import edu.utcn.eeg.artifactdetection.classifier.svm.SvmBinaryClassifier;
+import edu.utcn.eeg.artifactdetection.helpers.LoggerUtil;
 import edu.utcn.eeg.artifactdetection.model.Segment;
 import edu.utcn.eeg.artifactdetection.postprocessing.ResultsValidator;
 import edu.utcn.eeg.artifactdetection.view.provider.SimpleChannelSegmentProvider;
@@ -18,25 +21,29 @@ public class ListOfChannelsBinaryClassificationSceneMaker extends
 		ListOfChannelsSceneMaker {
 
 	private String clasificator;
+	Logger logger = LoggerUtil.logger(getClass());
 
+	
 	public ListOfChannelsBinaryClassificationSceneMaker(Stage stage,
 			String clasificator) {
 		super(stage);
 		this.clasificator = clasificator;
 	}
 
+	@Override
 	@SuppressWarnings("restriction")
 	protected void addActionHandlerForButtonVizualize(Button btn) {
 		btn.setOnAction(new EventHandler<ActionEvent>() {
 
+			@Override
 			public void handle(ActionEvent event) {
-				System.out.println("vizualize classify with " + clasificator);
+				logger.info("vizualize classify with " + clasificator);
 
 				int regionIdx = getRegionComboBoxValue();
 				int channelIdx = Integer.parseInt(channelComboBox.getValue()
 						.toString());
 				int nrChannel = channelIdx + regionIdx * 32;
-				System.out.println(channelIdx + " " + regionIdx + " Channel "
+				logger.info(channelIdx + " " + regionIdx + " Channel "
 						+ nrChannel);
 				if (nrChannel >= 72) {
 					SimpleChannelSegmentProvider provider = new SimpleChannelSegmentProvider(
@@ -45,12 +52,12 @@ public class ListOfChannelsBinaryClassificationSceneMaker extends
 					List<Segment> testSegm = provider
 							.provideSegments(nrChannel);
 					if (testSegm == null) {
-						System.out.println("list of segments null");
+						logger.error("list of segments null");
 						errorLabel.setText("Channel not available!");
 					} else {
 						List<Segment> classifiedSegments = getCorrespondinClasifiedSegments(testSegm);
 						if (clasificator == null) {
-							System.out.println("classifier null");
+							logger.error("classifier null");
 							errorLabel.setText("Choose a classifier!");
 						} else {
 							SimpleSegmentLabeldViewSceneMaker sm = new SimpleSegmentLabeledBinaryViewSceneMaker(

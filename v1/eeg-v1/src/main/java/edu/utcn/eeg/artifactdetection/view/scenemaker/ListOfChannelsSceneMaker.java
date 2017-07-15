@@ -1,32 +1,32 @@
 package edu.utcn.eeg.artifactdetection.view.scenemaker;
 
-import java.io.File;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import edu.utcn.eeg.artifactdetection.classifier.Classifier;
-import edu.utcn.eeg.artifactdetection.classifier.decisiontree.DecisionTreeClassifier;
-import edu.utcn.eeg.artifactdetection.model.AbstractSegment;
+import org.apache.log4j.Logger;
+
+import edu.utcn.eeg.artifactdetection.helpers.LoggerUtil;
 import edu.utcn.eeg.artifactdetection.model.Segment;
 import edu.utcn.eeg.artifactdetection.view.provider.SimpleChannelSegmentProvider;
-import java_cup.internal_error;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 public class ListOfChannelsSceneMaker extends AbstractSceneMaker {
 
 	private static final int NR_CHANNELS = 128;
+	Logger logger = LoggerUtil.logger(getClass());
 
 	protected Button[] btnChannels;
 	protected Label[] labelChannels;
@@ -125,6 +125,7 @@ public class ListOfChannelsSceneMaker extends AbstractSceneMaker {
 	protected void addActionHandlerForButtonVizualize(Button btn) {
 		btn.setOnAction(new EventHandler<ActionEvent>() {
 
+			@Override
 			public void handle(ActionEvent event) {
 				int regionIdx = getRegionComboBoxValue();
 				int channelIdx;
@@ -135,16 +136,16 @@ public class ListOfChannelsSceneMaker extends AbstractSceneMaker {
 					channelIdx = 0;
 				}
 				int nrChannel = channelIdx + regionIdx * 32;
-				System.out.println(channelIdx + " " + regionIdx + " "
+				logger.info(channelIdx + " " + regionIdx + " "
 						+ nrChannel);
 				if (nrChannel >= 72) {
 					SimpleChannelSegmentProvider provider = new SimpleChannelSegmentProvider(
 							nrChannel);
 					List<Segment> testSegm = provider
 							.provideSegments(nrChannel);
-					System.out.println(testSegm);
+					logger.info(testSegm);
 					if (testSegm.equals(null)) {
-						System.out.println("list of segments null");
+						logger.info("list of segments null");
 						errorLabel.setText("Channel not available!");
 					} else {
 						SimpleSegmentViewSceneMaker sm = new SimpleSegmentViewSceneMaker(stage, testSegm, 0);
